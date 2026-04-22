@@ -83,19 +83,31 @@ export function normalizeReadingLanguage(rawValue?: string): ReadingLanguage {
     : defaultLanguage;
 }
 
+export function normalizeReadingLanguageWithDefault(
+  rawValue: string | undefined,
+  configuredDefaultLanguage: ReadingLanguage,
+): ReadingLanguage {
+  return readingLanguages.includes((rawValue || "") as ReadingLanguage)
+    ? ((rawValue || "") as ReadingLanguage)
+    : configuredDefaultLanguage;
+}
+
 export function buildReadingInputFromSearchParams(params: {
   birthYear?: SearchParamValue;
   ageBand?: SearchParamValue;
   westernZodiac?: SearchParamValue;
   intent?: SearchParamValue;
   language?: SearchParamValue;
-}): ReadingInput {
+}, configuredDefaultLanguage: ReadingLanguage = defaultLanguage): ReadingInput {
   return {
     birthYear: normalizeBirthYear(takeFirstValue(params.birthYear)),
     ageBand: normalizeAgeBand(takeFirstValue(params.ageBand)),
     westernZodiac: normalizeWesternZodiac(takeFirstValue(params.westernZodiac)),
     intent: normalizeReadingIntent(takeFirstValue(params.intent)),
-    language: normalizeReadingLanguage(takeFirstValue(params.language)),
+    language: normalizeReadingLanguageWithDefault(
+      takeFirstValue(params.language),
+      configuredDefaultLanguage,
+    ),
   };
 }
 

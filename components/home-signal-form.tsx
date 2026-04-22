@@ -7,6 +7,7 @@ import {
   buildDerivedReadingInput,
   isValidBirthDate,
 } from "@/engine/reading-profile";
+import type { ReadingLanguage } from "@/types/reading";
 
 const intents = [
   "clarity",
@@ -17,7 +18,11 @@ const intents = [
   "openness",
 ] as const;
 
-export function HomeSignalForm() {
+export function HomeSignalForm({
+  defaultLanguage = "en",
+}: {
+  defaultLanguage?: ReadingLanguage;
+}) {
   const router = useRouter();
   const [birthDate, setBirthDate] = useState("");
   const [intent, setIntent] = useState<(typeof intents)[number]>("clarity");
@@ -32,7 +37,7 @@ export function HomeSignalForm() {
     const derivedInput = buildDerivedReadingInput({
       birthDate,
       intent,
-      language: "en",
+      language: defaultLanguage,
     });
     const searchParams = new URLSearchParams({
       birthYear: String(derivedInput.birthYear),
@@ -124,7 +129,8 @@ export function HomeSignalForm() {
 
           <p className="text-sm leading-6 text-stone-300/70">
             Your birth date is translated locally before navigation so the
-            result route only receives lower-sensitivity profile fields.
+            result route only receives lower-sensitivity profile fields while
+            defaulting language from the current app config.
           </p>
         </div>
       </form>

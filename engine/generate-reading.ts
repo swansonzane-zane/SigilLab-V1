@@ -3,6 +3,7 @@ import {
   getDeepSeekRuntimeConfig,
 } from "@/lib/ai/deepseek";
 import { buildReadingPrompt } from "@/engine/reading-prompt";
+import { getAppConfig } from "@/services/configs-service";
 import type {
   ReadingGenerationResult,
   ReadingInput,
@@ -157,6 +158,7 @@ export async function generateReadingWithMeta(
   const { systemPrompt, userPrompt } = await buildReadingPrompt(input);
   const startedAt = Date.now();
   const deepSeekConfig = getDeepSeekRuntimeConfig();
+  const config = await getAppConfig();
 
   try {
     const rawOutput = await callDeepSeekChatCompletion({
@@ -179,9 +181,34 @@ export async function generateReadingWithMeta(
         model: deepSeekConfig.model,
         fallback: false,
         latencyMs: Date.now() - startedAt,
+        failed: false,
       },
     };
   } catch {
+    if (!config.enableFallback) {
+      return {
+        output: {
+          title: "Signal Temporarily Unavailable",
+          headline: "The reading channel is quiet for a moment.",
+          punchline:
+            "We couldn't complete your signal right now, but your intent is still held.",
+          insight:
+            "The live reading model did not return a usable result and fallback mode is currently disabled. Please try again shortly or return to the ritual and generate another signal.",
+          journalPrompts: [
+            "What feeling needed this reading most right now?",
+            "What truth can I name even without a generated signal?",
+          ],
+        },
+        meta: {
+          provider: "deepseek",
+          model: deepSeekConfig.model,
+          fallback: false,
+          latencyMs: Date.now() - startedAt,
+          failed: true,
+        },
+      };
+    }
+
     return {
       output: buildMockReadingOutput(input),
       meta: {
@@ -189,6 +216,7 @@ export async function generateReadingWithMeta(
         model: "mock-reading-engine",
         fallback: true,
         latencyMs: Date.now() - startedAt,
+        failed: false,
       },
     };
   }

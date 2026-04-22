@@ -1,0 +1,7 @@
+{
+  "defaultLanguage": "en",
+  "enableShare": true,
+  "enableFallback": true,
+  "enablePremiumPlaceholder": true,
+  "maxJournalPrompts": 3
+}

@@ -1,6 +1,9 @@
+import { getAppConfig } from "@/services/configs-service";
 import { HomeSignalForm } from "@/components/home-signal-form";
 
-export default function Home() {
+export default async function Home() {
+  const config = await getAppConfig();
+
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
       <div
@@ -39,7 +42,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <HomeSignalForm />
+          <HomeSignalForm defaultLanguage={config.defaultLanguage} />
         </section>
       </div>
     </main>

@@ -3,6 +3,7 @@ import { buildReadingInputFromSearchParams } from "@/engine/reading-request";
 import { ResultActionBar } from "@/components/result-action-bar";
 import { ResultHero } from "@/components/result-hero";
 import { ResultPrompts } from "@/components/result-prompts";
+import { getAppConfig } from "@/services/configs-service";
 import { createReadingRecord } from "@/services/readings-service";
 
 type ResultPageProps = {
@@ -16,7 +17,11 @@ type ResultPageProps = {
 };
 
 export default async function ResultPage({ searchParams }: ResultPageProps) {
-  const input = buildReadingInputFromSearchParams(await searchParams);
+  const config = await getAppConfig();
+  const input = buildReadingInputFromSearchParams(
+    await searchParams,
+    config.defaultLanguage,
+  );
   const { output, meta } = await generateReadingWithMeta(input);
 
   await createReadingRecord({
@@ -45,10 +50,19 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
 
           <ResultHero input={input} output={output} />
 
-          <ResultPrompts prompts={output.journalPrompts} />
+          {meta.failed ? (
+            <div className="max-w-3xl rounded-[1.5rem] border border-amber-200/20 bg-amber-100/8 px-5 py-4 text-sm leading-7 text-amber-50/90">
+              Live generation failed and fallback mode is disabled, so this
+              page is showing a stable failure response instead of mock content.
+            </div>
+          ) : null}
+
+          <ResultPrompts
+            prompts={output.journalPrompts.slice(0, config.maxJournalPrompts)}
+          />
         </section>
       </div>
-      <ResultActionBar />
+      <ResultActionBar showShare={config.enableShare} />
     </main>
   );
 }

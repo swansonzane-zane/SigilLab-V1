@@ -7,7 +7,7 @@ export const readingIntents = [
   "openness",
 ] as const;
 
-export const readingLanguages = ["en"] as const;
+export const readingLanguages = ["en", "es"] as const;
 export const readingAgeBands = [
   "under-18",
   "18-24",
@@ -65,6 +65,7 @@ export type ReadingGenerationMeta = {
   model: string;
   fallback: boolean;
   latencyMs: number;
+  failed: boolean;
 };
 
 export type ReadingGenerationResult = {
