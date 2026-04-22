@@ -1,7 +1,8 @@
-import type { ShareModel } from "@/types/share";
+import type { ShareModel, ShareRecord } from "@/types/share";
 
-export function buildMockShareModel(): ShareModel {
+export function createShareRecordPayload(): Omit<ShareRecord, "shareId" | "createdAt"> {
   return {
+    title: "SigilLab",
     headline: "A threshold is opening where old static used to rule.",
     punchline:
       "Your signal is asking for honesty before motion and softness before proof.",
@@ -13,10 +14,28 @@ export function buildMockShareModel(): ShareModel {
       "#MysticMirror",
       "#NightRitual",
     ],
+    ctaText: "Generate Your Own Signal",
+    ctaHref: "/",
+    sigilSpec: {
+      intentLabel: "share",
+    },
+    intent: "clarity",
+  };
+}
+
+export function buildShareModelFromRecord(record: ShareRecord): ShareModel {
+  return {
+    shareId: record.shareId,
+    title: record.title,
+    headline: record.headline,
+    punchline: record.punchline,
+    subtext: record.subtext,
+    hashtags: record.hashtags,
     revealCtaText: "Reveal Another Path",
     revealCtaHref: "/",
-    qrPlaceholderText: "Scan to open SigilLab",
-    shareTitle: "SigilLab",
+    onlineCtaLabel: "Open this seal online",
+    sharedPath: `/shared/${record.shareId}`,
+    shareTitle: record.title,
     shareText: "A sigil was revealed for me today. May clarity travel with you.",
     saveSuccessMessage: "The sigil has been sealed into your keeping.",
     saveFailureMessage: "The sigil resisted capture.",
@@ -26,5 +45,7 @@ export function buildMockShareModel(): ShareModel {
     copySuccessMessage: "Your blessing has been folded into the clipboard.",
     shareFailureMessage: "The blessing could not leave your device this time.",
     rewardHint: "Share light, and more light may return.",
+    privacyNotice: "Only the symbol is shared. Your private details remain with you.",
+    sigilIntent: record.sigilSpec.intentLabel,
   };
 }

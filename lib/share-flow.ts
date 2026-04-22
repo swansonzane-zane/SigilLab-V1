@@ -33,7 +33,12 @@ function wrapText(value: string, maxCharsPerLine: number) {
   return lines;
 }
 
-function renderTextLines(lines: string[], x: number, y: number, lineHeight: number) {
+function renderTextLines(
+  lines: string[],
+  x: number,
+  y: number,
+  lineHeight: number,
+) {
   return lines
     .map(
       (line, index) =>
@@ -43,16 +48,7 @@ function renderTextLines(lines: string[], x: number, y: number, lineHeight: numb
 }
 
 export function buildShareMessage(model: ShareModel, url: string) {
-  return [
-    model.shareTitle,
-    "",
-    model.punchline,
-    model.headline,
-    "",
-    model.shareText,
-    "",
-    url,
-  ].join("\n");
+  return [model.shareText, "", "Open the seal:", url].join("\n");
 }
 
 export function buildPosterSvg(model: ShareModel, url: string) {
@@ -60,6 +56,8 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   const headlineLines = wrapText(model.headline, 34).slice(0, 3);
   const subtextLines = wrapText(model.subtext, 42).slice(0, 4);
   const hashtagLine = model.hashtags.join("   ");
+  const onlineCtaLines = wrapText(model.onlineCtaLabel, 24).slice(0, 2);
+  const urlLines = wrapText(url, 44).slice(0, 3);
 
   return `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1800" viewBox="0 0 1200 1800" role="img" aria-label="SigilLab share sigil">
@@ -88,7 +86,7 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   <rect x="88" y="88" width="1024" height="1624" rx="72" fill="url(#card)" stroke="rgba(255,255,255,0.12)" />
   <rect x="140" y="146" width="244" height="52" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" />
   <circle cx="176" cy="172" r="8" fill="#f5d58a" />
-  <text x="200" y="180" fill="#f7e8bd" font-size="24" font-family="Georgia, serif" letter-spacing="8">SIGILLAB</text>
+  <text x="200" y="180" fill="#f7e8bd" font-size="24" font-family="Georgia, serif" letter-spacing="8">${escapeXml(model.title.toUpperCase())}</text>
   <text x="600" y="296" text-anchor="middle" fill="rgba(186,230,253,0.86)" font-size="24" font-family="Georgia, serif" letter-spacing="10">EMOTIONAL READING</text>
   <circle cx="600" cy="680" r="252" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)" />
   <circle cx="600" cy="680" r="210" fill="none" stroke="rgba(245,215,138,0.2)" />
@@ -105,9 +103,9 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   <text x="600" y="1230" text-anchor="middle" fill="rgba(245,245,244,0.88)" font-size="36" font-family="Georgia, serif">${renderTextLines(headlineLines, 600, 1230, 50)}</text>
   <text x="600" y="1380" text-anchor="middle" fill="rgba(214,211,209,0.8)" font-size="28" font-family="Georgia, serif">${renderTextLines(subtextLines, 600, 1380, 40)}</text>
   <text x="600" y="1554" text-anchor="middle" fill="rgba(231,229,228,0.74)" font-size="24" font-family="Georgia, serif">${escapeXml(hashtagLine)}</text>
-  <rect x="438" y="1600" width="324" height="74" rx="37" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" />
-  <text x="600" y="1646" text-anchor="middle" fill="#f4ead6" font-size="26" font-family="Georgia, serif" letter-spacing="5">${escapeXml(model.qrPlaceholderText)}</text>
-  <text x="600" y="1732" text-anchor="middle" fill="rgba(214,211,209,0.58)" font-size="22" font-family="Georgia, serif">${escapeXml(url)}</text>
+  <rect x="312" y="1600" width="576" height="132" rx="37" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" />
+  <text x="600" y="1638" text-anchor="middle" fill="#f4ead6" font-size="26" font-family="Georgia, serif">${renderTextLines(onlineCtaLines, 600, 1638, 30)}</text>
+  <text x="600" y="1698" text-anchor="middle" fill="rgba(214,211,209,0.7)" font-size="20" font-family="Georgia, serif">${renderTextLines(urlLines, 600, 1698, 28)}</text>
 </svg>
   `.trim();
 }

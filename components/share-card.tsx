@@ -17,7 +17,7 @@ export function ShareCard({ model }: ShareCardProps) {
         <div className="flex items-center justify-between gap-3">
           <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[11px] tracking-[0.3em] text-amber-100/88 uppercase">
             <span className="h-2 w-2 rounded-full bg-amber-200 shadow-[0_0_12px_rgba(252,211,77,0.82)]" />
-            SigilLab
+            {model.title}
           </div>
           <p className="text-[11px] tracking-[0.28em] text-stone-300/58 uppercase">
             Share Ritual
@@ -26,7 +26,7 @@ export function ShareCard({ model }: ShareCardProps) {
 
         <div className="-my-2 flex justify-center">
           <div className="scale-[0.82] sm:scale-[0.88]">
-            <ResultSigil intent="share" />
+            <ResultSigil intent={model.sigilIntent} />
           </div>
         </div>
 
@@ -67,38 +67,21 @@ export function ShareCard({ model }: ShareCardProps) {
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-[11px] tracking-[0.28em] text-stone-300/56 uppercase">
-                Passage Mark
+                {model.onlineCtaLabel}
               </p>
               <p className="mt-2 max-w-[12rem] text-sm leading-6 text-stone-300/82">
-                Carry this seal into a story, a message thread, or a private screenshot.
+                Carry this exact seal into a story, a message thread, or a private screenshot.
               </p>
             </div>
-            <div className="justify-self-center sm:justify-self-end">
-              <div className="rounded-[1.4rem] border border-white/10 bg-black/25 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)]">
-                <div className="grid h-24 w-24 grid-cols-5 gap-1 rounded-[1rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-2">
-                  {Array.from({ length: 25 }).map((_, index) => {
-                    const filled = [
-                      0, 1, 4, 5, 7, 9, 10, 12, 14, 15, 18, 20, 21, 23, 24,
-                    ].includes(index);
-
-                    return (
-                      <span
-                        key={index}
-                        className={
-                          filled
-                            ? "rounded-[2px] bg-stone-100/88"
-                            : "rounded-[2px] bg-white/8"
-                        }
-                      />
-                    );
-                  })}
-                </div>
-              </div>
+            <div className="max-w-[11rem] rounded-[1.4rem] border border-white/10 bg-black/25 px-4 py-3 text-right shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)]">
+              <p className="text-[11px] tracking-[0.24em] text-amber-100/70 uppercase">
+                Shared Link
+              </p>
+              <p className="mt-2 break-all text-sm leading-6 text-stone-200/80">
+                {model.sharedPath}
+              </p>
             </div>
           </div>
-          <p className="mt-3 text-center text-[10px] tracking-[0.24em] text-stone-300/58 uppercase">
-            {model.qrPlaceholderText}
-          </p>
         </div>
 
         <ShareActions model={model} />

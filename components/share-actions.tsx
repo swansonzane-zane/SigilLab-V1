@@ -38,7 +38,9 @@ export function ShareActions({ model }: ShareActionsProps) {
   const [isSharing, setIsSharing] = useState(false);
 
   const currentUrl =
-    typeof window === "undefined" ? model.revealCtaHref : window.location.href;
+    typeof window === "undefined"
+      ? model.sharedPath
+      : new URL(model.sharedPath, window.location.origin).toString();
 
   async function handleSaveSigil() {
     if (isSaving) {
@@ -54,7 +56,7 @@ export function ShareActions({ model }: ShareActionsProps) {
       const anchor = document.createElement("a");
 
       anchor.href = blobUrl;
-      anchor.download = "sigillab-share-sigil.svg";
+      anchor.download = `sigillab-${model.shareId}.svg`;
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
@@ -63,14 +65,14 @@ export function ShareActions({ model }: ShareActionsProps) {
       startTransition({
         active: true,
         level: "feedback",
-        title: "The sigil has been sealed into your keeping.",
+        title: model.saveSuccessMessage,
         message: "Keep it close while the current still answers to your name.",
       });
     } catch {
       startTransition({
         active: true,
         level: "feedback",
-        title: "The sigil resisted capture.",
+        title: model.saveFailureMessage,
         message: model.saveHint,
       });
     } finally {
@@ -117,7 +119,7 @@ export function ShareActions({ model }: ShareActionsProps) {
         startTransition({
           active: true,
           level: "feedback",
-          title: "The blessing could not be carried from this browser.",
+          title: model.shareFailureMessage,
           message: model.saveHint,
         });
       }
@@ -141,7 +143,7 @@ export function ShareActions({ model }: ShareActionsProps) {
         startTransition({
           active: true,
           level: "feedback",
-          title: "The blessing could not leave your device this time.",
+          title: model.shareFailureMessage,
           message: model.saveHint,
         });
       }
@@ -157,7 +159,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           type="button"
           onClick={handleSaveSigil}
           disabled={isSaving}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-amber-100/20 bg-[linear-gradient(135deg,rgba(244,215,161,0.96),rgba(214,179,255,0.88)_56%,rgba(134,217,255,0.9))] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105"
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-amber-100/20 bg-[linear-gradient(135deg,rgba(244,215,161,0.96),rgba(214,179,255,0.88)_56%,rgba(134,217,255,0.9))] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSaving ? "Sealing the sigil..." : "Save Sigil"}
         </button>
@@ -165,7 +167,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           type="button"
           onClick={handleSendBlessing}
           disabled={isSharing}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-semibold text-stone-100 transition hover:border-white/20 hover:bg-white/[0.08]"
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-semibold text-stone-100 transition hover:border-white/20 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSharing ? "Sending the blessing..." : "Send Blessing"}
         </button>
@@ -192,6 +194,15 @@ export function ShareActions({ model }: ShareActionsProps) {
         </p>
         <p className="mt-2 text-sm leading-7 text-stone-200/82">
           {model.saveHint}
+        </p>
+      </div>
+
+      <div className="rounded-[1.6rem] border border-emerald-200/10 bg-emerald-200/[0.04] px-4 py-4 text-center">
+        <p className="text-xs tracking-[0.28em] text-emerald-100/72 uppercase">
+          Privacy Boundary
+        </p>
+        <p className="mt-2 text-sm leading-7 text-stone-200/82">
+          {model.privacyNotice}
         </p>
       </div>
 

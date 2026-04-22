@@ -1,8 +1,12 @@
 import { ShareCard } from "@/components/share-card";
-import { buildMockShareModel } from "@/engine/share-model";
+import { buildShareModelFromRecord } from "@/engine/share-model";
+import { createShareRecord } from "@/services/shares-service";
 
-export default function SharePage() {
-  const model = buildMockShareModel();
+export const dynamic = "force-dynamic";
+
+export default async function SharePage() {
+  const record = await createShareRecord();
+  const model = buildShareModelFromRecord(record);
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
@@ -22,6 +26,9 @@ export default function SharePage() {
             This card is shaped for screenshots, blessings, and return paths.
             Keep the ritual close, then send it onward without breaking the
             atmosphere.
+          </p>
+          <p className="mt-3 text-sm leading-7 text-emerald-100/68">
+            {model.privacyNotice}
           </p>
         </div>
 
