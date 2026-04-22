@@ -34,3 +34,26 @@ export type AIProviderConfig = {
   enabled: boolean;
   apiKeyMasked: string;
 };
+
+export type AppConfig = {
+  defaultLanguage: "en" | "es";
+  enableShare: boolean;
+  enableFallback: boolean;
+  enablePremiumPlaceholder: boolean;
+  maxJournalPrompts: number;
+};
+
+export type MetricsSnapshot = {
+  dailyReadings: number;
+  successRate: number;
+  fallbackRate: number;
+  averageLatencyMs: number;
+  topIntents: Array<{
+    intent: string;
+    count: number;
+  }>;
+  languageDistribution: Array<{
+    language: string;
+    count: number;
+  }>;
+};
