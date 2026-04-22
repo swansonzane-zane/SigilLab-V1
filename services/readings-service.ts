@@ -53,6 +53,21 @@ function deriveEmotionalIntensity(input: ReadingInput, output: ReadingOutput) {
   return Math.min(10, byIntent[input.intent] + bonus);
 }
 
+function normalizeReadingRecord(record: ReadingRecord): ReadingRecord {
+  return {
+    ...record,
+    status: record.status || (record.fallback ? "fallback" : "success"),
+    errorReason: record.errorReason ?? null,
+    fallbackReason: record.fallbackReason ?? null,
+    providerResponseMs: record.providerResponseMs ?? null,
+    totalLatencyMs:
+      record.totalLatencyMs ??
+      ("latencyMs" in record && typeof (record as { latencyMs?: unknown }).latencyMs === "number"
+        ? ((record as { latencyMs: number }).latencyMs)
+        : 0),
+  };
+}
+
 export async function listReadingRecords(): Promise<ReadingRecord[]> {
   await ensureReadingsFile();
 
@@ -66,7 +81,7 @@ export async function listReadingRecords(): Promise<ReadingRecord[]> {
   try {
     const parsed = JSON.parse(trimmed) as unknown;
 
-    return isRecordArray(parsed) ? parsed : [];
+    return isRecordArray(parsed) ? parsed.map(normalizeReadingRecord) : [];
   } catch {
     return [];
   }
@@ -96,12 +111,16 @@ export async function createReadingRecord(params: {
     language: params.input.language,
     provider: params.meta.provider,
     model: params.meta.model,
+    status: params.meta.status,
     fallback: params.meta.fallback,
+    errorReason: params.meta.errorReason,
+    fallbackReason: params.meta.fallbackReason,
+    providerResponseMs: params.meta.providerResponseMs,
+    totalLatencyMs: params.meta.totalLatencyMs,
     title: params.output.title,
     insight: params.output.insight,
     emotionalState: deriveEmotionalState(params.input, params.output),
     emotionalIntensity: deriveEmotionalIntensity(params.input, params.output),
-    latencyMs: params.meta.latencyMs,
   };
 
   const nextRecords = [record, ...records];

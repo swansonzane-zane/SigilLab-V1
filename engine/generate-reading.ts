@@ -1,5 +1,6 @@
 import {
   callDeepSeekChatCompletion,
+  DeepSeekError,
   getDeepSeekRuntimeConfig,
 } from "@/lib/ai/deepseek";
 import { buildReadingPrompt } from "@/engine/reading-prompt";
@@ -110,7 +111,14 @@ function assertNonEmptyString(value: unknown): asserts value is string {
 }
 
 function parseReadingOutput(rawText: string): ReadingOutput {
-  const parsed = JSON.parse(rawText) as Partial<ReadingOutput>;
+  let parsed: Partial<ReadingOutput>;
+
+  try {
+    parsed = JSON.parse(rawText) as Partial<ReadingOutput>;
+  } catch {
+    throw new DeepSeekError("invalid_json", "Provider returned invalid JSON");
+  }
+
   const title = parsed.title;
   const headline = parsed.headline;
   const punchline = parsed.punchline;
@@ -122,13 +130,23 @@ function parseReadingOutput(rawText: string): ReadingOutput {
     : [];
 
   if (journalPrompts.length < 2) {
-    throw new Error("DeepSeek reading output failed validation");
+    throw new DeepSeekError(
+      "invalid_schema",
+      "DeepSeek reading output failed validation",
+    );
   }
 
-  assertNonEmptyString(title);
-  assertNonEmptyString(headline);
-  assertNonEmptyString(punchline);
-  assertNonEmptyString(insight);
+  try {
+    assertNonEmptyString(title);
+    assertNonEmptyString(headline);
+    assertNonEmptyString(punchline);
+    assertNonEmptyString(insight);
+  } catch {
+    throw new DeepSeekError(
+      "invalid_schema",
+      "DeepSeek reading output failed validation",
+    );
+  }
 
   const normalizedTitle = title.trim();
   const normalizedHeadline = headline.trim();
@@ -142,6 +160,14 @@ function parseReadingOutput(rawText: string): ReadingOutput {
     insight: normalizedInsight,
     journalPrompts: journalPrompts.map((prompt) => prompt.trim()),
   };
+}
+
+function classifyGenerationError(error: unknown) {
+  if (error instanceof DeepSeekError) {
+    return error.code;
+  }
+
+  return "provider_http_error";
 }
 
 export async function generateReading(
@@ -159,6 +185,7 @@ export async function generateReadingWithMeta(
   const startedAt = Date.now();
   const deepSeekConfig = getDeepSeekRuntimeConfig();
   const config = await getAppConfig();
+  let providerResponseMs: number | null = null;
 
   try {
     const rawOutput = await callDeepSeekChatCompletion({
@@ -173,18 +200,26 @@ export async function generateReadingWithMeta(
         },
       ],
     });
+    providerResponseMs = Date.now() - startedAt;
 
     return {
       output: parseReadingOutput(rawOutput),
       meta: {
         provider: "deepseek",
         model: deepSeekConfig.model,
+        status: "success",
         fallback: false,
-        latencyMs: Date.now() - startedAt,
+        errorReason: null,
+        fallbackReason: null,
+        providerResponseMs,
+        totalLatencyMs: Date.now() - startedAt,
         failed: false,
       },
     };
-  } catch {
+  } catch (error) {
+    const reason = classifyGenerationError(error);
+    providerResponseMs ??= reason === "missing_api_key" ? null : Date.now() - startedAt;
+
     if (!config.enableFallback) {
       return {
         output: {
@@ -202,8 +237,12 @@ export async function generateReadingWithMeta(
         meta: {
           provider: "deepseek",
           model: deepSeekConfig.model,
+          status: "error",
           fallback: false,
-          latencyMs: Date.now() - startedAt,
+          errorReason: reason,
+          fallbackReason: null,
+          providerResponseMs,
+          totalLatencyMs: Date.now() - startedAt,
           failed: true,
         },
       };
@@ -214,8 +253,12 @@ export async function generateReadingWithMeta(
       meta: {
         provider: "mock",
         model: "mock-reading-engine",
+        status: "fallback",
         fallback: true,
-        latencyMs: Date.now() - startedAt,
+        errorReason: null,
+        fallbackReason: reason,
+        providerResponseMs,
+        totalLatencyMs: Date.now() - startedAt,
         failed: false,
       },
     };

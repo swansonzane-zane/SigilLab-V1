@@ -8,12 +8,16 @@ export type ReadingRecord = {
   language: string;
   provider: string;
   model: string;
+  status: "success" | "fallback" | "error";
   fallback: boolean;
+  errorReason: string | null;
+  fallbackReason: string | null;
+  providerResponseMs: number | null;
+  totalLatencyMs: number;
   title: string;
   insight: string;
   emotionalState: string;
   emotionalIntensity: number;
-  latencyMs: number;
 };
 
 export type PromptVersion = {

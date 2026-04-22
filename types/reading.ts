@@ -63,8 +63,12 @@ export type ReadingOutput = {
 export type ReadingGenerationMeta = {
   provider: string;
   model: string;
+  status: "success" | "fallback" | "error";
   fallback: boolean;
-  latencyMs: number;
+  errorReason: string | null;
+  fallbackReason: string | null;
+  providerResponseMs: number | null;
+  totalLatencyMs: number;
   failed: boolean;
 };
 

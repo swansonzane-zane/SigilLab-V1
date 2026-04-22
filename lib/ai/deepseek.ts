@@ -3,6 +3,15 @@ type DeepSeekMessage = {
   content: string;
 };
 
+export class DeepSeekError extends Error {
+  code: string;
+
+  constructor(code: string, message: string) {
+    super(message);
+    this.code = code;
+  }
+}
+
 type CallDeepSeekChatCompletionInput = {
   messages: DeepSeekMessage[];
   temperature?: number;
@@ -37,42 +46,67 @@ export async function callDeepSeekChatCompletion({
   const { apiKey, baseUrl, model } = getDeepSeekRuntimeConfig();
 
   if (!apiKey) {
-    throw new Error("Missing DEEPSEEK_API_KEY");
+    throw new DeepSeekError("missing_api_key", "Missing DEEPSEEK_API_KEY");
   }
 
-  const response = await fetch(`${baseUrl}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: false,
-      temperature,
-      max_tokens: maxTokens,
-      response_format: {
-        type: "json_object",
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const response = await fetch(`${baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
-    }),
-    cache: "no-store",
-  });
+      body: JSON.stringify({
+        model,
+        messages,
+        stream: false,
+        temperature,
+        max_tokens: maxTokens,
+        response_format: {
+          type: "json_object",
+        },
+      }),
+      cache: "no-store",
+      signal: controller.signal,
+    });
 
-  if (!response.ok) {
-    const errorText = await response.text();
+    if (!response.ok) {
+      const errorText = await response.text();
 
-    throw new Error(
-      `DeepSeek request failed with status ${response.status}: ${errorText}`,
+      throw new DeepSeekError(
+        "provider_http_error",
+        `DeepSeek request failed with status ${response.status}: ${errorText}`,
+      );
+    }
+
+    const data = (await response.json()) as DeepSeekChatCompletionResponse;
+    const content = data.choices?.[0]?.message?.content?.trim();
+
+    if (!content) {
+      throw new DeepSeekError(
+        "empty_response",
+        "DeepSeek response did not include message content",
+      );
+    }
+
+    return content;
+  } catch (error) {
+    if (error instanceof DeepSeekError) {
+      throw error;
+    }
+
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new DeepSeekError("timeout", "DeepSeek request timed out");
+    }
+
+    throw new DeepSeekError(
+      "provider_http_error",
+      error instanceof Error ? error.message : "Unknown provider failure",
     );
+  } finally {
+    clearTimeout(timeout);
   }
-
-  const data = (await response.json()) as DeepSeekChatCompletionResponse;
-  const content = data.choices?.[0]?.message?.content?.trim();
-
-  if (!content) {
-    throw new Error("DeepSeek response did not include message content");
-  }
-
-  return content;
 }

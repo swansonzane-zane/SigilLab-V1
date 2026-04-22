@@ -46,13 +46,19 @@ export default async function AdminReadingsPage({
             ) : null}
             {records.map((record) => {
               const isSelected = selectedRecord?.id === record.id;
+              const statusTone =
+                record.status === "success"
+                  ? "border-emerald-300/25 bg-emerald-300/10 text-emerald-100"
+                  : record.status === "fallback"
+                    ? "border-amber-300/25 bg-amber-300/10 text-amber-100"
+                    : "border-rose-300/25 bg-rose-300/10 text-rose-100";
 
               return (
                 <a
                   key={record.id}
                   href={`/admin/readings?record=${record.id}`}
                   className={[
-                    "grid gap-3 rounded-2xl border px-4 py-4 text-sm transition sm:grid-cols-[1.05fr_0.7fr_0.95fr_0.55fr_1.1fr_0.45fr]",
+                    "grid gap-3 rounded-2xl border px-4 py-4 text-sm transition sm:grid-cols-[1.05fr_0.7fr_0.9fr_0.7fr_1.1fr_0.55fr]",
                     isSelected
                       ? "border-amber-200/30 bg-amber-100/8 text-stone-100"
                       : "border-white/8 bg-white/[0.03] text-stone-200/82 hover:border-white/16 hover:bg-white/[0.05]",
@@ -78,9 +84,15 @@ export default async function AdminReadingsPage({
                   </div>
                   <div>
                     <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
-                      Fallback
+                      Status
                     </p>
-                    <p className="mt-1">{record.fallback ? "Yes" : "No"}</p>
+                    <p className="mt-1">
+                      <span
+                        className={`rounded-full border px-2.5 py-1 text-[11px] tracking-[0.18em] uppercase ${statusTone}`}
+                      >
+                        {record.status}
+                      </span>
+                    </p>
                   </div>
                   <div>
                     <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
@@ -92,9 +104,9 @@ export default async function AdminReadingsPage({
                   </div>
                   <div>
                     <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
-                      Latency
+                      Total Latency
                     </p>
-                    <p className="mt-1">{record.latencyMs}ms</p>
+                    <p className="mt-1">{record.totalLatencyMs}ms</p>
                   </div>
                   <div className="sm:col-span-full">
                     <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
@@ -132,12 +144,25 @@ export default async function AdminReadingsPage({
                   ["Age Band", selectedRecord.ageBand],
                   ["Western Zodiac", selectedRecord.westernZodiac],
                   ["Intent", selectedRecord.intent],
+                  ["Status", selectedRecord.status],
                   ["Emotional State", selectedRecord.emotionalState],
                   [
                     "Emotional Intensity",
                     `${selectedRecord.emotionalIntensity}/10`,
                   ],
                   ["Fallback", selectedRecord.fallback ? "Yes" : "No"],
+                  [
+                    "Fallback Reason",
+                    selectedRecord.fallbackReason || "None",
+                  ],
+                  ["Error Reason", selectedRecord.errorReason || "None"],
+                  [
+                    "Provider Response",
+                    selectedRecord.providerResponseMs
+                      ? `${selectedRecord.providerResponseMs}ms`
+                      : "N/A",
+                  ],
+                  ["Total Latency", `${selectedRecord.totalLatencyMs}ms`],
                   [
                     "Provider / Model",
                     `${selectedRecord.provider} / ${selectedRecord.model}`,
