@@ -1,3 +1,5 @@
+import { callDeepSeekChatCompletion } from "@/lib/ai/deepseek";
+import { buildReadingPrompt } from "@/engine/reading-prompt";
 import type { ReadingInput, ReadingOutput } from "@/types/reading";
 
 const intentThemes = {
@@ -60,8 +62,72 @@ export function buildMockReadingOutput(input: ReadingInput): ReadingOutput {
   };
 }
 
+function isNonEmptyString(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function assertNonEmptyString(value: unknown): asserts value is string {
+  if (!isNonEmptyString(value)) {
+    throw new Error("DeepSeek reading output failed validation");
+  }
+}
+
+function parseReadingOutput(rawText: string): ReadingOutput {
+  const parsed = JSON.parse(rawText) as Partial<ReadingOutput>;
+  const title = parsed.title;
+  const headline = parsed.headline;
+  const punchline = parsed.punchline;
+  const insight = parsed.insight;
+  const journalPrompts = Array.isArray(parsed.journalPrompts)
+    ? parsed.journalPrompts
+        .filter((prompt): prompt is string => isNonEmptyString(prompt))
+        .slice(0, 3)
+    : [];
+
+  if (journalPrompts.length < 2) {
+    throw new Error("DeepSeek reading output failed validation");
+  }
+
+  assertNonEmptyString(title);
+  assertNonEmptyString(headline);
+  assertNonEmptyString(punchline);
+  assertNonEmptyString(insight);
+
+  const normalizedTitle = title.trim();
+  const normalizedHeadline = headline.trim();
+  const normalizedPunchline = punchline.trim();
+  const normalizedInsight = insight.trim();
+
+  return {
+    title: normalizedTitle,
+    headline: normalizedHeadline,
+    punchline: normalizedPunchline,
+    insight: normalizedInsight,
+    journalPrompts: journalPrompts.map((prompt) => prompt.trim()),
+  };
+}
+
 export async function generateReading(
   input: ReadingInput,
 ): Promise<ReadingOutput> {
-  return buildMockReadingOutput(input);
+  const { systemPrompt, userPrompt } = buildReadingPrompt(input);
+
+  try {
+    const rawOutput = await callDeepSeekChatCompletion({
+      messages: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        {
+          role: "user",
+          content: userPrompt,
+        },
+      ],
+    });
+
+    return parseReadingOutput(rawOutput);
+  } catch {
+    return buildMockReadingOutput(input);
+  }
 }
