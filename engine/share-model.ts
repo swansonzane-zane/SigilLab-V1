@@ -13,8 +13,15 @@ export function buildMockShareModel(): ShareModel {
       "#MysticMirror",
       "#NightRitual",
     ],
-    ctaText: "Begin Your Signal",
-    ctaHref: "/",
+    revealCtaText: "Reveal Another Path",
+    revealCtaHref: "/",
     qrPlaceholderText: "Scan to open SigilLab",
+    shareTitle: "SigilLab",
+    shareText: "A sigil was revealed for me today. May clarity travel with you.",
+    saveHint:
+      "Preserve this sigil before the energy fades. If the seal does not download, hold it on screen and keep a screenshot close.",
+    shareSuccessMessage: "The seal now travels beyond your path.",
+    copySuccessMessage: "Your blessing has been folded into the clipboard.",
+    rewardHint: "Share light, and more light may return.",
   };
 }
