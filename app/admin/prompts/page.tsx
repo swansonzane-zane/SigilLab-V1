@@ -1,3 +1,4 @@
+import { AdminPromptsEditor } from "@/components/admin/admin-prompts-editor";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminSectionCard } from "@/components/admin/admin-section-card";
 import {
@@ -19,11 +20,11 @@ function getSelectedVersionId(value?: string | string[]) {
 export default async function AdminPromptsPage({
   searchParams,
 }: AdminPromptsPageProps) {
-  const promptVersions = listPromptVersions();
+  const promptVersions = await listPromptVersions();
   const selectedVersionId = getSelectedVersionId((await searchParams).version);
-  const activePrompt = getActivePromptVersion();
+  const activePrompt = await getActivePromptVersion();
   const selectedPrompt =
-    (selectedVersionId && getPromptVersionById(selectedVersionId)) ||
+    (selectedVersionId && (await getPromptVersionById(selectedVersionId))) ||
     activePrompt ||
     promptVersions[0];
 
@@ -89,37 +90,10 @@ export default async function AdminPromptsPage({
 
         <AdminSectionCard
           title="Prompt Detail"
-          description="Read-only detail view for the currently selected prompt version."
+          description="Editable prompt detail with save and active-state controls."
         >
           {selectedPrompt ? (
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-heading text-3xl text-stone-50">
-                  {selectedPrompt.name}
-                </h2>
-                {selectedPrompt.status === "active" ? (
-                  <span className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-1 text-[11px] tracking-[0.24em] text-emerald-100 uppercase">
-                    Active Prompt
-                  </span>
-                ) : null}
-              </div>
-              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
-                <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
-                  System Prompt
-                </p>
-                <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-stone-200/84">
-                  {selectedPrompt.systemPrompt}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
-                <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
-                  User Prompt Template
-                </p>
-                <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-stone-200/84">
-                  {selectedPrompt.userPromptTemplate}
-                </p>
-              </div>
-            </div>
+            <AdminPromptsEditor prompt={selectedPrompt} />
           ) : null}
         </AdminSectionCard>
       </div>

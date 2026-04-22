@@ -154,7 +154,7 @@ export async function generateReading(
 export async function generateReadingWithMeta(
   input: ReadingInput,
 ): Promise<ReadingGenerationResult> {
-  const { systemPrompt, userPrompt } = buildReadingPrompt(input);
+  const { systemPrompt, userPrompt } = await buildReadingPrompt(input);
   const startedAt = Date.now();
   const deepSeekConfig = getDeepSeekRuntimeConfig();
 
