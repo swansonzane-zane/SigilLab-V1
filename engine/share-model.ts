@@ -1,13 +1,32 @@
-import type { ShareModel, ShareRecord } from "@/types/share";
+import type { ShareModel, ShareRecord, ShareSeedInput } from "@/types/share";
 
-export function createShareRecordPayload(): Omit<ShareRecord, "shareId" | "createdAt"> {
+function normalizeSeedText(value: string | undefined, fallback: string) {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : fallback;
+}
+
+function normalizeIntentLabel(value: string | undefined) {
+  const trimmed = value?.trim().toLowerCase();
+  return trimmed || "clarity";
+}
+
+export function createShareRecordPayload(
+  seed?: ShareSeedInput,
+): Omit<ShareRecord, "shareId" | "createdAt"> {
   return {
-    title: "SigilLab",
-    headline: "A threshold is opening where old static used to rule.",
-    punchline:
+    title: normalizeSeedText(seed?.title, "SigilLab"),
+    headline: normalizeSeedText(
+      seed?.headline,
+      "A threshold is opening where old static used to rule.",
+    ),
+    punchline: normalizeSeedText(
+      seed?.punchline,
       "Your signal is asking for honesty before motion and softness before proof.",
-    subtext:
+    ),
+    subtext: normalizeSeedText(
+      seed?.subtext,
       "Hold this reading like a private omen: intimate, luminous, and clear enough to carry into the next conversation you cannot avoid.",
+    ),
     hashtags: [
       "#SigilLab",
       "#EmotionalSignal",
@@ -17,9 +36,10 @@ export function createShareRecordPayload(): Omit<ShareRecord, "shareId" | "creat
     ctaText: "Generate Your Own Signal",
     ctaHref: "/",
     sigilSpec: {
-      intentLabel: "share",
+      intentLabel: normalizeIntentLabel(seed?.intent),
     },
-    intent: "clarity",
+    intent: normalizeIntentLabel(seed?.intent),
+    zodiac: seed?.zodiac?.trim() || undefined,
   };
 }
 

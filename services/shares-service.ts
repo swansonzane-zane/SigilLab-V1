@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { createShareRecordPayload } from "@/engine/share-model";
-import type { ShareRecord } from "@/types/share";
+import type { ShareRecord, ShareSeedInput } from "@/types/share";
 
 const dataDir = path.join(process.cwd(), "data");
 const sharesFilePath = path.join(dataDir, "shares.json");
@@ -65,9 +65,9 @@ export async function getShareRecordById(
   return records.find((record) => record.shareId === shareId);
 }
 
-export async function createShareRecord(): Promise<ShareRecord> {
+export async function createShareRecord(seed?: ShareSeedInput): Promise<ShareRecord> {
   const records = await listShareRecords();
-  const payload = createShareRecordPayload();
+  const payload = createShareRecordPayload(seed);
   const record: ShareRecord = {
     shareId: buildShareId(),
     createdAt: new Date().toISOString(),

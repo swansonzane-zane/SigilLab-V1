@@ -17,6 +17,15 @@ export type ShareRecord = {
   zodiac?: string;
 };
 
+export type ShareSeedInput = {
+  title?: string;
+  headline?: string;
+  punchline?: string;
+  subtext?: string;
+  intent?: string;
+  zodiac?: string;
+};
+
 export type ShareModel = {
   shareId: string;
   title: string;

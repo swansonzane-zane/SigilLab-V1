@@ -1,5 +1,65 @@
 [
   {
+    "shareId": "shr_e40c7a33",
+    "createdAt": "2026-04-22T23:41:03.168Z",
+    "title": "SigilLab",
+    "headline": "A threshold is opening where old static used to rule.",
+    "punchline": "Your signal is asking for honesty before motion and softness before proof.",
+    "subtext": "Hold this reading like a private omen: intimate, luminous, and clear enough to carry into the next conversation you cannot avoid.",
+    "hashtags": [
+      "#SigilLab",
+      "#EmotionalSignal",
+      "#MysticMirror",
+      "#NightRitual"
+    ],
+    "ctaText": "Generate Your Own Signal",
+    "ctaHref": "/",
+    "sigilSpec": {
+      "intentLabel": "clarity"
+    },
+    "intent": "clarity"
+  },
+  {
+    "shareId": "shr_4e18b423",
+    "createdAt": "2026-04-22T23:41:03.155Z",
+    "title": "SigilLab",
+    "headline": "A threshold is opening where old static used to rule.",
+    "punchline": "Your signal is asking for honesty before motion and softness before proof.",
+    "subtext": "Hold this reading like a private omen: intimate, luminous, and clear enough to carry into the next conversation you cannot avoid.",
+    "hashtags": [
+      "#SigilLab",
+      "#EmotionalSignal",
+      "#MysticMirror",
+      "#NightRitual"
+    ],
+    "ctaText": "Generate Your Own Signal",
+    "ctaHref": "/",
+    "sigilSpec": {
+      "intentLabel": "clarity"
+    },
+    "intent": "clarity"
+  },
+  {
+    "shareId": "shr_26a52e06",
+    "createdAt": "2026-04-22T23:29:10.934Z",
+    "title": "SigilLab",
+    "headline": "A threshold is opening where old static used to rule.",
+    "punchline": "Your signal is asking for honesty before motion and softness before proof.",
+    "subtext": "Hold this reading like a private omen: intimate, luminous, and clear enough to carry into the next conversation you cannot avoid.",
+    "hashtags": [
+      "#SigilLab",
+      "#EmotionalSignal",
+      "#MysticMirror",
+      "#NightRitual"
+    ],
+    "ctaText": "Generate Your Own Signal",
+    "ctaHref": "/",
+    "sigilSpec": {
+      "intentLabel": "share"
+    },
+    "intent": "clarity"
+  },
+  {
     "shareId": "shr_30f97017",
     "createdAt": "2026-04-22T23:26:55.105Z",
     "title": "SigilLab",

@@ -4,7 +4,19 @@ import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
 
-export function ResultActionBar({ showShare }: { showShare: boolean }) {
+type ResultActionBarProps = {
+  showShare: boolean;
+  shareSeed?: {
+    title: string;
+    headline: string;
+    punchline: string;
+    subtext: string;
+    intent: string;
+    zodiac: string;
+  };
+};
+
+export function ResultActionBar({ showShare, shareSeed }: ResultActionBarProps) {
   const router = useRouter();
   const { startTransition } = useTransitionController();
 
@@ -22,7 +34,17 @@ export function ResultActionBar({ showShare }: { showShare: boolean }) {
                 message:
                   "A luminous share card is being lifted into view so the signal can travel cleanly.",
               });
-              router.push("/share");
+
+              const searchParams = new URLSearchParams({
+                title: shareSeed?.title || "SigilLab",
+                headline: shareSeed?.headline || "",
+                punchline: shareSeed?.punchline || "",
+                subtext: shareSeed?.subtext || "",
+                intent: shareSeed?.intent || "clarity",
+                zodiac: shareSeed?.zodiac || "",
+              });
+
+              router.push(`/share?${searchParams.toString()}`);
             }}
             className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-medium text-stone-100 transition hover:bg-white/[0.1]"
           >

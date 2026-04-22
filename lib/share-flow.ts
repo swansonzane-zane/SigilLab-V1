@@ -47,17 +47,42 @@ function renderTextLines(
     .join("");
 }
 
+function measureTextBlock(
+  lines: string[],
+  fontSize: number,
+  lineHeight: number,
+  paddingBottom: number,
+) {
+  const safeLines = Math.max(lines.length, 1);
+  return fontSize + (safeLines - 1) * lineHeight + paddingBottom;
+}
+
 export function buildShareMessage(model: ShareModel, url: string) {
   return [model.shareText, "", "Open the seal:", url].join("\n");
 }
 
 export function buildPosterSvg(model: ShareModel, url: string) {
-  const punchlineLines = wrapText(model.punchline, 22).slice(0, 3);
-  const headlineLines = wrapText(model.headline, 34).slice(0, 3);
-  const subtextLines = wrapText(model.subtext, 42).slice(0, 4);
+  const punchlineLines = wrapText(model.punchline, 22).slice(0, 4);
+  const headlineLines = wrapText(model.headline, 34).slice(0, 4);
+  const subtextLines = wrapText(model.subtext, 42).slice(0, 5);
   const hashtagLine = model.hashtags.join("   ");
   const onlineCtaLines = wrapText(model.onlineCtaLabel, 24).slice(0, 2);
   const urlLines = wrapText(url, 44).slice(0, 3);
+  const sigilIntentLabel = wrapText(model.sigilIntent.toUpperCase(), 20).slice(
+    0,
+    1,
+  );
+
+  const punchlineY = 1020;
+  const punchlineBlockHeight = measureTextBlock(punchlineLines, 78, 88, 34);
+  const headlineY = punchlineY + punchlineBlockHeight;
+  const headlineBlockHeight = measureTextBlock(headlineLines, 36, 52, 34);
+  const subtextY = headlineY + headlineBlockHeight;
+  const subtextBlockHeight = measureTextBlock(subtextLines, 28, 40, 42);
+  const hashtagsY = subtextY + subtextBlockHeight;
+  const ctaBoxY = hashtagsY + 42;
+  const ctaLabelY = ctaBoxY + 38;
+  const ctaUrlY = ctaBoxY + 98;
 
   return `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1800" viewBox="0 0 1200 1800" role="img" aria-label="SigilLab share sigil">
@@ -99,13 +124,14 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   <path d="M600 462 L660 598 L798 680 L660 762 L600 898 L540 762 L402 680 L540 598 Z" fill="none" stroke="rgba(255,255,255,0.76)" stroke-width="4" />
   <path d="M600 538 L718 680 L600 822 L482 680 Z" fill="none" stroke="rgba(255,255,255,0.58)" stroke-width="4" />
   <circle cx="600" cy="680" r="16" fill="#fff9eb" />
-  <text x="600" y="1040" text-anchor="middle" fill="#fff5df" font-size="78" font-weight="600" font-family="Georgia, serif">${renderTextLines(punchlineLines, 600, 1040, 86)}</text>
-  <text x="600" y="1230" text-anchor="middle" fill="rgba(245,245,244,0.88)" font-size="36" font-family="Georgia, serif">${renderTextLines(headlineLines, 600, 1230, 50)}</text>
-  <text x="600" y="1380" text-anchor="middle" fill="rgba(214,211,209,0.8)" font-size="28" font-family="Georgia, serif">${renderTextLines(subtextLines, 600, 1380, 40)}</text>
-  <text x="600" y="1554" text-anchor="middle" fill="rgba(231,229,228,0.74)" font-size="24" font-family="Georgia, serif">${escapeXml(hashtagLine)}</text>
-  <rect x="312" y="1600" width="576" height="132" rx="37" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" />
-  <text x="600" y="1638" text-anchor="middle" fill="#f4ead6" font-size="26" font-family="Georgia, serif">${renderTextLines(onlineCtaLines, 600, 1638, 30)}</text>
-  <text x="600" y="1698" text-anchor="middle" fill="rgba(214,211,209,0.7)" font-size="20" font-family="Georgia, serif">${renderTextLines(urlLines, 600, 1698, 28)}</text>
+  <text x="600" y="948" text-anchor="middle" fill="rgba(214,211,209,0.62)" font-size="20" font-family="Georgia, serif" letter-spacing="8">${renderTextLines(sigilIntentLabel, 600, 948, 24)}</text>
+  <text x="600" y="${punchlineY}" text-anchor="middle" fill="#fff5df" font-size="78" font-weight="600" font-family="Georgia, serif">${renderTextLines(punchlineLines, 600, punchlineY, 88)}</text>
+  <text x="600" y="${headlineY}" text-anchor="middle" fill="rgba(245,245,244,0.88)" font-size="36" font-family="Georgia, serif">${renderTextLines(headlineLines, 600, headlineY, 52)}</text>
+  <text x="600" y="${subtextY}" text-anchor="middle" fill="rgba(214,211,209,0.8)" font-size="28" font-family="Georgia, serif">${renderTextLines(subtextLines, 600, subtextY, 40)}</text>
+  <text x="600" y="${hashtagsY}" text-anchor="middle" fill="rgba(231,229,228,0.74)" font-size="24" font-family="Georgia, serif">${escapeXml(hashtagLine)}</text>
+  <rect x="312" y="${ctaBoxY}" width="576" height="132" rx="37" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" />
+  <text x="600" y="${ctaLabelY}" text-anchor="middle" fill="#f4ead6" font-size="26" font-family="Georgia, serif">${renderTextLines(onlineCtaLines, 600, ctaLabelY, 30)}</text>
+  <text x="600" y="${ctaUrlY}" text-anchor="middle" fill="rgba(214,211,209,0.7)" font-size="20" font-family="Georgia, serif">${renderTextLines(urlLines, 600, ctaUrlY, 28)}</text>
 </svg>
   `.trim();
 }

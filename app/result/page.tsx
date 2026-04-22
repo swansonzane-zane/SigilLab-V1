@@ -62,7 +62,17 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
           />
         </section>
       </div>
-      <ResultActionBar showShare={config.enableShare} />
+      <ResultActionBar
+        showShare={config.enableShare}
+        shareSeed={{
+          title: output.title,
+          headline: output.headline,
+          punchline: output.punchline,
+          subtext: output.insight,
+          intent: input.intent,
+          zodiac: input.westernZodiac,
+        }}
+      />
     </main>
   );
 }

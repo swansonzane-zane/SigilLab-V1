@@ -4,8 +4,31 @@ import { createShareRecord } from "@/services/shares-service";
 
 export const dynamic = "force-dynamic";
 
-export default async function SharePage() {
-  const record = await createShareRecord();
+type SharePageProps = {
+  searchParams: Promise<{
+    title?: string | string[];
+    headline?: string | string[];
+    punchline?: string | string[];
+    subtext?: string | string[];
+    intent?: string | string[];
+    zodiac?: string | string[];
+  }>;
+};
+
+function getParam(value?: string | string[]) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function SharePage({ searchParams }: SharePageProps) {
+  const params = await searchParams;
+  const record = await createShareRecord({
+    title: getParam(params.title),
+    headline: getParam(params.headline),
+    punchline: getParam(params.punchline),
+    subtext: getParam(params.subtext),
+    intent: getParam(params.intent),
+    zodiac: getParam(params.zodiac),
+  });
   const model = buildShareModelFromRecord(record);
 
   return (
