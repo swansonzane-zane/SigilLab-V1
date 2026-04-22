@@ -31,12 +31,13 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
               Emotional Signal Result
             </p>
             <h2 className="font-heading text-4xl leading-tight font-semibold text-stone-50 sm:text-5xl">
-              Your reading is assembled from the intention you brought into the
-              ritual.
+              The current sky answers the intention you carried into this
+              moment.
             </h2>
             <p className="max-w-xl text-base leading-7 text-stone-300/82 sm:text-lg">
-              This mock result flow reads URL parameters safely, normalizes the
-              request, and returns a stable SigilLab output instead of a 404.
+              Settle into what rises first. Your signal below is written as a
+              reflective reading meant to help you name the feeling, pattern,
+              and next opening in front of you.
             </p>
           </div>
 
