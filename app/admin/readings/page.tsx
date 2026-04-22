@@ -114,6 +114,34 @@ export default async function AdminReadingsPage({
                     </p>
                     <p className="mt-1 text-stone-100">{record.title}</p>
                   </div>
+                  <div className="sm:col-span-full grid gap-3 sm:grid-cols-3">
+                    <div>
+                      <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
+                        Provider Response
+                      </p>
+                      <p className="mt-1">
+                        {record.providerResponseMs
+                          ? `${record.providerResponseMs}ms`
+                          : "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
+                        Fallback Reason
+                      </p>
+                      <p className="mt-1 break-words">
+                        {record.fallbackReason || "None"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
+                        Error Reason
+                      </p>
+                      <p className="mt-1 break-words">
+                        {record.errorReason || "None"}
+                      </p>
+                    </div>
+                  </div>
                 </a>
               );
             })}
