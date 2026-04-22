@@ -59,3 +59,15 @@ export type ReadingOutput = {
   insight: string;
   journalPrompts: string[];
 };
+
+export type ReadingGenerationMeta = {
+  provider: string;
+  model: string;
+  fallback: boolean;
+  latencyMs: number;
+};
+
+export type ReadingGenerationResult = {
+  output: ReadingOutput;
+  meta: ReadingGenerationMeta;
+};

@@ -17,7 +17,7 @@ type DeepSeekChatCompletionResponse = {
   }>;
 };
 
-function getDeepSeekConfig() {
+export function getDeepSeekRuntimeConfig() {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   const baseUrl = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com";
   const model = process.env.DEEPSEEK_MODEL || "deepseek-chat";
@@ -34,7 +34,7 @@ export async function callDeepSeekChatCompletion({
   temperature = 1.15,
   maxTokens = 900,
 }: CallDeepSeekChatCompletionInput): Promise<string> {
-  const { apiKey, baseUrl, model } = getDeepSeekConfig();
+  const { apiKey, baseUrl, model } = getDeepSeekRuntimeConfig();
 
   if (!apiKey) {
     throw new Error("Missing DEEPSEEK_API_KEY");

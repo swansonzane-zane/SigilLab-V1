@@ -18,10 +18,11 @@ function getSelectedRecordId(value?: string | string[]) {
 export default async function AdminReadingsPage({
   searchParams,
 }: AdminReadingsPageProps) {
-  const records = listReadingRecords();
+  const records = await listReadingRecords();
   const selectedRecordId = getSelectedRecordId((await searchParams).record);
   const selectedRecord =
-    (selectedRecordId && getReadingRecordById(selectedRecordId)) || records[0];
+    (selectedRecordId && (await getReadingRecordById(selectedRecordId))) ||
+    records[0];
 
   return (
     <div className="space-y-8">
@@ -34,9 +35,15 @@ export default async function AdminReadingsPage({
       <div className="grid gap-5 xl:grid-cols-[1.25fr_0.95fr]">
         <AdminSectionCard
           title="Reading Records"
-          description="List view with quick operational details and direct selection into the record panel."
+          description="Persisted reading records with live provider and fallback detail."
         >
           <div className="space-y-3">
+            {records.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-white/12 bg-white/[0.02] px-4 py-8 text-sm text-stone-300/72">
+                No reading records yet. Generate a reading from the homepage to
+                create the first persisted entry.
+              </div>
+            ) : null}
             {records.map((record) => {
               const isSelected = selectedRecord?.id === record.id;
 
@@ -148,7 +155,12 @@ export default async function AdminReadingsPage({
                 ))}
               </div>
             </div>
-          ) : null}
+          ) : (
+            <div className="rounded-2xl border border-dashed border-white/12 bg-white/[0.02] p-5 text-sm leading-7 text-stone-300/72">
+              Select a record once readings have been generated. This panel will
+              show the persisted insight, emotional markers, and provider trace.
+            </div>
+          )}
         </AdminSectionCard>
       </div>
     </div>

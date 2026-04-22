@@ -1,6 +1,13 @@
-import { callDeepSeekChatCompletion } from "@/lib/ai/deepseek";
+import {
+  callDeepSeekChatCompletion,
+  getDeepSeekRuntimeConfig,
+} from "@/lib/ai/deepseek";
 import { buildReadingPrompt } from "@/engine/reading-prompt";
-import type { ReadingInput, ReadingOutput } from "@/types/reading";
+import type {
+  ReadingGenerationResult,
+  ReadingInput,
+  ReadingOutput,
+} from "@/types/reading";
 
 const intentThemes = {
   clarity: {
@@ -139,7 +146,17 @@ function parseReadingOutput(rawText: string): ReadingOutput {
 export async function generateReading(
   input: ReadingInput,
 ): Promise<ReadingOutput> {
+  const result = await generateReadingWithMeta(input);
+
+  return result.output;
+}
+
+export async function generateReadingWithMeta(
+  input: ReadingInput,
+): Promise<ReadingGenerationResult> {
   const { systemPrompt, userPrompt } = buildReadingPrompt(input);
+  const startedAt = Date.now();
+  const deepSeekConfig = getDeepSeekRuntimeConfig();
 
   try {
     const rawOutput = await callDeepSeekChatCompletion({
@@ -155,8 +172,24 @@ export async function generateReading(
       ],
     });
 
-    return parseReadingOutput(rawOutput);
+    return {
+      output: parseReadingOutput(rawOutput),
+      meta: {
+        provider: "deepseek",
+        model: deepSeekConfig.model,
+        fallback: false,
+        latencyMs: Date.now() - startedAt,
+      },
+    };
   } catch {
-    return buildMockReadingOutput(input);
+    return {
+      output: buildMockReadingOutput(input),
+      meta: {
+        provider: "mock",
+        model: "mock-reading-engine",
+        fallback: true,
+        latencyMs: Date.now() - startedAt,
+      },
+    };
   }
 }

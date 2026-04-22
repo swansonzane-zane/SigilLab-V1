@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 
-import { generateReading } from "@/engine/generate-reading";
+import { generateReadingWithMeta } from "@/engine/generate-reading";
 import {
   buildReadingInputFromBody,
   hasValidReadingInputShape,
   isReadingInputCandidate,
 } from "@/engine/reading-request";
+import { createReadingRecord } from "@/services/readings-service";
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +23,13 @@ export async function POST(request: Request) {
     }
 
     const input = buildReadingInputFromBody(body);
-    const output = await generateReading(input);
+    const { output, meta } = await generateReadingWithMeta(input);
+
+    await createReadingRecord({
+      input,
+      output,
+      meta,
+    });
 
     return NextResponse.json(output);
   } catch {

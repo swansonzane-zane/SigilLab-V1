@@ -1,8 +1,9 @@
-import { generateReading } from "@/engine/generate-reading";
+import { generateReadingWithMeta } from "@/engine/generate-reading";
 import { buildReadingInputFromSearchParams } from "@/engine/reading-request";
 import { ResultActionBar } from "@/components/result-action-bar";
 import { ResultHero } from "@/components/result-hero";
 import { ResultPrompts } from "@/components/result-prompts";
+import { createReadingRecord } from "@/services/readings-service";
 
 type ResultPageProps = {
   searchParams: Promise<{
@@ -16,7 +17,13 @@ type ResultPageProps = {
 
 export default async function ResultPage({ searchParams }: ResultPageProps) {
   const input = buildReadingInputFromSearchParams(await searchParams);
-  const output = await generateReading(input);
+  const { output, meta } = await generateReadingWithMeta(input);
+
+  await createReadingRecord({
+    input,
+    output,
+    meta,
+  });
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
