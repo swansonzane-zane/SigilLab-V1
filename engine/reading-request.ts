@@ -1,6 +1,7 @@
 import {
   readingAgeBands,
   readingIntents,
+  readingLanguages,
   readingWesternZodiacs,
   type ReadingInput,
   type ReadingAgeBand,
@@ -16,6 +17,13 @@ const defaultIntent: ReadingIntent = "clarity";
 const defaultLanguage: ReadingLanguage = "en";
 
 type SearchParamValue = string | string[] | undefined;
+type ReadingInputCandidate = Partial<{
+  birthYear: unknown;
+  ageBand: unknown;
+  westernZodiac: unknown;
+  intent: unknown;
+  language: unknown;
+}>;
 
 function takeFirstValue(value: SearchParamValue) {
   if (Array.isArray(value)) {
@@ -70,7 +78,9 @@ export function normalizeWesternZodiac(
 }
 
 export function normalizeReadingLanguage(rawValue?: string): ReadingLanguage {
-  return rawValue === "en" ? "en" : defaultLanguage;
+  return readingLanguages.includes((rawValue || "") as ReadingLanguage)
+    ? ((rawValue || "") as ReadingLanguage)
+    : defaultLanguage;
 }
 
 export function buildReadingInputFromSearchParams(params: {
@@ -87,4 +97,56 @@ export function buildReadingInputFromSearchParams(params: {
     intent: normalizeReadingIntent(takeFirstValue(params.intent)),
     language: normalizeReadingLanguage(takeFirstValue(params.language)),
   };
+}
+
+export function isReadingInputCandidate(
+  value: unknown,
+): value is ReadingInputCandidate {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+
+  return (
+    typeof candidate.birthYear !== "undefined" &&
+    typeof candidate.ageBand !== "undefined" &&
+    typeof candidate.westernZodiac !== "undefined" &&
+    typeof candidate.intent !== "undefined" &&
+    typeof candidate.language !== "undefined"
+  );
+}
+
+export function buildReadingInputFromBody(body: ReadingInputCandidate): ReadingInput {
+  return {
+    birthYear: normalizeBirthYear(
+      typeof body.birthYear === "number"
+        ? String(body.birthYear)
+        : typeof body.birthYear === "string"
+          ? body.birthYear
+          : undefined,
+    ),
+    ageBand: normalizeAgeBand(
+      typeof body.ageBand === "string" ? body.ageBand : undefined,
+    ),
+    westernZodiac: normalizeWesternZodiac(
+      typeof body.westernZodiac === "string" ? body.westernZodiac : undefined,
+    ),
+    intent: normalizeReadingIntent(
+      typeof body.intent === "string" ? body.intent : undefined,
+    ),
+    language: normalizeReadingLanguage(
+      typeof body.language === "string" ? body.language : undefined,
+    ),
+  };
+}
+
+export function hasValidReadingInputShape(body: ReadingInputCandidate): boolean {
+  return (
+    typeof body.birthYear === "number" &&
+    typeof body.ageBand === "string" &&
+    typeof body.westernZodiac === "string" &&
+    typeof body.intent === "string" &&
+    typeof body.language === "string"
+  );
 }
