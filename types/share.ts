@@ -11,5 +11,8 @@ export type ShareModel = {
   saveHint: string;
   shareSuccessMessage: string;
   copySuccessMessage: string;
+  saveSuccessMessage: string;
+  saveFailureMessage: string;
+  shareFailureMessage: string;
   rewardHint: string;
 };

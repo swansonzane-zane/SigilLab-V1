@@ -43,6 +43,15 @@ export function ShareCard({ model }: ShareCardProps) {
           </p>
         </div>
 
+        <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-center">
+          <p className="text-xs tracking-[0.28em] text-stone-300/62 uppercase">
+            Blessing To Send
+          </p>
+          <p className="mt-2 text-sm leading-7 text-stone-200/84">
+            {model.shareText}
+          </p>
+        </div>
+
         <div className="flex flex-wrap justify-center gap-2">
           {model.hashtags.map((tag) => (
             <span

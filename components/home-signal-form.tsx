@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
+import { useTransitionController } from "@/components/transition-provider";
 import {
   buildDerivedReadingInput,
   isValidBirthDate,
@@ -24,15 +25,26 @@ export function HomeSignalForm({
   defaultLanguage?: ReadingLanguage;
 }) {
   const router = useRouter();
+  const { activeTransition, startTransition } = useTransitionController();
   const [birthDate, setBirthDate] = useState("");
   const [intent, setIntent] = useState<(typeof intents)[number]>("clarity");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!isValidBirthDate(birthDate)) {
+    if (!isValidBirthDate(birthDate) || isSubmitting) {
       return;
     }
+
+    setIsSubmitting(true);
+    startTransition({
+      active: true,
+      level: "ritual",
+      title: "The signal is being cast...",
+      message:
+        "Hold your intention steady while the seal gathers form around your present season.",
+    });
 
     const derivedInput = buildDerivedReadingInput({
       birthDate,
@@ -121,10 +133,12 @@ export function HomeSignalForm({
           </fieldset>
           <button
             type="submit"
-            disabled={!birthDate}
+            disabled={!birthDate || isSubmitting}
             className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 py-3.5 text-base font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-stone-500 disabled:hover:brightness-100"
           >
-            Generate Signal
+            {isSubmitting || activeTransition?.level === "ritual"
+              ? "The signal is being cast..."
+              : "Generate Signal"}
           </button>
 
           <p className="text-sm leading-6 text-stone-300/70">
