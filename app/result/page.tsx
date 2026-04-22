@@ -6,7 +6,9 @@ import { ResultPrompts } from "@/components/result-prompts";
 
 type ResultPageProps = {
   searchParams: Promise<{
-    birthDate?: string | string[];
+    birthYear?: string | string[];
+    ageBand?: string | string[];
+    westernZodiac?: string | string[];
     intent?: string | string[];
     language?: string | string[];
   }>;
@@ -39,7 +41,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
           <ResultPrompts prompts={output.journalPrompts} />
         </section>
       </div>
-      <ResultActionBar birthDate={input.birthDate} />
+      <ResultActionBar />
     </main>
   );
 }

@@ -1,7 +1,9 @@
 export type ReadingRecord = {
   id: string;
   createdAt: string;
-  birthDate: string;
+  birthYear: number;
+  ageBand: string;
+  westernZodiac: string;
   intent: string;
   language: string;
   provider: string;

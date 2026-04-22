@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SigilLab
+
+SigilLab is a mystical emotional reading app built with the Next.js App Router, TypeScript, and Tailwind CSS. It currently includes:
+
+- a ritualized homepage flow at `/`
+- a productized reading result page at `/result`
+- a share-card style preview at `/share`
+- a dark admin surface under `/admin`
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Privacy Boundary
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+SigilLab currently accepts a full birth date in the browser UI, but the raw date is only used locally on the client to derive lower-sensitivity profile fields before navigation.
 
-## Learn More
+The system does not retain or forward the full birth date in:
 
-To learn more about Next.js, take a look at the following resources:
+- the result URL
+- the server-side reading pipeline
+- the admin reading records
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The reading flow now uses only these derived fields:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `birthYear`
+- `ageBand`
+- `westernZodiac`
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev
+npm run lint
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- DeepSeek is used as the first-pass text model when configured.
+- The reading flow falls back to a mock generator when AI credentials are missing or the provider response is invalid.
+- Admin pages currently use local mock data and read-only structure intended for future expansion.
+
+## Deployment
+
+Any standard Next.js deployment target will work as long as the runtime environment can provide optional DeepSeek environment variables.

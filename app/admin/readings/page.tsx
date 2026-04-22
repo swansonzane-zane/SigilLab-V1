@@ -121,7 +121,9 @@ export default async function AdminReadingsPage({
 
               <div className="grid gap-3 sm:grid-cols-2">
                 {[
-                  ["Birth Date", selectedRecord.birthDate],
+                  ["Birth Year", String(selectedRecord.birthYear)],
+                  ["Age Band", selectedRecord.ageBand],
+                  ["Western Zodiac", selectedRecord.westernZodiac],
                   ["Intent", selectedRecord.intent],
                   ["Emotional State", selectedRecord.emotionalState],
                   [

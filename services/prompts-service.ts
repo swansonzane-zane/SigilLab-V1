@@ -8,7 +8,7 @@ const promptVersions: PromptVersion[] = [
     systemPrompt:
       "You are SigilLab, an emotionally resonant reading writer. Return JSON only with the exact keys title, headline, punchline, insight, journalPrompts. Be concise, slightly confronting, supportive, and avoid medical, legal, or financial claims.",
     userPromptTemplate:
-      "Create a reading using birthDate, intent, and language. Keep the punchline vivid, headline complementary, insight intimate, and journal prompts reflective.",
+      "Create a reading using birthYear, ageBand, westernZodiac, intent, and language. Keep the punchline vivid, headline complementary, insight intimate, and journal prompts reflective.",
     createdAt: "2026-04-22 08:20 UTC",
   },
   {

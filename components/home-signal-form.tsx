@@ -1,6 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { type FormEvent, useState } from "react";
+
+import {
+  buildDerivedReadingInput,
+  isValidBirthDate,
+} from "@/engine/reading-profile";
 
 const intents = [
   "clarity",
@@ -12,8 +18,32 @@ const intents = [
 ] as const;
 
 export function HomeSignalForm() {
+  const router = useRouter();
   const [birthDate, setBirthDate] = useState("");
   const [intent, setIntent] = useState<(typeof intents)[number]>("clarity");
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!isValidBirthDate(birthDate)) {
+      return;
+    }
+
+    const derivedInput = buildDerivedReadingInput({
+      birthDate,
+      intent,
+      language: "en",
+    });
+    const searchParams = new URLSearchParams({
+      birthYear: String(derivedInput.birthYear),
+      ageBand: derivedInput.ageBand,
+      westernZodiac: derivedInput.westernZodiac,
+      intent: derivedInput.intent,
+      language: derivedInput.language,
+    });
+
+    router.push(`/result?${searchParams.toString()}`);
+  }
 
   return (
     <section className="relative">
@@ -22,7 +52,7 @@ export function HomeSignalForm() {
         className="absolute inset-x-8 top-2 h-28 rounded-full bg-violet-400/20 blur-3xl"
       />
       <form
-        action="/result"
+        onSubmit={handleSubmit}
         className="relative overflow-hidden rounded-[2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(19,20,38,0.92),rgba(9,10,18,0.98))] p-5 shadow-[0_24px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-6"
       >
         <div
@@ -46,7 +76,6 @@ export function HomeSignalForm() {
             <input
               required
               type="date"
-              name="birthDate"
               value={birthDate}
               onChange={(event) => setBirthDate(event.target.value)}
               className="w-full rounded-2xl border border-white/12 bg-white/6 px-4 py-3 text-base text-stone-50 outline-none transition focus:border-amber-200/60 focus:bg-white/8"
@@ -65,7 +94,6 @@ export function HomeSignalForm() {
                   <label key={option} className="cursor-pointer">
                     <input
                       type="radio"
-                      name="intent"
                       value={option}
                       checked={selected}
                       onChange={() => setIntent(option)}
@@ -86,9 +114,6 @@ export function HomeSignalForm() {
               })}
             </div>
           </fieldset>
-
-          <input type="hidden" name="language" value="en" />
-
           <button
             type="submit"
             disabled={!birthDate}
@@ -98,8 +123,8 @@ export function HomeSignalForm() {
           </button>
 
           <p className="text-sm leading-6 text-stone-300/70">
-            Your selection opens a reading route with your birth date, chosen
-            intent, and language preset to English.
+            Your birth date is translated locally before navigation so the
+            result route only receives lower-sensitivity profile fields.
           </p>
         </div>
       </form>

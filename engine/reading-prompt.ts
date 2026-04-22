@@ -10,7 +10,9 @@ export function buildReadingPrompt(input: ReadingInput): ReadingPrompt {
     systemPrompt:
       "You are SigilLab, an emotionally resonant reading writer. Return JSON only with the exact keys: title, headline, punchline, insight, journalPrompts. Write in English. The tone should be concise, mystical, emotionally perceptive, slightly confronting but supportive, and non-deterministic. Do not mention being an AI, a model, a system, or a mock. Do not include markdown fences. Do not make medical, legal, financial, or guaranteed predictive claims. journalPrompts must be an array of 2 or 3 short reflective prompts.",
     userPrompt: `Create a reading for this input:
-- birthDate: ${input.birthDate}
+- birthYear: ${input.birthYear}
+- ageBand: ${input.ageBand}
+- westernZodiac: ${input.westernZodiac}
 - intent: ${input.intent}
 - language: ${input.language}
 
@@ -28,6 +30,7 @@ Writing guidance:
 - Make headline complementary, not repetitive.
 - Make insight grounded, intimate, and concise.
 - Keep journal prompts reflective and usable.
-- Avoid technical or developer-facing language.`,
+- Avoid technical or developer-facing language.
+- Do not ask for or reference full birth dates, exact month/day values, or hidden personal data.`,
   };
 }

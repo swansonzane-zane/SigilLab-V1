@@ -35,28 +35,57 @@ const intentThemes = {
   },
 } as const;
 
-function getDayNumber(birthDate: string) {
-  return Number.parseInt(birthDate.slice(-2), 10);
+function getBirthYearSignal(birthYear: number) {
+  return Number.parseInt(String(birthYear).slice(-2), 10);
 }
 
-function getMonthNumber(birthDate: string) {
-  return Number.parseInt(birthDate.slice(5, 7), 10);
+function getAgeBandSignal(ageBand: ReadingInput["ageBand"]) {
+  const bandValues: Record<ReadingInput["ageBand"], number> = {
+    "under-18": 1,
+    "18-24": 2,
+    "25-29": 3,
+    "30-35": 4,
+    "36-44": 5,
+    "45+": 6,
+  };
+
+  return bandValues[ageBand];
+}
+
+function getZodiacSignal(zodiac: ReadingInput["westernZodiac"]) {
+  const zodiacValues: Record<ReadingInput["westernZodiac"], number> = {
+    Aries: 1,
+    Taurus: 2,
+    Gemini: 3,
+    Cancer: 4,
+    Leo: 5,
+    Virgo: 6,
+    Libra: 7,
+    Scorpio: 8,
+    Sagittarius: 9,
+    Capricorn: 10,
+    Aquarius: 11,
+    Pisces: 12,
+  };
+
+  return zodiacValues[zodiac];
 }
 
 export function buildMockReadingOutput(input: ReadingInput): ReadingOutput {
   const theme = intentThemes[input.intent];
-  const day = getDayNumber(input.birthDate);
-  const month = getMonthNumber(input.birthDate);
-  const resonance = ((day + month * 3) % 9) + 1;
+  const yearSignal = getBirthYearSignal(input.birthYear);
+  const ageSignal = getAgeBandSignal(input.ageBand);
+  const zodiacSignal = getZodiacSignal(input.westernZodiac);
+  const resonance = ((yearSignal + ageSignal * 2 + zodiacSignal) % 9) + 1;
 
   return {
     title: `${input.intent[0].toUpperCase()}${input.intent.slice(1)} Signal`,
-    headline: `A ${theme.aura} is rising around your current intention.`,
+    headline: `A ${theme.aura} is rising around your ${input.westernZodiac.toLowerCase()} current.`,
     punchline: `Your emotional field ${theme.verb} and points toward resonance level ${resonance}.`,
-    insight: `Born on ${input.birthDate}, you are arriving at this reading with a pattern that favors reflection before movement. The current ${input.intent} pulse suggests that your next shift comes from naming the feeling underneath the story, then choosing one action that matches the quieter truth you already sense.`,
+    insight: `With a birth year of ${input.birthYear}, an age band of ${input.ageBand}, and a ${input.westernZodiac} signature, you are arriving at this reading with a pattern that favors reflection before movement. The current ${input.intent} pulse suggests that your next shift comes from naming the feeling underneath the story, then choosing one action that matches the quieter truth you already sense.`,
     journalPrompts: [
       `Where in my life do I already feel the first signs of ${input.intent}, even if they are subtle?`,
-      `What would change this week if I trusted the ${theme.aura} instead of reacting to urgency?`,
+      `What would change this week if I trusted the ${theme.aura} of my ${input.westernZodiac} pattern instead of reacting to urgency?`,
       `What single ritual, boundary, or conversation would help me honor ${theme.promptSeed}?`,
     ],
   };

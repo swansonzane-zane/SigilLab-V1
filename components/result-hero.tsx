@@ -19,7 +19,9 @@ export function ResultHero({ input, output }: ResultHeroProps) {
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
             {output.title}
           </span>
-          <span>{input.birthDate}</span>
+          <span>{input.birthYear}</span>
+          <span>{input.ageBand}</span>
+          <span>{input.westernZodiac}</span>
           <span>{input.language}</span>
         </div>
 

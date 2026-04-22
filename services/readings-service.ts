@@ -4,7 +4,9 @@ const readingRecords: ReadingRecord[] = [
   {
     id: "rdg_001",
     createdAt: "2026-04-22 09:12 UTC",
-    birthDate: "1993-04-16",
+    birthYear: 1993,
+    ageBand: "30-35",
+    westernZodiac: "Aries",
     intent: "healing",
     language: "en",
     provider: "deepseek",
@@ -20,7 +22,9 @@ const readingRecords: ReadingRecord[] = [
   {
     id: "rdg_002",
     createdAt: "2026-04-22 08:46 UTC",
-    birthDate: "1992-03-14",
+    birthYear: 1992,
+    ageBand: "30-35",
+    westernZodiac: "Pisces",
     intent: "clarity",
     language: "en",
     provider: "mock",
@@ -36,7 +40,9 @@ const readingRecords: ReadingRecord[] = [
   {
     id: "rdg_003",
     createdAt: "2026-04-22 07:58 UTC",
-    birthDate: "1988-11-02",
+    birthYear: 1988,
+    ageBand: "36-44",
+    westernZodiac: "Scorpio",
     intent: "focus",
     language: "en",
     provider: "deepseek",
@@ -52,7 +58,9 @@ const readingRecords: ReadingRecord[] = [
   {
     id: "rdg_004",
     createdAt: "2026-04-22 07:14 UTC",
-    birthDate: "1996-06-28",
+    birthYear: 1996,
+    ageBand: "25-29",
+    westernZodiac: "Cancer",
     intent: "release",
     language: "en",
     provider: "mock",
