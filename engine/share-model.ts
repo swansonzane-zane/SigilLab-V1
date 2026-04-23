@@ -1,3 +1,5 @@
+import QRCode from "qrcode";
+
 import type { ShareModel, ShareRecord, ShareSeedInput } from "@/types/share";
 
 function normalizeSeedText(value: string | undefined, fallback: string) {
@@ -43,10 +45,27 @@ export function createShareRecordPayload(
   };
 }
 
-export function buildShareModelFromRecord(record: ShareRecord): ShareModel {
+async function buildQrSvg(url: string) {
+  return QRCode.toString(url, {
+    type: "svg",
+    margin: 0,
+    width: 168,
+    color: {
+      dark: "#f5f5f4",
+      light: "#0000",
+    },
+  });
+}
+
+export async function buildShareModelFromRecord(
+  record: ShareRecord,
+): Promise<ShareModel> {
+  const sharedPath = `/shared/${record.shareId}`;
+
   return {
     shareId: record.shareId,
     title: record.title,
+    posterTitle: record.punchline,
     headline: record.headline,
     punchline: record.punchline,
     subtext: record.subtext,
@@ -54,7 +73,7 @@ export function buildShareModelFromRecord(record: ShareRecord): ShareModel {
     revealCtaText: "Reveal Another Path",
     revealCtaHref: "/",
     onlineCtaLabel: "Open this seal online",
-    sharedPath: `/shared/${record.shareId}`,
+    sharedPath,
     shareTitle: record.title,
     shareText: "A sigil was revealed for me today. May clarity travel with you.",
     saveSuccessMessage: "The sigil has been sealed into your keeping.",
@@ -67,5 +86,6 @@ export function buildShareModelFromRecord(record: ShareRecord): ShareModel {
     rewardHint: "Share light, and more light may return.",
     privacyNotice: "Only the symbol is shared. Your private details remain with you.",
     sigilIntent: record.sigilSpec.intentLabel,
+    qrSvg: await buildQrSvg(sharedPath),
   };
 }

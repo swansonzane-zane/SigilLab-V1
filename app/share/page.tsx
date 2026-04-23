@@ -29,7 +29,7 @@ export default async function SharePage({ searchParams }: SharePageProps) {
     intent: getParam(params.intent),
     zodiac: getParam(params.zodiac),
   });
-  const model = buildShareModelFromRecord(record);
+  const model = await buildShareModelFromRecord(record);
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">

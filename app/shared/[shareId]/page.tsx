@@ -45,7 +45,7 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
     );
   }
 
-  const model = buildShareModelFromRecord(record);
+  const model = await buildShareModelFromRecord(record);
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">

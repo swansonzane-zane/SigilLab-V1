@@ -47,6 +47,12 @@ function renderTextLines(
     .join("");
 }
 
+function extractSvgInnerMarkup(svg: string) {
+  const cleaned = svg.replace(/<\?xml[\s\S]*?\?>/g, "").trim();
+  const match = cleaned.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
+  return match ? match[1] : cleaned;
+}
+
 function measureTextBlock(
   lines: string[],
   fontSize: number,
@@ -66,23 +72,25 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   const headlineLines = wrapText(model.headline, 34).slice(0, 4);
   const subtextLines = wrapText(model.subtext, 42).slice(0, 5);
   const hashtagLine = model.hashtags.join("   ");
-  const onlineCtaLines = wrapText(model.onlineCtaLabel, 24).slice(0, 2);
+  const onlineCtaLines = wrapText(model.onlineCtaLabel, 28).slice(0, 2);
   const urlLines = wrapText(url, 44).slice(0, 3);
   const sigilIntentLabel = wrapText(model.sigilIntent.toUpperCase(), 20).slice(
     0,
     1,
   );
+  const qrMarkup = extractSvgInnerMarkup(model.qrSvg);
 
-  const punchlineY = 1020;
-  const punchlineBlockHeight = measureTextBlock(punchlineLines, 78, 88, 34);
+  const punchlineY = 980;
+  const punchlineBlockHeight = measureTextBlock(punchlineLines, 74, 82, 30);
   const headlineY = punchlineY + punchlineBlockHeight;
-  const headlineBlockHeight = measureTextBlock(headlineLines, 36, 52, 34);
+  const headlineBlockHeight = measureTextBlock(headlineLines, 34, 48, 28);
   const subtextY = headlineY + headlineBlockHeight;
-  const subtextBlockHeight = measureTextBlock(subtextLines, 28, 40, 42);
+  const subtextBlockHeight = measureTextBlock(subtextLines, 26, 36, 34);
   const hashtagsY = subtextY + subtextBlockHeight;
-  const ctaBoxY = hashtagsY + 42;
-  const ctaLabelY = ctaBoxY + 38;
-  const ctaUrlY = ctaBoxY + 98;
+  const footerY = hashtagsY + 40;
+  const qrY = footerY + 34;
+  const footerTitleY = footerY + 28;
+  const footerUrlY = footerY + 118;
 
   return `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1800" viewBox="0 0 1200 1800" role="img" aria-label="SigilLab share sigil">
@@ -109,10 +117,10 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   <rect width="1200" height="1800" fill="url(#haloBlue)" />
   <rect width="1200" height="1800" fill="url(#haloViolet)" />
   <rect x="88" y="88" width="1024" height="1624" rx="72" fill="url(#card)" stroke="rgba(255,255,255,0.12)" />
-  <rect x="140" y="146" width="244" height="52" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" />
   <circle cx="176" cy="172" r="8" fill="#f5d58a" />
   <text x="200" y="180" fill="#f7e8bd" font-size="24" font-family="Georgia, serif" letter-spacing="8">${escapeXml(model.title.toUpperCase())}</text>
-  <text x="600" y="296" text-anchor="middle" fill="rgba(186,230,253,0.86)" font-size="24" font-family="Georgia, serif" letter-spacing="10">EMOTIONAL READING</text>
+  <text x="600" y="274" text-anchor="middle" fill="rgba(186,230,253,0.86)" font-size="22" font-family="Georgia, serif" letter-spacing="10">EMOTIONAL READING</text>
+  <text x="600" y="344" text-anchor="middle" fill="#fff5df" font-size="54" font-family="Georgia, serif">${renderTextLines(wrapText(model.posterTitle, 26).slice(0, 2), 600, 344, 58)}</text>
   <circle cx="600" cy="680" r="252" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)" />
   <circle cx="600" cy="680" r="210" fill="none" stroke="rgba(245,215,138,0.2)" />
   <circle cx="600" cy="680" r="166" fill="none" stroke="rgba(125,211,252,0.14)" />
@@ -129,9 +137,12 @@ export function buildPosterSvg(model: ShareModel, url: string) {
   <text x="600" y="${headlineY}" text-anchor="middle" fill="rgba(245,245,244,0.88)" font-size="36" font-family="Georgia, serif">${renderTextLines(headlineLines, 600, headlineY, 52)}</text>
   <text x="600" y="${subtextY}" text-anchor="middle" fill="rgba(214,211,209,0.8)" font-size="28" font-family="Georgia, serif">${renderTextLines(subtextLines, 600, subtextY, 40)}</text>
   <text x="600" y="${hashtagsY}" text-anchor="middle" fill="rgba(231,229,228,0.74)" font-size="24" font-family="Georgia, serif">${escapeXml(hashtagLine)}</text>
-  <rect x="312" y="${ctaBoxY}" width="576" height="132" rx="37" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" />
-  <text x="600" y="${ctaLabelY}" text-anchor="middle" fill="#f4ead6" font-size="26" font-family="Georgia, serif">${renderTextLines(onlineCtaLines, 600, ctaLabelY, 30)}</text>
-  <text x="600" y="${ctaUrlY}" text-anchor="middle" fill="rgba(214,211,209,0.7)" font-size="20" font-family="Georgia, serif">${renderTextLines(urlLines, 600, ctaUrlY, 28)}</text>
+  <rect x="170" y="${footerY}" width="860" height="260" rx="34" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" />
+  <g transform="translate(214 ${qrY}) scale(0.9)">
+    ${qrMarkup}
+  </g>
+  <text x="456" y="${footerTitleY}" fill="#f4ead6" font-size="28" font-family="Georgia, serif">${renderTextLines(onlineCtaLines, 456, footerTitleY, 34)}</text>
+  <text x="456" y="${footerUrlY}" fill="rgba(214,211,209,0.76)" font-size="20" font-family="Georgia, serif">${renderTextLines(urlLines, 456, footerUrlY, 30)}</text>
 </svg>
   `.trim();
 }

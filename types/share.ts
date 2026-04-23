@@ -29,6 +29,7 @@ export type ShareSeedInput = {
 export type ShareModel = {
   shareId: string;
   title: string;
+  posterTitle: string;
   headline: string;
   punchline: string;
   subtext: string;
@@ -48,4 +49,5 @@ export type ShareModel = {
   rewardHint: string;
   privacyNotice: string;
   sigilIntent: string;
+  qrSvg: string;
 };

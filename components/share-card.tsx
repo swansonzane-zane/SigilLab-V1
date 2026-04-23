@@ -73,14 +73,21 @@ export function ShareCard({ model }: ShareCardProps) {
                 Carry this exact seal into a story, a message thread, or a private screenshot.
               </p>
             </div>
-            <div className="max-w-[11rem] rounded-[1.4rem] border border-white/10 bg-black/25 px-4 py-3 text-right shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)]">
-              <p className="text-[11px] tracking-[0.24em] text-amber-100/70 uppercase">
-                Shared Link
-              </p>
-              <p className="mt-2 break-all text-sm leading-6 text-stone-200/80">
-                {model.sharedPath}
-              </p>
+            <div className="rounded-[1.4rem] border border-white/10 bg-black/25 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)]">
+              <div
+                aria-hidden="true"
+                className="h-24 w-24 rounded-[1rem] bg-white p-2"
+                dangerouslySetInnerHTML={{ __html: model.qrSvg }}
+              />
             </div>
+          </div>
+          <div className="mt-3 rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+            <p className="text-center text-[10px] tracking-[0.24em] text-amber-100/70 uppercase">
+              Shared Link
+            </p>
+            <p className="mt-2 break-all text-center text-sm leading-6 text-stone-200/80">
+              {model.sharedPath}
+            </p>
           </div>
         </div>
 
