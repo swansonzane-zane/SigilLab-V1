@@ -76,11 +76,11 @@ export function ShareCard({ model }: ShareCardProps) {
                 <p className="max-w-[16rem] text-sm leading-6 text-stone-300/82">
                   Carry this exact seal into a story, a message thread, or a private screenshot.
                 </p>
-                <div className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+                <div className="space-y-2 pt-1">
                   <p className="text-[10px] tracking-[0.24em] text-amber-100/70 uppercase">
                     Shared Link
                   </p>
-                  <p className="mt-2 break-all text-sm leading-6 text-stone-200/80">
+                  <p className="break-all text-sm leading-6 text-stone-200/80">
                     {model.sharedPath}
                   </p>
                 </div>
