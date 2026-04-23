@@ -1,10 +1,11 @@
 "use client";
 
+import { toPng } from "html-to-image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
-import { buildPosterSvg, buildShareMessage } from "@/lib/share-flow";
+import { buildShareMessage } from "@/lib/share-flow";
 import type { ShareModel } from "@/types/share";
 
 type ShareActionsProps = {
@@ -50,17 +51,24 @@ export function ShareActions({ model }: ShareActionsProps) {
     setIsSaving(true);
 
     try {
-      const svg = buildPosterSvg(model, currentUrl);
-      const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-      const blobUrl = URL.createObjectURL(blob);
+      const posterNode = document.getElementById(`share-poster-${model.shareId}`);
+
+      if (!posterNode) {
+        throw new Error("share poster not found");
+      }
+
+      const dataUrl = await toPng(posterNode, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: "#090b14",
+      });
       const anchor = document.createElement("a");
 
-      anchor.href = blobUrl;
-      anchor.download = `sigillab-${model.shareId}.svg`;
+      anchor.href = dataUrl;
+      anchor.download = `sigillab-${model.shareId}.png`;
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
-      URL.revokeObjectURL(blobUrl);
 
       startTransition({
         active: true,
@@ -73,7 +81,8 @@ export function ShareActions({ model }: ShareActionsProps) {
         active: true,
         level: "feedback",
         title: model.saveFailureMessage,
-        message: model.saveHint,
+        message:
+          "Preserve this sigil before the energy fades. If the seal cannot be captured here, keep it with a screenshot from the page itself.",
       });
     } finally {
       setIsSaving(false);
