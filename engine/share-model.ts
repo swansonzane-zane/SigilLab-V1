@@ -46,7 +46,7 @@ export function createShareRecordPayload(
 }
 
 async function buildQrSvg(url: string) {
-  return QRCode.toString(url, {
+  const svg = await QRCode.toString(url, {
     type: "svg",
     margin: 0,
     width: 168,
@@ -55,6 +55,11 @@ async function buildQrSvg(url: string) {
       light: "#0000",
     },
   });
+
+  return svg.replace(
+    /<svg([^>]*?)width="[^"]+"([^>]*?)height="[^"]+"([^>]*?)>/,
+    '<svg$1width="100%"$2height="100%"$3 preserveAspectRatio="xMidYMid meet">',
+  );
 }
 
 export async function buildShareModelFromRecord(

@@ -1,5 +1,26 @@
 [
   {
+    "shareId": "shr_b3ef8eab",
+    "createdAt": "2026-04-23T00:37:00.051Z",
+    "title": "The Archer's Return to the Heart",
+    "headline": "Your journey has been outward, but healing calls you inward.",
+    "punchline": "The arrow you've been launching into the world is turning back, not to wound, but to stitch the sky of your own soul.",
+    "subtext": "Your natural expansiveness now serves a quieter purpose: to map the inner landscapes you've raced past, finding solace in the stillness you once avoided.",
+    "hashtags": [
+      "#SigilLab",
+      "#EmotionalSignal",
+      "#MysticMirror",
+      "#NightRitual"
+    ],
+    "ctaText": "Generate Your Own Signal",
+    "ctaHref": "/",
+    "sigilSpec": {
+      "intentLabel": "healing"
+    },
+    "intent": "healing",
+    "zodiac": "Sagittarius"
+  },
+  {
     "shareId": "shr_1d78281b",
     "createdAt": "2026-04-23T00:28:30.322Z",
     "title": "The Archer's Return to the Heart",

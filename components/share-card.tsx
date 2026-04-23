@@ -68,7 +68,7 @@ export function ShareCard({ model }: ShareCardProps) {
           </div>
 
           <div className="rounded-[1.8rem] border border-white/10 bg-black/18 p-4 sm:p-5">
-            <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
+            <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
               <div className="space-y-3">
                 <p className="text-[11px] tracking-[0.28em] text-stone-300/56 uppercase">
                   {model.onlineCtaLabel}
@@ -85,10 +85,10 @@ export function ShareCard({ model }: ShareCardProps) {
                   </p>
                 </div>
               </div>
-              <div className="justify-self-center rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] sm:justify-self-end">
+              <div className="justify-self-center sm:justify-self-end">
                 <div
                   aria-hidden="true"
-                  className="h-28 w-28 overflow-hidden rounded-[1rem] bg-white p-2"
+                  className="[&_svg]:block [&_svg]:h-full [&_svg]:w-full h-32 w-32 shrink-0 rounded-[1.25rem] bg-white p-3 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
                   dangerouslySetInnerHTML={{ __html: model.qrSvg }}
                 />
               </div>
