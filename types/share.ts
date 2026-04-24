@@ -59,6 +59,7 @@ export type ShareModel = {
   privacyBoundaryLabel: string;
   returnOfLightLabel: string;
   saveSigilLabel: string;
+  hdExportLabel: string;
   savingSigilLabel: string;
   sendBlessingLabel: string;
   sendingBlessingLabel: string;

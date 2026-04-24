@@ -3,10 +3,11 @@ import { ShareActions } from "@/components/share-actions";
 import type { ShareModel } from "@/types/share";
 
 type ShareCardProps = {
+  isPremium: boolean;
   model: ShareModel;
 };
 
-export function ShareCard({ model }: ShareCardProps) {
+export function ShareCard({ isPremium, model }: ShareCardProps) {
   return (
     <div className="mx-auto w-full max-w-[28rem] space-y-4">
       <section
@@ -101,7 +102,7 @@ export function ShareCard({ model }: ShareCardProps) {
         </div>
       </section>
 
-      <ShareActions model={model} />
+      <ShareActions isPremium={isPremium} model={model} />
     </div>
   );
 }

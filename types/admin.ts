@@ -44,6 +44,10 @@ export type AppConfig = {
   enableShare: boolean;
   enableFallback: boolean;
   enablePremiumPlaceholder: boolean;
+  enableAds: boolean;
+  enablePremium: boolean;
+  premiumMonthlyPrice: number;
+  premiumYearlyPrice: number;
   maxJournalPrompts: number;
 };
 
@@ -76,4 +80,7 @@ export type MetricsSnapshot = {
     percentage: number;
   }>;
   shareCount: number;
+  premiumVisits: number;
+  upgradeCtaClicks: number;
+  adsEnabled: boolean;
 };

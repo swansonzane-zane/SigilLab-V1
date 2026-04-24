@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { PremiumBadge } from "@/components/premium-badge";
 import { HomeSignalForm } from "@/components/home-signal-form";
 import type { I18nDictionary } from "@/services/i18n-service";
 import type { ReadingLanguage } from "@/types/reading";
@@ -10,12 +11,16 @@ import type { ReadingLanguage } from "@/types/reading";
 type HomePageShellProps = {
   initialLanguage: ReadingLanguage;
   dictionaries: Record<ReadingLanguage, I18nDictionary>;
+  isPremium: boolean;
+  showAds: boolean;
   supportedLanguages: ReadingLanguage[];
 };
 
 export function HomePageShell({
   initialLanguage,
   dictionaries,
+  isPremium,
+  showAds,
   supportedLanguages,
 }: HomePageShellProps) {
   const router = useRouter();
@@ -24,7 +29,13 @@ export function HomePageShell({
 
   function handleLanguageChange(nextLanguage: ReadingLanguage) {
     setLanguage(nextLanguage);
-    router.replace(`/?${new URLSearchParams({ language: nextLanguage })}`, {
+    const params = new URLSearchParams({ language: nextLanguage });
+
+    if (isPremium) {
+      params.set("premium", "1");
+    }
+
+    router.replace(`/?${params.toString()}`, {
       scroll: false,
     });
   }
@@ -42,6 +53,7 @@ export function HomePageShell({
               <span className="h-2 w-2 rounded-full bg-amber-200 shadow-[0_0_14px_rgba(252,211,77,0.9)]" />
               SigilLab
             </div>
+            {isPremium ? <PremiumBadge dictionary={dictionary} /> : null}
             <div className="space-y-5">
               <p className="text-sm font-medium tracking-[0.32em] text-sky-100/70 uppercase">
                 {dictionary.home.eyebrow}
@@ -66,8 +78,10 @@ export function HomePageShell({
           </div>
           <HomeSignalForm
             dictionary={dictionary}
+            isPremium={isPremium}
             language={language}
             onLanguageChange={handleLanguageChange}
+            showAds={showAds}
             supportedLanguages={supportedLanguages}
           />
         </section>

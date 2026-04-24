@@ -34,11 +34,15 @@ export default async function AdminConfigsPage() {
               },
               {
                 title: "Feature Switches",
-                note: "Share visibility and fallback behavior are now wired into the live front-end flow.",
+                note: "Share visibility, fallback behavior, ads, and premium gates are wired into the live front-end flow.",
               },
               {
                 title: "Prompt Limits",
                 note: "Journal prompts on the result page are capped by the saved config value.",
+              },
+              {
+                title: "Monetization",
+                note: "Ad visibility and static premium prices can be edited without a payment provider.",
               },
               {
                 title: "Save Path",

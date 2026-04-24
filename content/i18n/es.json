@@ -85,5 +85,24 @@
     "sharedMissingSubtitle": "El sigilo compartido ya no puede recuperarse, pero una nueva lectura todavia puede invocarse desde el inicio.",
     "generateOwnSignal": "Genera Tu Propia Señal",
     "sharedSealEyebrow": "Sello Compartido"
+  },
+  "monetization": {
+    "adEyebrow": "Insight Patrocinado",
+    "adText": "Tu proximo camino puede aparecer aqui.",
+    "adCta": "Saber Mas",
+    "premiumBadge": "Premium",
+    "hdExport": "Exportar Sigilo HD",
+    "upgradePitch": "Quita anuncios + desbloquea exportaciones HD",
+    "upgradeNote": "Un espacio de lectura mas silencioso con exportaciones premium para tu señal.",
+    "upgradeCta": "Mejorar a Premium",
+    "premiumEyebrow": "SigilLab Premium",
+    "premiumTitle": "Por que Premium",
+    "premiumSubtitle": "Mantén el ritual claro, exporta sigilos mas limpios y reserva espacio para la proxima capa de funciones de SigilLab.",
+    "whyPremium": "Premium mantiene la lectura sin anuncios y abre superficies de compartir y exportar con mayor calidad.",
+    "adFreeReadings": "Lecturas sin anuncios",
+    "hdSigilExports": "Exportaciones de sigilos HD",
+    "priorityFutureFeatures": "Prioridad en funciones futuras",
+    "monthlyCta": "Empezar Mensual",
+    "yearlyCta": "Empezar Anual"
   }
 }

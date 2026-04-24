@@ -1,6 +1,13 @@
 import { ShareCard } from "@/components/share-card";
+import { AdSlot } from "@/components/ad-slot";
+import { PremiumBadge } from "@/components/premium-badge";
 import { buildShareModelFromRecord } from "@/engine/share-model";
+import { getAppConfig } from "@/services/configs-service";
 import { getDictionary, resolveLanguage } from "@/services/i18n-service";
+import {
+  resolvePremiumState,
+  shouldShowAds,
+} from "@/services/monetization-service";
 import { createShareRecord } from "@/services/shares-service";
 
 export const dynamic = "force-dynamic";
@@ -14,6 +21,7 @@ type SharePageProps = {
     intent?: string | string[];
     zodiac?: string | string[];
     language?: string | string[];
+    premium?: string | string[];
   }>;
 };
 
@@ -22,8 +30,10 @@ function getParam(value?: string | string[]) {
 }
 
 export default async function SharePage({ searchParams }: SharePageProps) {
+  const config = await getAppConfig();
   const params = await searchParams;
   const language = await resolveLanguage(params.language);
+  const isPremium = resolvePremiumState(params.premium, config);
   const dictionary = await getDictionary(language);
   const record = await createShareRecord({
     title: getParam(params.title),
@@ -44,6 +54,9 @@ export default async function SharePage({ searchParams }: SharePageProps) {
       />
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-6 max-w-lg text-center">
+          <div className="mb-4 flex justify-center">
+            {isPremium ? <PremiumBadge dictionary={dictionary} /> : null}
+          </div>
           <p className="text-sm tracking-[0.32em] text-stone-300/58 uppercase">
             {dictionary.share.eyebrow}
           </p>
@@ -58,7 +71,16 @@ export default async function SharePage({ searchParams }: SharePageProps) {
           </p>
         </div>
 
-        <ShareCard model={model} />
+        <ShareCard
+          isPremium={isPremium}
+          model={model}
+        />
+
+        {shouldShowAds(config, isPremium) ? (
+          <div className="mt-6 w-full max-w-[28rem]">
+            <AdSlot dictionary={dictionary} />
+          </div>
+        ) : null}
       </div>
     </main>
   );

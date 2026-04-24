@@ -15,6 +15,10 @@ function isConfigCandidate(value: unknown): value is AppConfig {
     typeof config.enableShare === "boolean" &&
     typeof config.enableFallback === "boolean" &&
     typeof config.enablePremiumPlaceholder === "boolean" &&
+    typeof config.enableAds === "boolean" &&
+    typeof config.enablePremium === "boolean" &&
+    typeof config.premiumMonthlyPrice === "number" &&
+    typeof config.premiumYearlyPrice === "number" &&
     typeof config.maxJournalPrompts === "number"
   );
 }

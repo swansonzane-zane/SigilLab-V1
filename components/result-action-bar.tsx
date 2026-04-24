@@ -8,6 +8,7 @@ import type { ReadingLanguage } from "@/types/reading";
 
 type ResultActionBarProps = {
   showShare: boolean;
+  isPremium: boolean;
   shareSeed?: {
     title: string;
     headline: string;
@@ -22,6 +23,7 @@ type ResultActionBarProps = {
 
 export function ResultActionBar({
   showShare,
+  isPremium,
   shareSeed,
   dictionary,
 }: ResultActionBarProps) {
@@ -51,6 +53,7 @@ export function ResultActionBar({
                 intent: shareSeed?.intent || "clarity",
                 zodiac: shareSeed?.zodiac || "",
                 language,
+                ...(isPremium ? { premium: "1" } : {}),
               });
 
               router.push(`/share?${searchParams.toString()}`);
@@ -69,7 +72,13 @@ export function ResultActionBar({
               title: dictionary.result.returnTransitionTitle,
               message: dictionary.result.returnTransitionMessage,
             });
-            router.push(`/?${new URLSearchParams({ language }).toString()}`);
+            const params = new URLSearchParams({ language });
+
+            if (isPremium) {
+              params.set("premium", "1");
+            }
+
+            router.push(`/?${params.toString()}`);
           }}
           className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105"
         >

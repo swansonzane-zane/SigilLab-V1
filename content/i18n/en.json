@@ -85,5 +85,24 @@
     "sharedMissingSubtitle": "The shared sigil can no longer be recovered, but a new reading can still be cast from the beginning.",
     "generateOwnSignal": "Generate Your Own Signal",
     "sharedSealEyebrow": "Shared Seal"
+  },
+  "monetization": {
+    "adEyebrow": "Sponsored Insight",
+    "adText": "Your next path may appear here.",
+    "adCta": "Learn More",
+    "premiumBadge": "Premium",
+    "hdExport": "HD Sigil Export",
+    "upgradePitch": "Remove ads + unlock HD exports",
+    "upgradeNote": "A quieter reading space with premium export polish reserved for your signal.",
+    "upgradeCta": "Upgrade to Premium",
+    "premiumEyebrow": "SigilLab Premium",
+    "premiumTitle": "Why Premium",
+    "premiumSubtitle": "Keep the ritual clear, export cleaner sigils, and reserve space for the next layer of SigilLab features.",
+    "whyPremium": "Premium keeps the reading flow ad-free while opening higher-quality share and export surfaces.",
+    "adFreeReadings": "Ad-free readings",
+    "hdSigilExports": "HD sigil exports",
+    "priorityFutureFeatures": "Priority future features",
+    "monthlyCta": "Start Monthly",
+    "yearlyCta": "Start Yearly"
   }
 }

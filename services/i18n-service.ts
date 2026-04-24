@@ -81,6 +81,25 @@ export type I18nDictionary = {
     generateOwnSignal: string;
     sharedSealEyebrow: string;
   };
+  monetization: {
+    adEyebrow: string;
+    adText: string;
+    adCta: string;
+    premiumBadge: string;
+    hdExport: string;
+    upgradePitch: string;
+    upgradeNote: string;
+    upgradeCta: string;
+    premiumEyebrow: string;
+    premiumTitle: string;
+    premiumSubtitle: string;
+    whyPremium: string;
+    adFreeReadings: string;
+    hdSigilExports: string;
+    priorityFutureFeatures: string;
+    monthlyCta: string;
+    yearlyCta: string;
+  };
 };
 
 type ReadingIntentKey =

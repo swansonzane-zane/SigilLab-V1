@@ -25,6 +25,16 @@ const toggleFields = [
     label: "Enable Premium Placeholder",
     note: "Stored for future premium surface toggles.",
   },
+  {
+    key: "enableAds",
+    label: "Enable Ads",
+    note: "Controls sponsored placeholders for non-premium front-end users.",
+  },
+  {
+    key: "enablePremium",
+    label: "Enable Premium",
+    note: "Allows the mock premium URL flag and upgrade entry points.",
+  },
 ] as const;
 
 export function AdminConfigsEditor({ config }: AdminConfigsEditorProps) {
@@ -100,6 +110,44 @@ export function AdminConfigsEditor({ config }: AdminConfigsEditorProps) {
               updateField(
                 "maxJournalPrompts",
                 Math.min(5, Math.max(1, Number.parseInt(event.target.value, 10) || 1)),
+              )
+            }
+            className="w-full rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-amber-200/35"
+          />
+        </label>
+
+        <label className="block space-y-2">
+          <span className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
+            Monthly Premium Price
+          </span>
+          <input
+            type="number"
+            min={0}
+            step={0.01}
+            value={formState.premiumMonthlyPrice}
+            onChange={(event) =>
+              updateField(
+                "premiumMonthlyPrice",
+                Number.parseFloat(event.target.value) || 0,
+              )
+            }
+            className="w-full rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-amber-200/35"
+          />
+        </label>
+
+        <label className="block space-y-2">
+          <span className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
+            Yearly Premium Price
+          </span>
+          <input
+            type="number"
+            min={0}
+            step={0.01}
+            value={formState.premiumYearlyPrice}
+            onChange={(event) =>
+              updateField(
+                "premiumYearlyPrice",
+                Number.parseFloat(event.target.value) || 0,
               )
             }
             className="w-full rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-amber-200/35"

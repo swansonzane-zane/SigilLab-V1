@@ -3,8 +3,15 @@ import { buildReadingInputFromSearchParams } from "@/engine/reading-request";
 import { ResultActionBar } from "@/components/result-action-bar";
 import { ResultHero } from "@/components/result-hero";
 import { ResultPrompts } from "@/components/result-prompts";
+import { AdSlot } from "@/components/ad-slot";
+import { PremiumBadge } from "@/components/premium-badge";
+import { PremiumUpgradeCta } from "@/components/premium-upgrade-cta";
 import { getAppConfig } from "@/services/configs-service";
 import { getDictionary } from "@/services/i18n-service";
+import {
+  resolvePremiumState,
+  shouldShowAds,
+} from "@/services/monetization-service";
 import { createReadingRecord } from "@/services/readings-service";
 
 type ResultPageProps = {
@@ -14,15 +21,19 @@ type ResultPageProps = {
     westernZodiac?: string | string[];
     intent?: string | string[];
     language?: string | string[];
+    premium?: string | string[];
   }>;
 };
 
 export default async function ResultPage({ searchParams }: ResultPageProps) {
   const config = await getAppConfig();
+  const params = await searchParams;
   const input = buildReadingInputFromSearchParams(
-    await searchParams,
+    params,
     config.defaultLanguage,
   );
+  const isPremium = resolvePremiumState(params.premium, config);
+  const showAds = shouldShowAds(config, isPremium);
   const dictionary = await getDictionary(input.language);
   const { output, meta } = await generateReadingWithMeta(input);
 
@@ -49,12 +60,22 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
               {dictionary.result.eyebrow}
             </p>
           </div>
+          {isPremium ? <PremiumBadge dictionary={dictionary} /> : null}
 
           <ResultHero
             input={input}
             output={output}
             dictionary={dictionary}
           />
+
+          {showAds ? <AdSlot dictionary={dictionary} /> : null}
+
+          {!isPremium && config.enablePremium ? (
+            <PremiumUpgradeCta
+              dictionary={dictionary}
+              language={input.language}
+            />
+          ) : null}
 
           {meta.failed ? (
             <div className="max-w-3xl rounded-[1.5rem] border border-amber-200/20 bg-amber-100/8 px-5 py-4 text-sm leading-7 text-amber-50/90">
@@ -80,6 +101,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
           language: input.language,
         }}
         dictionary={dictionary}
+        isPremium={isPremium}
       />
     </main>
   );

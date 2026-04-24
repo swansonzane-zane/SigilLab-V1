@@ -1,5 +1,6 @@
 import { listReadingRecords } from "@/services/readings-service";
 import { listShareRecords } from "@/services/shares-service";
+import { getAppConfig } from "@/services/configs-service";
 import type { MetricsSnapshot, ReadingRecord } from "@/types/admin";
 
 type DistributionItem = {
@@ -57,6 +58,7 @@ function isSameUtcDay(isoDate: string, utcDay: string) {
 }
 
 export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
+  const config = await getAppConfig();
   const readings = await listReadingRecords();
   const shares = await listShareRecords();
   const totalReadings = readings.length;
@@ -90,5 +92,8 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
     ageBandDistribution: buildDistribution(readings, (record) => record.ageBand),
     zodiacDistribution: buildDistribution(readings, (record) => record.westernZodiac),
     shareCount: shares.length,
+    premiumVisits: 0,
+    upgradeCtaClicks: 0,
+    adsEnabled: config.enableAds,
   };
 }

@@ -3,5 +3,9 @@
   "enableShare": true,
   "enableFallback": true,
   "enablePremiumPlaceholder": true,
+  "enableAds": true,
+  "enablePremium": true,
+  "premiumMonthlyPrice": 4.99,
+  "premiumYearlyPrice": 29.99,
   "maxJournalPrompts": 3
 }

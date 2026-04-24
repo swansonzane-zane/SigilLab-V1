@@ -11,6 +11,10 @@ const defaultAppConfig: AppConfig = {
   enableShare: true,
   enableFallback: true,
   enablePremiumPlaceholder: true,
+  enableAds: true,
+  enablePremium: true,
+  premiumMonthlyPrice: 4.99,
+  premiumYearlyPrice: 29.99,
   maxJournalPrompts: 3,
 };
 
@@ -63,6 +67,24 @@ function normalizeAppConfig(value: unknown): AppConfig {
       typeof config.enablePremiumPlaceholder === "boolean"
         ? config.enablePremiumPlaceholder
         : defaultAppConfig.enablePremiumPlaceholder,
+    enableAds:
+      typeof config.enableAds === "boolean"
+        ? config.enableAds
+        : defaultAppConfig.enableAds,
+    enablePremium:
+      typeof config.enablePremium === "boolean"
+        ? config.enablePremium
+        : defaultAppConfig.enablePremium,
+    premiumMonthlyPrice:
+      typeof config.premiumMonthlyPrice === "number" &&
+      Number.isFinite(config.premiumMonthlyPrice)
+        ? Math.max(0, Number(config.premiumMonthlyPrice.toFixed(2)))
+        : defaultAppConfig.premiumMonthlyPrice,
+    premiumYearlyPrice:
+      typeof config.premiumYearlyPrice === "number" &&
+      Number.isFinite(config.premiumYearlyPrice)
+        ? Math.max(0, Number(config.premiumYearlyPrice.toFixed(2)))
+        : defaultAppConfig.premiumYearlyPrice,
     maxJournalPrompts:
       typeof config.maxJournalPrompts === "number" &&
       Number.isFinite(config.maxJournalPrompts)

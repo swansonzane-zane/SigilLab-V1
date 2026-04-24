@@ -5,17 +5,25 @@ import {
   type I18nDictionary,
   resolveLanguage,
 } from "@/services/i18n-service";
+import {
+  resolvePremiumState,
+  shouldShowAds,
+} from "@/services/monetization-service";
+import { getAppConfig } from "@/services/configs-service";
 import type { ReadingLanguage } from "@/types/reading";
 
 type HomePageProps = {
   searchParams: Promise<{
     language?: string | string[];
+    premium?: string | string[];
   }>;
 };
 
 export default async function Home({ searchParams }: HomePageProps) {
+  const config = await getAppConfig();
   const params = await searchParams;
   const language = await resolveLanguage(params.language);
+  const isPremium = resolvePremiumState(params.premium, config);
   const supportedLanguages = getSupportedLanguages();
   const dictionaryEntries = await Promise.all(
     supportedLanguages.map(async (supportedLanguage) => [
@@ -33,6 +41,8 @@ export default async function Home({ searchParams }: HomePageProps) {
         >
       }
       initialLanguage={language}
+      isPremium={isPremium}
+      showAds={shouldShowAds(config, isPremium)}
       supportedLanguages={supportedLanguages}
     />
   );

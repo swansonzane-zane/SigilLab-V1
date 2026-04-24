@@ -103,6 +103,7 @@ export async function buildShareModelFromRecord(
     privacyBoundaryLabel: dictionary.share.privacyBoundaryLabel,
     returnOfLightLabel: dictionary.share.returnOfLightLabel,
     saveSigilLabel: dictionary.share.saveSigil,
+    hdExportLabel: dictionary.monetization.hdExport,
     savingSigilLabel: dictionary.share.savingSigil,
     sendBlessingLabel: dictionary.share.sendBlessing,
     sendingBlessingLabel: dictionary.share.sendingBlessing,

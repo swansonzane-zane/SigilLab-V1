@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
 import { useTransitionController } from "@/components/transition-provider";
+import { AdSlot } from "@/components/ad-slot";
 import {
   buildDerivedReadingInput,
   isValidBirthDate,
@@ -22,13 +23,17 @@ const intents = [
 
 export function HomeSignalForm({
   dictionary,
+  isPremium,
   language,
   onLanguageChange,
+  showAds,
   supportedLanguages,
 }: {
   dictionary: I18nDictionary;
+  isPremium: boolean;
   language: ReadingLanguage;
   onLanguageChange: (language: ReadingLanguage) => void;
+  showAds: boolean;
   supportedLanguages: ReadingLanguage[];
 }) {
   const router = useRouter();
@@ -57,13 +62,19 @@ export function HomeSignalForm({
       intent,
       language,
     });
-    const searchParams = new URLSearchParams({
+    const nextParams: Record<string, string> = {
       birthYear: String(derivedInput.birthYear),
       ageBand: derivedInput.ageBand,
       westernZodiac: derivedInput.westernZodiac,
       intent: derivedInput.intent,
       language: derivedInput.language,
-    });
+    };
+
+    if (isPremium) {
+      nextParams.premium = "1";
+    }
+
+    const searchParams = new URLSearchParams(nextParams);
 
     router.push(`/result?${searchParams.toString()}`);
   }
@@ -177,6 +188,8 @@ export function HomeSignalForm({
           <p className="text-sm leading-6 text-stone-300/70">
             {dictionary.home.privacyNote}
           </p>
+
+          {showAds ? <AdSlot compact dictionary={dictionary} /> : null}
         </div>
       </form>
     </section>

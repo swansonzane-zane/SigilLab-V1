@@ -59,6 +59,21 @@ export default async function AdminDashboardPage() {
           value={String(metrics.shareCount)}
           note="Total share identities generated from the current branch flow."
         />
+        <AdminStatCard
+          label="Premium Visits"
+          value={String(metrics.premiumVisits)}
+          note="Mock v1 placeholder until premium visit tracking is connected."
+        />
+        <AdminStatCard
+          label="Upgrade CTA Clicks"
+          value={String(metrics.upgradeCtaClicks)}
+          note="Mock v1 placeholder for future monetization funnel events."
+        />
+        <AdminStatCard
+          label="Ads"
+          value={metrics.adsEnabled ? "Enabled" : "Disabled"}
+          note="Reflects the current admin config value for sponsored placements."
+        />
       </section>
 
       <div className="grid gap-5 xl:grid-cols-2">

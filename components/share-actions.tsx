@@ -9,6 +9,7 @@ import { buildShareMessage } from "@/lib/share-flow";
 import type { ShareModel } from "@/types/share";
 
 type ShareActionsProps = {
+  isPremium: boolean;
   model: ShareModel;
 };
 
@@ -32,7 +33,7 @@ async function copyToClipboard(value: string) {
   return copied;
 }
 
-export function ShareActions({ model }: ShareActionsProps) {
+export function ShareActions({ isPremium, model }: ShareActionsProps) {
   const router = useRouter();
   const { startTransition } = useTransitionController();
   const [isSaving, setIsSaving] = useState(false);
@@ -166,7 +167,11 @@ export function ShareActions({ model }: ShareActionsProps) {
           disabled={isSaving}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-amber-100/20 bg-[linear-gradient(135deg,rgba(244,215,161,0.96),rgba(214,179,255,0.88)_56%,rgba(134,217,255,0.9))] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSaving ? model.savingSigilLabel : model.saveSigilLabel}
+          {isSaving
+            ? model.savingSigilLabel
+            : isPremium
+              ? model.hdExportLabel
+              : model.saveSigilLabel}
         </button>
         <button
           type="button"
