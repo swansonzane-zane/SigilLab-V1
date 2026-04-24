@@ -118,6 +118,28 @@ export function AdminConfigsEditor({ config }: AdminConfigsEditorProps) {
 
         <label className="block space-y-2">
           <span className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
+            Daily Free Limit
+          </span>
+          <input
+            type="number"
+            min={0}
+            max={20}
+            value={formState.dailyFreeLimit}
+            onChange={(event) =>
+              updateField(
+                "dailyFreeLimit",
+                Math.min(
+                  20,
+                  Math.max(0, Number.parseInt(event.target.value, 10) || 0),
+                ),
+              )
+            }
+            className="w-full rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-amber-200/35"
+          />
+        </label>
+
+        <label className="block space-y-2">
+          <span className="text-[11px] tracking-[0.22em] text-stone-300/55 uppercase">
             Monthly Premium Price
           </span>
           <input

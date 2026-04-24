@@ -1,7 +1,6 @@
 "use client";
 
 const energyStorageKey = "sigillab-energy-v1";
-const dailyFreeLimit = 3;
 const shareRewardLimit = 3;
 
 export type EnergyState = {
@@ -84,7 +83,7 @@ export function resetIfNewDay() {
   return state;
 }
 
-export function getEnergyState(premium = false): EnergyState {
+export function getEnergyState(premium = false, dailyFreeLimit = 3): EnergyState {
   const state = resetIfNewDay();
 
   return {
@@ -95,8 +94,8 @@ export function getEnergyState(premium = false): EnergyState {
   };
 }
 
-export function canGenerate(premium = false) {
-  const state = getEnergyState(premium);
+export function canGenerate(premium = false, dailyFreeLimit = 3) {
+  const state = getEnergyState(premium, dailyFreeLimit);
 
   if (state.premium) {
     return true;
@@ -108,14 +107,14 @@ export function canGenerate(premium = false) {
   );
 }
 
-export function consumeReading(premium = false) {
-  const state = getEnergyState(premium);
+export function consumeReading(premium = false, dailyFreeLimit = 3) {
+  const state = getEnergyState(premium, dailyFreeLimit);
 
   if (state.premium) {
     return state;
   }
 
-  if (!canGenerate(false)) {
+  if (!canGenerate(false, dailyFreeLimit)) {
     return state;
   }
 
@@ -127,11 +126,11 @@ export function consumeReading(premium = false) {
   };
 
   writeStoredState(nextStoredState);
-  return getEnergyState(false);
+  return getEnergyState(false, dailyFreeLimit);
 }
 
-export function grantShareReward(premium = false) {
-  const state = getEnergyState(premium);
+export function grantShareReward(premium = false, dailyFreeLimit = 3) {
+  const state = getEnergyState(premium, dailyFreeLimit);
 
   if (state.premium || state.shareRewardsToday >= state.shareRewardLimit) {
     return { granted: false, state };
@@ -145,11 +144,11 @@ export function grantShareReward(premium = false) {
   };
 
   writeStoredState(nextStoredState);
-  return { granted: true, state: getEnergyState(false) };
+  return { granted: true, state: getEnergyState(false, dailyFreeLimit) };
 }
 
-export function grantAdReward(premium = false) {
-  const state = getEnergyState(premium);
+export function grantAdReward(premium = false, dailyFreeLimit = 3) {
+  const state = getEnergyState(premium, dailyFreeLimit);
 
   if (state.premium) {
     return state;
@@ -163,5 +162,5 @@ export function grantAdReward(premium = false) {
   };
 
   writeStoredState(nextStoredState);
-  return getEnergyState(false);
+  return getEnergyState(false, dailyFreeLimit);
 }

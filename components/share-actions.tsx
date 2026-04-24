@@ -1,15 +1,17 @@
 "use client";
 
 import { toPng } from "html-to-image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
 import { buildShareMessage } from "@/lib/share-flow";
 import { grantShareReward } from "@/services/energy-service";
+import { saveRecentShare } from "@/services/recent-share-service";
 import type { ShareModel } from "@/types/share";
 
 type ShareActionsProps = {
+  dailyFreeLimit: number;
   isPremium: boolean;
   model: ShareModel;
 };
@@ -34,7 +36,11 @@ async function copyToClipboard(value: string) {
   return copied;
 }
 
-export function ShareActions({ isPremium, model }: ShareActionsProps) {
+export function ShareActions({
+  dailyFreeLimit,
+  isPremium,
+  model,
+}: ShareActionsProps) {
   const router = useRouter();
   const { startTransition } = useTransitionController();
   const [isSaving, setIsSaving] = useState(false);
@@ -45,8 +51,12 @@ export function ShareActions({ isPremium, model }: ShareActionsProps) {
       ? model.sharedPath
       : new URL(model.sharedPath, window.location.origin).toString();
 
+  useEffect(() => {
+    saveRecentShare(model, currentUrl);
+  }, [currentUrl, model]);
+
   function getEnergyRewardDetail(fallbackMessage: string) {
-    const result = grantShareReward(isPremium);
+    const result = grantShareReward(isPremium, dailyFreeLimit);
 
     return result.granted ? model.energyRewardMessage : fallbackMessage;
   }

@@ -39,6 +39,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       }
       initialLanguage={language}
       isPremium={isPremium}
+      dailyFreeLimit={config.dailyFreeLimit}
       sponsorEnabled={config.enableAds}
       supportedLanguages={supportedLanguages}
     />

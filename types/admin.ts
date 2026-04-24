@@ -48,6 +48,7 @@ export type AppConfig = {
   enablePremium: boolean;
   premiumMonthlyPrice: number;
   premiumYearlyPrice: number;
+  dailyFreeLimit: number;
   maxJournalPrompts: number;
 };
 

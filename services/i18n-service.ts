@@ -32,6 +32,8 @@ export type I18nDictionary = {
     journalPrompts: string;
     journalPromptsTitle: string;
     promptLabel: string;
+    promptCopySuccess: string;
+    promptCopyFailure: string;
     share: string;
     revealAnotherPath: string;
     shareTransitionTitle: string;
@@ -111,6 +113,7 @@ export type I18nDictionary = {
     shareRewardLimitReached: string;
     sharingBlessing: string;
     shareBlessingText: string;
+    genericBlessingLinkLabel: string;
     sponsorRewardCta: string;
     sponsorRewardNote: string;
     sponsorLoading: string;

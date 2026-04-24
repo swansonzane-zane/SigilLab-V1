@@ -8,10 +8,13 @@ import {
   grantShareReward,
   type EnergyState,
 } from "@/services/energy-service";
+import { buildShareMessage } from "@/lib/share-flow";
 import type { I18nDictionary } from "@/services/i18n-service";
+import { getRecentShareMessage } from "@/services/recent-share-service";
 
 type EnergyExhaustedPanelProps = {
   dictionary: I18nDictionary;
+  dailyFreeLimit: number;
   energyState: EnergyState;
   language: string;
   onClose: () => void;
@@ -33,8 +36,22 @@ async function shareBlessing(text: string) {
   return false;
 }
 
+function buildFallbackBlessing(dictionary: I18nDictionary) {
+  const url = typeof window === "undefined" ? "/" : window.location.origin;
+
+  return buildShareMessage(
+    {
+      shareTitle: "",
+      shareTextLines: [dictionary.energy.shareBlessingText],
+      openSealPrefix: dictionary.energy.genericBlessingLinkLabel,
+    },
+    url,
+  );
+}
+
 export function EnergyExhaustedPanel({
   dictionary,
+  dailyFreeLimit,
   energyState,
   language,
   onClose,
@@ -54,8 +71,10 @@ export function EnergyExhaustedPanel({
     setIsSharing(true);
 
     try {
-      await shareBlessing(dictionary.energy.shareBlessingText);
-      const result = grantShareReward(false);
+      await shareBlessing(
+        getRecentShareMessage() || buildFallbackBlessing(dictionary),
+      );
+      const result = grantShareReward(false, dailyFreeLimit);
 
       if (result.granted) {
         onReward(result.state, dictionary.energy.rewardSuccess);
@@ -72,7 +91,7 @@ export function EnergyExhaustedPanel({
 
     setIsWatching(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    const nextState = grantAdReward(false);
+    const nextState = grantAdReward(false, dailyFreeLimit);
     setIsWatching(false);
     onReward(nextState, dictionary.energy.sponsorRewardSuccess);
   }

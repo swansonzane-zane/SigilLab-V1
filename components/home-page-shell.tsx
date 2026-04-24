@@ -9,6 +9,7 @@ import type { I18nDictionary } from "@/services/i18n-service";
 import type { ReadingLanguage } from "@/types/reading";
 
 type HomePageShellProps = {
+  dailyFreeLimit: number;
   initialLanguage: ReadingLanguage;
   dictionaries: Record<ReadingLanguage, I18nDictionary>;
   isPremium: boolean;
@@ -17,6 +18,7 @@ type HomePageShellProps = {
 };
 
 export function HomePageShell({
+  dailyFreeLimit,
   initialLanguage,
   dictionaries,
   isPremium,
@@ -78,6 +80,7 @@ export function HomePageShell({
           </div>
           <HomeSignalForm
             dictionary={dictionary}
+            dailyFreeLimit={dailyFreeLimit}
             isPremium={isPremium}
             language={language}
             onLanguageChange={handleLanguageChange}

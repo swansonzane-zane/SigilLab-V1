@@ -95,7 +95,7 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
     premiumVisits: 0,
     upgradeCtaClicks: 0,
     adsEnabled: config.enableAds,
-    dailyFreeUses: Math.min(dailyReadings, 3),
+    dailyFreeUses: Math.min(dailyReadings, config.dailyFreeLimit),
     shareRewardsClaimed: 0,
     sponsorRewardsClaimed: 0,
     premiumUnlimitedActive: config.enablePremium,

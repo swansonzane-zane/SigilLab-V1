@@ -7,5 +7,6 @@
   "enablePremium": true,
   "premiumMonthlyPrice": 4.99,
   "premiumYearlyPrice": 29.99,
+  "dailyFreeLimit": 3,
   "maxJournalPrompts": 3
 }

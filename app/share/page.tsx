@@ -68,6 +68,7 @@ export default async function SharePage({ searchParams }: SharePageProps) {
         </div>
 
         <ShareCard
+          dailyFreeLimit={config.dailyFreeLimit}
           isPremium={isPremium}
           model={model}
         />

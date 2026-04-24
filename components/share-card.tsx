@@ -3,11 +3,16 @@ import { ShareActions } from "@/components/share-actions";
 import type { ShareModel } from "@/types/share";
 
 type ShareCardProps = {
+  dailyFreeLimit: number;
   isPremium: boolean;
   model: ShareModel;
 };
 
-export function ShareCard({ isPremium, model }: ShareCardProps) {
+export function ShareCard({
+  dailyFreeLimit,
+  isPremium,
+  model,
+}: ShareCardProps) {
   return (
     <div className="mx-auto w-full max-w-[28rem] space-y-4">
       <section
@@ -102,7 +107,11 @@ export function ShareCard({ isPremium, model }: ShareCardProps) {
         </div>
       </section>
 
-      <ShareActions isPremium={isPremium} model={model} />
+      <ShareActions
+        dailyFreeLimit={dailyFreeLimit}
+        isPremium={isPremium}
+        model={model}
+      />
     </div>
   );
 }

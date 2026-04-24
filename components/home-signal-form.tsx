@@ -29,6 +29,7 @@ const intents = [
 
 export function HomeSignalForm({
   dictionary,
+  dailyFreeLimit,
   isPremium,
   language,
   onLanguageChange,
@@ -36,6 +37,7 @@ export function HomeSignalForm({
   supportedLanguages,
 }: {
   dictionary: I18nDictionary;
+  dailyFreeLimit: number;
   isPremium: boolean;
   language: ReadingLanguage;
   onLanguageChange: (language: ReadingLanguage) => void;
@@ -47,7 +49,7 @@ export function HomeSignalForm({
   const [birthDate, setBirthDate] = useState("");
   const [intent, setIntent] = useState<(typeof intents)[number]>("clarity");
   const [energyState, setEnergyState] = useState<EnergyState>(() =>
-    getEnergyState(isPremium),
+    getEnergyState(isPremium, dailyFreeLimit),
   );
   const [energyMessage, setEnergyMessage] = useState<string | null>(null);
   const [showEnergyPanel, setShowEnergyPanel] = useState(false);
@@ -68,13 +70,13 @@ export function HomeSignalForm({
       return;
     }
 
-    if (!canGenerate(isPremium)) {
-      setEnergyState(getEnergyState(isPremium));
+    if (!canGenerate(isPremium, dailyFreeLimit)) {
+      setEnergyState(getEnergyState(isPremium, dailyFreeLimit));
       setShowEnergyPanel(true);
       return;
     }
 
-    consumeReading(isPremium);
+    consumeReading(isPremium, dailyFreeLimit);
     setIsSubmitting(true);
     startTransition({
       active: true,
@@ -234,6 +236,7 @@ export function HomeSignalForm({
       {showEnergyPanel ? (
         <EnergyExhaustedPanel
           dictionary={dictionary}
+          dailyFreeLimit={dailyFreeLimit}
           energyState={energyState}
           language={language}
           onClose={() => setShowEnergyPanel(false)}

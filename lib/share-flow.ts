@@ -1,4 +1,4 @@
-import type { ShareModel } from "@/types/share";
+import type { ShareMessageModel, ShareModel } from "@/types/share";
 
 function escapeXml(value: string) {
   return value
@@ -63,7 +63,7 @@ function measureTextBlock(
   return fontSize + (safeLines - 1) * lineHeight + paddingBottom;
 }
 
-export function buildShareMessage(model: ShareModel, url: string) {
+export function buildShareMessage(model: ShareMessageModel, url: string) {
   const titlePrefix = model.shareTitle.trim();
   const textLines = model.shareTextLines.map((line, index) => {
     const trimmedLine = line.trim();

@@ -15,6 +15,7 @@ const defaultAppConfig: AppConfig = {
   enablePremium: true,
   premiumMonthlyPrice: 4.99,
   premiumYearlyPrice: 29.99,
+  dailyFreeLimit: 3,
   maxJournalPrompts: 3,
 };
 
@@ -85,6 +86,11 @@ function normalizeAppConfig(value: unknown): AppConfig {
       Number.isFinite(config.premiumYearlyPrice)
         ? Math.max(0, Number(config.premiumYearlyPrice.toFixed(2)))
         : defaultAppConfig.premiumYearlyPrice,
+    dailyFreeLimit:
+      typeof config.dailyFreeLimit === "number" &&
+      Number.isFinite(config.dailyFreeLimit)
+        ? Math.min(20, Math.max(0, Math.round(config.dailyFreeLimit)))
+        : defaultAppConfig.dailyFreeLimit,
     maxJournalPrompts:
       typeof config.maxJournalPrompts === "number" &&
       Number.isFinite(config.maxJournalPrompts)

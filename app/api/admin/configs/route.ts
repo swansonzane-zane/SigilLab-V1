@@ -19,6 +19,7 @@ function isConfigCandidate(value: unknown): value is AppConfig {
     typeof config.enablePremium === "boolean" &&
     typeof config.premiumMonthlyPrice === "number" &&
     typeof config.premiumYearlyPrice === "number" &&
+    typeof config.dailyFreeLimit === "number" &&
     typeof config.maxJournalPrompts === "number"
   );
 }

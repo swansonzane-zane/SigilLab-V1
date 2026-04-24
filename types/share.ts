@@ -28,6 +28,12 @@ export type ShareSeedInput = {
   language?: string;
 };
 
+export type ShareMessageModel = {
+  shareTitle: string;
+  shareTextLines: string[];
+  openSealPrefix: string;
+};
+
 export type ShareModel = {
   shareId: string;
   title: string;
