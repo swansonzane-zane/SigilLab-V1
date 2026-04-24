@@ -48,16 +48,32 @@ export type AppConfig = {
 };
 
 export type MetricsSnapshot = {
+  totalReadings: number;
   dailyReadings: number;
   successRate: number;
   fallbackRate: number;
+  errorRate: number;
   averageLatencyMs: number;
+  averageProviderResponseMs: number;
   topIntents: Array<{
-    intent: string;
+    label: string;
     count: number;
+    percentage: number;
   }>;
   languageDistribution: Array<{
-    language: string;
+    label: string;
     count: number;
+    percentage: number;
   }>;
+  ageBandDistribution: Array<{
+    label: string;
+    count: number;
+    percentage: number;
+  }>;
+  zodiacDistribution: Array<{
+    label: string;
+    count: number;
+    percentage: number;
+  }>;
+  shareCount: number;
 };

@@ -4,50 +4,73 @@ import { AdminSectionCard } from "@/components/admin/admin-section-card";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
 import { getMetricsSnapshot } from "@/services/metrics-service";
 
-export default function AdminDashboardPage() {
-  const metrics = getMetricsSnapshot();
+function formatRate(value: number) {
+  return `${value.toFixed(1)}%`;
+}
+
+function formatMs(value: number) {
+  return `${value.toFixed(1)}ms`;
+}
+
+export default async function AdminDashboardPage() {
+  const metrics = await getMetricsSnapshot();
 
   return (
     <div className="space-y-8">
       <AdminPageHeader
         eyebrow="Dashboard"
-        title="Monitor the reading surface."
-        description="This observability board tracks reading volume, reliability, fallback posture, latency, and the distribution of intent and language signals."
+        title="Monitor live reading operations."
+        description="Metrics below are aggregated from local reading and share records, giving an early-stage operating view that can later migrate to a warehouse-backed analytics stack."
       />
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-7">
+        <AdminStatCard
+          label="Total Readings"
+          value={String(metrics.totalReadings)}
+          note="All persisted reading records currently available in local storage."
+        />
         <AdminStatCard
           label="Daily Readings"
           value={String(metrics.dailyReadings)}
-          note="Current day volume across all reading requests."
+          note="Records created today (UTC day window) for quick activity checks."
         />
         <AdminStatCard
           label="Success Rate"
-          value={`${metrics.successRate}%`}
-          note="Share of requests that resolved without hitting the fallback path."
+          value={formatRate(metrics.successRate)}
+          note="Portion of readings that completed on the primary provider path."
         />
         <AdminStatCard
           label="Fallback Rate"
-          value={`${metrics.fallbackRate}%`}
-          note="Current fallback posture when provider output fails or is unavailable."
+          value={formatRate(metrics.fallbackRate)}
+          note="Readings served by fallback mode when primary generation could not complete."
+        />
+        <AdminStatCard
+          label="Error Rate"
+          value={formatRate(metrics.errorRate)}
+          note="Requests that failed without fallback output."
         />
         <AdminStatCard
           label="Average Latency"
-          value={`${metrics.averageLatencyMs}ms`}
-          note="Mean reading response time across the current metrics window."
+          value={formatMs(metrics.averageLatencyMs)}
+          note="Mean end-to-end latency from request start to final output."
+        />
+        <AdminStatCard
+          label="Share Records"
+          value={String(metrics.shareCount)}
+          note="Total share identities generated from the current branch flow."
         />
       </section>
 
-      <div className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+      <div className="grid gap-5 xl:grid-cols-2">
         <AdminSectionCard
           title="Top Intents"
           description="Most requested emotional intents in the current snapshot."
         >
           <AdminMeterList
             title="Intent Demand"
-            description="A quick visual ranking of what users are currently seeking."
+            description="Intent concentration from persisted readings."
             items={metrics.topIntents.map((item) => ({
-              label: item.intent,
+              label: `${item.label} (${item.percentage.toFixed(1)}%)`,
               value: item.count,
             }))}
           />
@@ -59,9 +82,39 @@ export default function AdminDashboardPage() {
         >
           <AdminMeterList
             title="Language Mix"
-            description="Read distribution by currently supported locale buckets."
+            description="Locale distribution from real request records."
             items={metrics.languageDistribution.map((item) => ({
-              label: item.language,
+              label: `${item.label} (${item.percentage.toFixed(1)}%)`,
+              value: item.count,
+            }))}
+          />
+        </AdminSectionCard>
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-2">
+        <AdminSectionCard
+          title="Age Band Distribution"
+          description="High-level age segment mix after privacy-safe derivation."
+        >
+          <AdminMeterList
+            title="Age Bands"
+            description="Derived age-band volume from real readings."
+            items={metrics.ageBandDistribution.map((item) => ({
+              label: `${item.label} (${item.percentage.toFixed(1)}%)`,
+              value: item.count,
+            }))}
+          />
+        </AdminSectionCard>
+
+        <AdminSectionCard
+          title="Zodiac Distribution"
+          description="Signal volume by western zodiac field."
+        >
+          <AdminMeterList
+            title="Zodiac Mix"
+            description="Relative zodiac spread across current records."
+            items={metrics.zodiacDistribution.map((item) => ({
+              label: `${item.label} (${item.percentage.toFixed(1)}%)`,
               value: item.count,
             }))}
           />
@@ -71,13 +124,13 @@ export default function AdminDashboardPage() {
       <div className="grid gap-5 xl:grid-cols-[0.9fr_1.1fr]">
         <AdminSectionCard
           title="Performance Snapshot"
-          description="A compact readout of how the reading pipeline is behaving."
+          description="Current reliability and latency posture from local records."
         >
           <div className="space-y-3">
             {[
-              `Success posture is holding at ${metrics.successRate}% across the latest metrics window.`,
-              `Fallback behavior currently accounts for ${metrics.fallbackRate}% of readings.`,
-              `Average latency is ${metrics.averageLatencyMs}ms, keeping the ritual flow responsive.`,
+              `Success posture is ${formatRate(metrics.successRate)} with ${formatRate(metrics.errorRate)} terminal errors.`,
+              `Fallback behavior currently accounts for ${formatRate(metrics.fallbackRate)} of readings.`,
+              `Average total latency is ${formatMs(metrics.averageLatencyMs)} and provider response latency is ${formatMs(metrics.averageProviderResponseMs)}.`,
             ].map((item) => (
               <div
                 key={item}
@@ -90,15 +143,15 @@ export default function AdminDashboardPage() {
         </AdminSectionCard>
 
         <AdminSectionCard
-          title="Operational Notes"
-          description="Mock board annotations that help the page feel like an actual control surface."
+          title="Data Notes"
+          description="Scope and interpretation guidance for this local-first dashboard."
         >
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              "Clarity remains the leading intent, so prompt sharpness should stay under review.",
-              "Spanish exists as a config target but remains a smaller traffic band.",
-              "Fallback remains enabled to protect the front-end result flow.",
-              "Share remains active, aligning with the current product propagation push.",
+              "Read metrics are aggregated directly from data/readings.json.",
+              "Share volume is aggregated from data/shares.json.",
+              "This board is suitable for early operator decisions on prompt, reliability, and traffic mix.",
+              "The same metric interfaces can be redirected to a database or warehouse later.",
             ].map((item) => (
               <div
                 key={item}
