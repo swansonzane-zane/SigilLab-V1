@@ -62,7 +62,10 @@
     "returnOfLightLabel": "Retorno de Luz",
     "revealCtaText": "Revelar Otro Camino",
     "shareTitle": "SigilLab",
-    "shareText": "Hoy se revelo un sigilo para mi. Que la claridad viaje contigo.",
+    "shareTextLines": [
+      "Hoy se revelo un sigilo para mi.",
+      "Que la claridad viaje contigo."
+    ],
     "saveSuccessMessage": "El sigilo quedo sellado bajo tu cuidado.",
     "saveSuccessDetail": "Mantenlo cerca mientras la corriente aun responde a tu nombre.",
     "saveFailureMessage": "El sigilo resistio la captura.",
@@ -76,7 +79,7 @@
     "shareFailureMessage": "La bendicion no pudo salir de tu dispositivo esta vez.",
     "rewardHint": "Comparte luz, y mas luz puede volver.",
     "privacyNotice": "Solo se comparte el simbolo. Tus detalles privados permanecen contigo.",
-    "openSealPrefix": "Abrir este sello:",
+    "openSealPrefix": "Abre el sello:",
     "sharedMissingEyebrow": "Sello Compartido",
     "sharedMissingTitle": "Este sello se desvanecio del circulo.",
     "sharedMissingSubtitle": "El sigilo compartido ya no puede recuperarse, pero una nueva lectura todavia puede invocarse desde el inicio.",

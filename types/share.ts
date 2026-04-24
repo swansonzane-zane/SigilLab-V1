@@ -41,7 +41,7 @@ export type ShareModel = {
   onlineCtaLabel: string;
   sharedPath: string;
   shareTitle: string;
-  shareText: string;
+  shareTextLines: string[];
   saveHint: string;
   shareSuccessMessage: string;
   copySuccessMessage: string;

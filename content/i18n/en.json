@@ -62,7 +62,10 @@
     "returnOfLightLabel": "Return Of Light",
     "revealCtaText": "Reveal Another Path",
     "shareTitle": "SigilLab",
-    "shareText": "A sigil was revealed for me today. May clarity travel with you.",
+    "shareTextLines": [
+      "A sigil was revealed for me today.",
+      "May clarity travel with you."
+    ],
     "saveSuccessMessage": "The sigil has been sealed into your keeping.",
     "saveSuccessDetail": "Keep it close while the current still answers to your name.",
     "saveFailureMessage": "The sigil resisted capture.",

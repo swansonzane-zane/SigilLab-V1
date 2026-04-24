@@ -52,7 +52,11 @@ export function ShareCard({ model }: ShareCardProps) {
               {model.blessingLabel}
             </p>
             <p className="mt-2 text-sm leading-7 text-stone-200/84">
-              {model.shareText}
+              {model.shareTextLines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </p>
           </div>
 

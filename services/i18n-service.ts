@@ -60,7 +60,7 @@ export type I18nDictionary = {
     returnOfLightLabel: string;
     revealCtaText: string;
     shareTitle: string;
-    shareText: string;
+    shareTextLines: string[];
     saveSuccessMessage: string;
     saveSuccessDetail: string;
     saveFailureMessage: string;

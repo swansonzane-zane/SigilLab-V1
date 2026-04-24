@@ -44,6 +44,48 @@ const intentThemes = {
   },
 } as const;
 
+const localizedIntentThemes = {
+  en: intentThemes,
+  es: {
+    clarity: {
+      intentLabel: "claridad",
+      aura: "horizonte lucido",
+      verb: "separa la senal del ruido",
+      promptSeed: "lo que ya es verdad",
+    },
+    healing: {
+      intentLabel: "sanacion",
+      aura: "marea reparadora",
+      verb: "suaviza lo que permanecio protegido",
+      promptSeed: "lo que esta listo para sanar",
+    },
+    focus: {
+      intentLabel: "enfoque",
+      aura: "rayo concentrado",
+      verb: "reune la atencion dispersa",
+      promptSeed: "lo que merece devocion",
+    },
+    balance: {
+      intentLabel: "equilibrio",
+      aura: "arco de equilibrio",
+      verb: "pone corrientes opuestas en dialogo",
+      promptSeed: "lo que pide estabilidad",
+    },
+    release: {
+      intentLabel: "liberacion",
+      aura: "brasa menguante",
+      verb: "afloja patrones que ya no necesitan sostenerte",
+      promptSeed: "lo que puede ser soltado",
+    },
+    openness: {
+      intentLabel: "apertura",
+      aura: "luz de umbral",
+      verb: "abre la puerta a un contacto nuevo",
+      promptSeed: "lo que puede ser recibido",
+    },
+  },
+} as const;
+
 function getBirthYearSignal(birthYear: number) {
   return Number.parseInt(String(birthYear).slice(-2), 10);
 }
@@ -81,7 +123,11 @@ function getZodiacSignal(zodiac: ReadingInput["westernZodiac"]) {
 }
 
 export function buildMockReadingOutput(input: ReadingInput): ReadingOutput {
-  const theme = intentThemes[input.intent];
+  if (input.language === "es") {
+    return buildSpanishMockReadingOutput(input);
+  }
+
+  const theme = localizedIntentThemes.en[input.intent];
   const yearSignal = getBirthYearSignal(input.birthYear);
   const ageSignal = getAgeBandSignal(input.ageBand);
   const zodiacSignal = getZodiacSignal(input.westernZodiac);
@@ -96,6 +142,56 @@ export function buildMockReadingOutput(input: ReadingInput): ReadingOutput {
       `Where in my life do I already feel the first signs of ${input.intent}, even if they are subtle?`,
       `What would change this week if I trusted the ${theme.aura} of my ${input.westernZodiac} pattern instead of reacting to urgency?`,
       `What single ritual, boundary, or conversation would help me honor ${theme.promptSeed}?`,
+    ],
+  };
+}
+
+function buildSpanishMockReadingOutput(input: ReadingInput): ReadingOutput {
+  const theme = localizedIntentThemes.es[input.intent];
+  const yearSignal = getBirthYearSignal(input.birthYear);
+  const ageSignal = getAgeBandSignal(input.ageBand);
+  const zodiacSignal = getZodiacSignal(input.westernZodiac);
+  const resonance = ((yearSignal + ageSignal * 2 + zodiacSignal) % 9) + 1;
+
+  return {
+    title: `Senal de ${theme.intentLabel}`,
+    headline: `Un ${theme.aura} se eleva alrededor de tu corriente ${input.westernZodiac}.`,
+    punchline: `Tu campo emocional ${theme.verb} y apunta hacia el nivel de resonancia ${resonance}.`,
+    insight: `Con un ano de nacimiento ${input.birthYear}, una franja de edad ${input.ageBand} y una firma ${input.westernZodiac}, llegas a esta lectura con un patron que favorece la reflexion antes del movimiento. El pulso actual de ${theme.intentLabel} sugiere que tu proximo cambio nace al nombrar la emocion debajo de la historia y elegir una accion que coincida con la verdad mas silenciosa que ya percibes.`,
+    journalPrompts: [
+      `Donde siento ya las primeras senales de ${theme.intentLabel}, aunque sean sutiles?`,
+      `Que cambiaria esta semana si confiara en el ${theme.aura} de mi patron ${input.westernZodiac} en lugar de reaccionar a la urgencia?`,
+      `Que ritual, limite o conversacion concreta me ayudaria a honrar ${theme.promptSeed}?`,
+    ],
+  };
+}
+
+function buildUnavailableReadingOutput(input: ReadingInput): ReadingOutput {
+  if (input.language === "es") {
+    return {
+      title: "Senal temporalmente no disponible",
+      headline: "El canal de lectura esta en silencio por un momento.",
+      punchline:
+        "No pudimos completar tu senal ahora, pero tu intencion sigue sostenida.",
+      insight:
+        "El modelo de lectura en vivo no devolvio una respuesta util y el modo de respaldo esta desactivado. Intentalo de nuevo en breve o vuelve al ritual para generar otra senal.",
+      journalPrompts: [
+        "Que emocion necesitaba mas esta lectura ahora?",
+        "Que verdad puedo nombrar incluso sin una senal generada?",
+      ],
+    };
+  }
+
+  return {
+    title: "Signal Temporarily Unavailable",
+    headline: "The reading channel is quiet for a moment.",
+    punchline:
+      "We couldn't complete your signal right now, but your intent is still held.",
+    insight:
+      "The live reading model did not return a usable result and fallback mode is currently disabled. Please try again shortly or return to the ritual and generate another signal.",
+    journalPrompts: [
+      "What feeling needed this reading most right now?",
+      "What truth can I name even without a generated signal?",
     ],
   };
 }
@@ -222,18 +318,7 @@ export async function generateReadingWithMeta(
 
     if (!config.enableFallback) {
       return {
-        output: {
-          title: "Signal Temporarily Unavailable",
-          headline: "The reading channel is quiet for a moment.",
-          punchline:
-            "We couldn't complete your signal right now, but your intent is still held.",
-          insight:
-            "The live reading model did not return a usable result and fallback mode is currently disabled. Please try again shortly or return to the ritual and generate another signal.",
-          journalPrompts: [
-            "What feeling needed this reading most right now?",
-            "What truth can I name even without a generated signal?",
-          ],
-        },
+        output: buildUnavailableReadingOutput(input),
         meta: {
           provider: "deepseek",
           model: deepSeekConfig.model,

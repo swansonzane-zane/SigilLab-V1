@@ -97,8 +97,7 @@ export function ShareActions({ model }: ShareActionsProps) {
 
     const shareData = {
       title: model.shareTitle,
-      text: model.shareText,
-      url: currentUrl,
+      text: buildShareMessage(model, currentUrl),
     };
 
     try {

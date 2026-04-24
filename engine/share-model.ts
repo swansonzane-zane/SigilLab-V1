@@ -85,7 +85,7 @@ export async function buildShareModelFromRecord(
     onlineCtaLabel: dictionary.share.onlineCtaLabel,
     sharedPath,
     shareTitle: dictionary.share.shareTitle,
-    shareText: dictionary.share.shareText,
+    shareTextLines: dictionary.share.shareTextLines,
     saveSuccessMessage: dictionary.share.saveSuccessMessage,
     saveFailureMessage: dictionary.share.saveFailureMessage,
     saveHint: dictionary.share.saveHint,
