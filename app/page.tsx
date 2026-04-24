@@ -5,10 +5,7 @@ import {
   type I18nDictionary,
   resolveLanguage,
 } from "@/services/i18n-service";
-import {
-  resolvePremiumState,
-  shouldShowAds,
-} from "@/services/monetization-service";
+import { resolvePremiumState } from "@/services/monetization-service";
 import { getAppConfig } from "@/services/configs-service";
 import type { ReadingLanguage } from "@/types/reading";
 
@@ -42,7 +39,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       }
       initialLanguage={language}
       isPremium={isPremium}
-      showAds={shouldShowAds(config, isPremium)}
+      sponsorEnabled={config.enableAds}
       supportedLanguages={supportedLanguages}
     />
   );

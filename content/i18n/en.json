@@ -104,5 +104,24 @@
     "priorityFutureFeatures": "Priority future features",
     "monthlyCta": "Start Monthly",
     "yearlyCta": "Start Yearly"
+  },
+  "energy": {
+    "remainingLabel": "Current remaining",
+    "remainingUnlimited": "Unlimited current",
+    "panelEyebrow": "Energy Gate",
+    "exhaustedTitle": "Today's current has quieted.",
+    "exhaustedSubtitle": "Choose how to reopen the path.",
+    "shareRewardCta": "Share a Blessing (+1)",
+    "shareRewardNote": "Send a small light outward and receive one more reading current today.",
+    "shareRewardLimitReached": "Today's blessing returns have reached their limit.",
+    "sharingBlessing": "Carrying the blessing...",
+    "shareBlessingText": "A small blessing from SigilLab: may clarity return to your path when the signal feels quiet.",
+    "sponsorRewardCta": "Watch a Sponsor Omen (+1)",
+    "sponsorRewardNote": "A brief sponsor placeholder will reopen one reading current.",
+    "sponsorLoading": "Reading the sponsor omen...",
+    "premiumCta": "Go Premium",
+    "close": "Return for now",
+    "rewardSuccess": "Your blessing returned energy to the path.",
+    "sponsorRewardSuccess": "The sponsor omen reopened the path."
   }
 }

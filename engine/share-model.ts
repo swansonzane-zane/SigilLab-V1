@@ -112,6 +112,7 @@ export async function buildShareModelFromRecord(
     shareSuccessDetail: dictionary.share.shareSuccessDetail,
     copySuccessDetail: dictionary.share.copySuccessDetail,
     copyFallbackDetail: dictionary.share.copyFallbackDetail,
+    energyRewardMessage: dictionary.energy.rewardSuccess,
     openSealPrefix: dictionary.share.openSealPrefix,
     language: record.language || "en",
     sigilIntent: record.sigilSpec.intentLabel,

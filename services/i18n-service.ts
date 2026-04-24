@@ -100,6 +100,25 @@ export type I18nDictionary = {
     monthlyCta: string;
     yearlyCta: string;
   };
+  energy: {
+    remainingLabel: string;
+    remainingUnlimited: string;
+    panelEyebrow: string;
+    exhaustedTitle: string;
+    exhaustedSubtitle: string;
+    shareRewardCta: string;
+    shareRewardNote: string;
+    shareRewardLimitReached: string;
+    sharingBlessing: string;
+    shareBlessingText: string;
+    sponsorRewardCta: string;
+    sponsorRewardNote: string;
+    sponsorLoading: string;
+    premiumCta: string;
+    close: string;
+    rewardSuccess: string;
+    sponsorRewardSuccess: string;
+  };
 };
 
 type ReadingIntentKey =

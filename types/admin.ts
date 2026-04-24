@@ -83,4 +83,8 @@ export type MetricsSnapshot = {
   premiumVisits: number;
   upgradeCtaClicks: number;
   adsEnabled: boolean;
+  dailyFreeUses: number;
+  shareRewardsClaimed: number;
+  sponsorRewardsClaimed: number;
+  premiumUnlimitedActive: boolean;
 };

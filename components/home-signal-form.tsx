@@ -4,11 +4,17 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
 import { useTransitionController } from "@/components/transition-provider";
-import { AdSlot } from "@/components/ad-slot";
+import { EnergyExhaustedPanel } from "@/components/energy-exhausted-panel";
 import {
   buildDerivedReadingInput,
   isValidBirthDate,
 } from "@/engine/reading-profile";
+import {
+  canGenerate,
+  consumeReading,
+  getEnergyState,
+  type EnergyState,
+} from "@/services/energy-service";
 import type { I18nDictionary } from "@/services/i18n-service";
 import type { ReadingLanguage } from "@/types/reading";
 
@@ -26,21 +32,34 @@ export function HomeSignalForm({
   isPremium,
   language,
   onLanguageChange,
-  showAds,
+  sponsorEnabled,
   supportedLanguages,
 }: {
   dictionary: I18nDictionary;
   isPremium: boolean;
   language: ReadingLanguage;
   onLanguageChange: (language: ReadingLanguage) => void;
-  showAds: boolean;
+  sponsorEnabled: boolean;
   supportedLanguages: ReadingLanguage[];
 }) {
   const router = useRouter();
   const { activeTransition, startTransition } = useTransitionController();
   const [birthDate, setBirthDate] = useState("");
   const [intent, setIntent] = useState<(typeof intents)[number]>("clarity");
+  const [energyState, setEnergyState] = useState<EnergyState>(() =>
+    getEnergyState(isPremium),
+  );
+  const [energyMessage, setEnergyMessage] = useState<string | null>(null);
+  const [showEnergyPanel, setShowEnergyPanel] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const remainingCurrent = Math.max(
+    0,
+    energyState.dailyFreeLimit +
+      energyState.shareRewardsToday +
+      energyState.sponsorRewardsToday -
+      energyState.usedToday,
+  );
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,6 +68,13 @@ export function HomeSignalForm({
       return;
     }
 
+    if (!canGenerate(isPremium)) {
+      setEnergyState(getEnergyState(isPremium));
+      setShowEnergyPanel(true);
+      return;
+    }
+
+    consumeReading(isPremium);
     setIsSubmitting(true);
     startTransition({
       active: true,
@@ -189,9 +215,36 @@ export function HomeSignalForm({
             {dictionary.home.privacyNote}
           </p>
 
-          {showAds ? <AdSlot compact dictionary={dictionary} /> : null}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-stone-200/78">
+            <span className="font-medium text-amber-100">
+              {isPremium
+                ? dictionary.energy.remainingUnlimited
+                : dictionary.energy.remainingLabel}
+            </span>
+            {isPremium ? null : <span>: {remainingCurrent}</span>}
+          </div>
+
+          {energyMessage ? (
+            <p className="text-sm leading-6 text-emerald-100/78">
+              {energyMessage}
+            </p>
+          ) : null}
         </div>
       </form>
+      {showEnergyPanel ? (
+        <EnergyExhaustedPanel
+          dictionary={dictionary}
+          energyState={energyState}
+          language={language}
+          onClose={() => setShowEnergyPanel(false)}
+          onReward={(state, message) => {
+            setEnergyState(state);
+            setEnergyMessage(message);
+            setShowEnergyPanel(false);
+          }}
+          sponsorEnabled={sponsorEnabled}
+        />
+      ) : null}
     </section>
   );
 }

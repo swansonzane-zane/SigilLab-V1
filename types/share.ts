@@ -68,6 +68,7 @@ export type ShareModel = {
   shareSuccessDetail: string;
   copySuccessDetail: string;
   copyFallbackDetail: string;
+  energyRewardMessage: string;
   openSealPrefix: string;
   language: string;
   sigilIntent: string;

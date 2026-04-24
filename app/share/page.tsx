@@ -1,13 +1,9 @@
 import { ShareCard } from "@/components/share-card";
-import { AdSlot } from "@/components/ad-slot";
 import { PremiumBadge } from "@/components/premium-badge";
 import { buildShareModelFromRecord } from "@/engine/share-model";
 import { getAppConfig } from "@/services/configs-service";
 import { getDictionary, resolveLanguage } from "@/services/i18n-service";
-import {
-  resolvePremiumState,
-  shouldShowAds,
-} from "@/services/monetization-service";
+import { resolvePremiumState } from "@/services/monetization-service";
 import { createShareRecord } from "@/services/shares-service";
 
 export const dynamic = "force-dynamic";
@@ -75,12 +71,6 @@ export default async function SharePage({ searchParams }: SharePageProps) {
           isPremium={isPremium}
           model={model}
         />
-
-        {shouldShowAds(config, isPremium) ? (
-          <div className="mt-6 w-full max-w-[28rem]">
-            <AdSlot dictionary={dictionary} />
-          </div>
-        ) : null}
       </div>
     </main>
   );

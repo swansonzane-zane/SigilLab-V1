@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
 import { buildShareMessage } from "@/lib/share-flow";
+import { grantShareReward } from "@/services/energy-service";
 import type { ShareModel } from "@/types/share";
 
 type ShareActionsProps = {
@@ -44,6 +45,12 @@ export function ShareActions({ isPremium, model }: ShareActionsProps) {
       ? model.sharedPath
       : new URL(model.sharedPath, window.location.origin).toString();
 
+  function getEnergyRewardDetail(fallbackMessage: string) {
+    const result = grantShareReward(isPremium);
+
+    return result.granted ? model.energyRewardMessage : fallbackMessage;
+  }
+
   async function handleSaveSigil() {
     if (isSaving) {
       return;
@@ -75,7 +82,7 @@ export function ShareActions({ isPremium, model }: ShareActionsProps) {
         active: true,
         level: "feedback",
         title: model.saveSuccessMessage,
-        message: model.saveSuccessDetail,
+        message: getEnergyRewardDetail(model.saveSuccessDetail),
       });
     } catch {
       startTransition({
@@ -108,7 +115,7 @@ export function ShareActions({ isPremium, model }: ShareActionsProps) {
           active: true,
           level: "feedback",
           title: model.shareSuccessMessage,
-          message: model.shareSuccessDetail,
+          message: getEnergyRewardDetail(model.shareSuccessDetail),
         });
         return;
       }
@@ -120,7 +127,7 @@ export function ShareActions({ isPremium, model }: ShareActionsProps) {
           active: true,
           level: "feedback",
           title: model.copySuccessMessage,
-          message: model.copySuccessDetail,
+          message: getEnergyRewardDetail(model.copySuccessDetail),
         });
       } else {
         startTransition({
@@ -143,7 +150,7 @@ export function ShareActions({ isPremium, model }: ShareActionsProps) {
           active: true,
           level: "feedback",
           title: model.copySuccessMessage,
-          message: model.copyFallbackDetail,
+          message: getEnergyRewardDetail(model.copyFallbackDetail),
         });
       } else {
         startTransition({

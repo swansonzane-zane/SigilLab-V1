@@ -12,7 +12,7 @@ type HomePageShellProps = {
   initialLanguage: ReadingLanguage;
   dictionaries: Record<ReadingLanguage, I18nDictionary>;
   isPremium: boolean;
-  showAds: boolean;
+  sponsorEnabled: boolean;
   supportedLanguages: ReadingLanguage[];
 };
 
@@ -20,7 +20,7 @@ export function HomePageShell({
   initialLanguage,
   dictionaries,
   isPremium,
-  showAds,
+  sponsorEnabled,
   supportedLanguages,
 }: HomePageShellProps) {
   const router = useRouter();
@@ -81,7 +81,7 @@ export function HomePageShell({
             isPremium={isPremium}
             language={language}
             onLanguageChange={handleLanguageChange}
-            showAds={showAds}
+            sponsorEnabled={sponsorEnabled}
             supportedLanguages={supportedLanguages}
           />
         </section>

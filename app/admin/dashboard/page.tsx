@@ -74,6 +74,26 @@ export default async function AdminDashboardPage() {
           value={metrics.adsEnabled ? "Enabled" : "Disabled"}
           note="Reflects the current admin config value for sponsored placements."
         />
+        <AdminStatCard
+          label="Daily Free Uses"
+          value={String(metrics.dailyFreeUses)}
+          note="Local mock estimate of free currents used today."
+        />
+        <AdminStatCard
+          label="Share Rewards Claimed"
+          value={String(metrics.shareRewardsClaimed)}
+          note="Local mock placeholder for blessing-based energy returns."
+        />
+        <AdminStatCard
+          label="Sponsor Rewards Claimed"
+          value={String(metrics.sponsorRewardsClaimed)}
+          note="Local mock placeholder for sponsor omen energy returns."
+        />
+        <AdminStatCard
+          label="Premium Unlimited Active"
+          value={metrics.premiumUnlimitedActive ? "Yes" : "No"}
+          note="Reflects whether the premium unlimited mode is enabled."
+        />
       </section>
 
       <div className="grid gap-5 xl:grid-cols-2">

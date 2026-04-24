@@ -104,5 +104,24 @@
     "priorityFutureFeatures": "Prioridad en funciones futuras",
     "monthlyCta": "Empezar Mensual",
     "yearlyCta": "Empezar Anual"
+  },
+  "energy": {
+    "remainingLabel": "Corriente restante",
+    "remainingUnlimited": "Corriente ilimitada",
+    "panelEyebrow": "Puerta de Energia",
+    "exhaustedTitle": "La corriente de hoy se ha aquietado.",
+    "exhaustedSubtitle": "Elige como reabrir el camino.",
+    "shareRewardCta": "Comparte una Bendicion (+1)",
+    "shareRewardNote": "Envia una pequena luz hacia afuera y recibe una corriente mas para leer hoy.",
+    "shareRewardLimitReached": "Los retornos de bendicion de hoy llegaron a su limite.",
+    "sharingBlessing": "Llevando la bendicion...",
+    "shareBlessingText": "Una pequena bendicion de SigilLab: que la claridad vuelva a tu camino cuando la señal se sienta quieta.",
+    "sponsorRewardCta": "Mira un Presagio Patrocinado (+1)",
+    "sponsorRewardNote": "Un breve placeholder patrocinado reabrira una corriente de lectura.",
+    "sponsorLoading": "Leyendo el presagio patrocinado...",
+    "premiumCta": "Ir a Premium",
+    "close": "Volver por ahora",
+    "rewardSuccess": "Tu bendicion devolvio energia al camino.",
+    "sponsorRewardSuccess": "El presagio patrocinado reabrio el camino."
   }
 }
