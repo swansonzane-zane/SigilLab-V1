@@ -1,21 +1,21 @@
 {
   "home": {
-    "eyebrow": "Lectura de Senal Emocional",
-    "title": "Ilumina la senal que se mueve bajo tu temporada presente.",
+    "eyebrow": "Lectura de Señal Emocional",
+    "title": "Ilumina la señal que se mueve bajo tu temporada presente.",
     "subtitle": "Ingresa tu fecha de nacimiento y define una intencion clara para generar una lectura de SigilLab afinada para claridad, sanacion, enfoque y el tono emocional del momento.",
     "featureCards": [
       "Atmosfera celestial con entradas rituales concretas.",
-      "Generacion de senal guiada por intencion en un solo paso.",
+      "Generacion de señal guiada por intencion en un solo paso.",
       "Disenado primero para movil y para una lectura rapida."
     ],
     "formEyebrow": "Iniciar Lectura",
-    "formTitle": "Afina el ritual y genera tu senal.",
+    "formTitle": "Afina el ritual y genera tu señal.",
     "birthDateLabel": "Fecha de nacimiento",
     "intentLabel": "Intencion",
-    "generateSignal": "Generar Senal",
-    "generatingSignal": "La senal se esta formando...",
+    "generateSignal": "Generar Señal",
+    "generatingSignal": "La señal se esta formando...",
     "privacyNote": "Tu fecha de nacimiento se traduce localmente antes de navegar, asi la pagina de resultado solo recibe campos de perfil menos sensibles y usa el idioma configurado en la app.",
-    "transitionTitle": "La senal se esta formando...",
+    "transitionTitle": "La señal se esta formando...",
     "transitionMessage": "Sosten tu intencion mientras el sello toma forma alrededor de tu temporada presente.",
     "languageLabel": "Idioma"
   },
@@ -29,18 +29,18 @@
   },
   "result": {
     "eyebrow": "Resultado Ritual",
-    "heroEyebrow": "Resultado de Senal Emocional",
+    "heroEyebrow": "Resultado de Señal Emocional",
     "insightLabel": "Insight",
     "journalPrompts": "Preguntas de diario",
-    "journalPromptsTitle": "Lleva la senal hacia adelante con una pregunta mas silenciosa.",
+    "journalPromptsTitle": "Lleva la señal hacia adelante con una pregunta mas silenciosa.",
     "promptLabel": "Pregunta",
     "share": "Compartir",
     "revealAnotherPath": "Revelar Otro Camino",
     "shareTransitionTitle": "Preparando tu sigilo para el mundo exterior...",
-    "shareTransitionMessage": "Una tarjeta luminosa se eleva para que la senal pueda viajar con claridad.",
+    "shareTransitionMessage": "Una tarjeta luminosa se eleva para que la señal pueda viajar con claridad.",
     "returnTransitionTitle": "Volver al circulo...",
     "returnTransitionMessage": "Otro camino se esta abriendo.",
-    "loading": "La senal se esta formando...",
+    "loading": "La señal se esta formando...",
     "fallbackNotice": "La generacion en vivo fallo y el modo de respaldo esta desactivado, asi que esta pagina muestra una respuesta estable de error en lugar de contenido simulado."
   },
   "share": {
@@ -63,7 +63,7 @@
     "revealCtaText": "Revelar Otro Camino",
     "shareTitle": "SigilLab",
     "shareTextLines": [
-      "Hoy se revelo un sigilo para mi.",
+      "Hoy se reveló un sigilo para mí.",
       "Que la claridad viaje contigo."
     ],
     "saveSuccessMessage": "El sigilo quedo sellado bajo tu cuidado.",
@@ -83,7 +83,7 @@
     "sharedMissingEyebrow": "Sello Compartido",
     "sharedMissingTitle": "Este sello se desvanecio del circulo.",
     "sharedMissingSubtitle": "El sigilo compartido ya no puede recuperarse, pero una nueva lectura todavia puede invocarse desde el inicio.",
-    "generateOwnSignal": "Genera Tu Propia Senal",
+    "generateOwnSignal": "Genera Tu Propia Señal",
     "sharedSealEyebrow": "Sello Compartido"
   }
 }

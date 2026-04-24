@@ -50,7 +50,7 @@ const localizedIntentThemes = {
     clarity: {
       intentLabel: "claridad",
       aura: "horizonte lucido",
-      verb: "separa la senal del ruido",
+      verb: "separa la señal del ruido",
       promptSeed: "lo que ya es verdad",
     },
     healing: {
@@ -154,12 +154,12 @@ function buildSpanishMockReadingOutput(input: ReadingInput): ReadingOutput {
   const resonance = ((yearSignal + ageSignal * 2 + zodiacSignal) % 9) + 1;
 
   return {
-    title: `Senal de ${theme.intentLabel}`,
+    title: `Señal de ${theme.intentLabel}`,
     headline: `Un ${theme.aura} se eleva alrededor de tu corriente ${input.westernZodiac}.`,
     punchline: `Tu campo emocional ${theme.verb} y apunta hacia el nivel de resonancia ${resonance}.`,
     insight: `Con un ano de nacimiento ${input.birthYear}, una franja de edad ${input.ageBand} y una firma ${input.westernZodiac}, llegas a esta lectura con un patron que favorece la reflexion antes del movimiento. El pulso actual de ${theme.intentLabel} sugiere que tu proximo cambio nace al nombrar la emocion debajo de la historia y elegir una accion que coincida con la verdad mas silenciosa que ya percibes.`,
     journalPrompts: [
-      `Donde siento ya las primeras senales de ${theme.intentLabel}, aunque sean sutiles?`,
+      `Donde siento ya las primeras señales de ${theme.intentLabel}, aunque sean sutiles?`,
       `Que cambiaria esta semana si confiara en el ${theme.aura} de mi patron ${input.westernZodiac} en lugar de reaccionar a la urgencia?`,
       `Que ritual, limite o conversacion concreta me ayudaria a honrar ${theme.promptSeed}?`,
     ],
@@ -169,15 +169,15 @@ function buildSpanishMockReadingOutput(input: ReadingInput): ReadingOutput {
 function buildUnavailableReadingOutput(input: ReadingInput): ReadingOutput {
   if (input.language === "es") {
     return {
-      title: "Senal temporalmente no disponible",
+      title: "Señal temporalmente no disponible",
       headline: "El canal de lectura esta en silencio por un momento.",
       punchline:
-        "No pudimos completar tu senal ahora, pero tu intencion sigue sostenida.",
+        "No pudimos completar tu señal ahora, pero tu intencion sigue sostenida.",
       insight:
-        "El modelo de lectura en vivo no devolvio una respuesta util y el modo de respaldo esta desactivado. Intentalo de nuevo en breve o vuelve al ritual para generar otra senal.",
+        "El modelo de lectura en vivo no devolvio una respuesta util y el modo de respaldo esta desactivado. Intentalo de nuevo en breve o vuelve al ritual para generar otra señal.",
       journalPrompts: [
         "Que emocion necesitaba mas esta lectura ahora?",
-        "Que verdad puedo nombrar incluso sin una senal generada?",
+        "Que verdad puedo nombrar incluso sin una señal generada?",
       ],
     };
   }

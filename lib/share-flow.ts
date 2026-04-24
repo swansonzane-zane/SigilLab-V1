@@ -64,7 +64,20 @@ function measureTextBlock(
 }
 
 export function buildShareMessage(model: ShareModel, url: string) {
-  return [...model.shareTextLines, "", model.openSealPrefix, url].join("\n");
+  const titlePrefix = model.shareTitle.trim();
+  const textLines = model.shareTextLines.map((line, index) => {
+    const trimmedLine = line.trim();
+
+    if (index !== 0 || !titlePrefix || !trimmedLine.startsWith(titlePrefix)) {
+      return trimmedLine;
+    }
+
+    return trimmedLine.slice(titlePrefix.length).trimStart();
+  });
+
+  return [...textLines.filter(Boolean), "", model.openSealPrefix, url].join(
+    "\n",
+  );
 }
 
 export function buildPosterSvg(model: ShareModel, url: string) {
