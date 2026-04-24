@@ -88,7 +88,7 @@ export function ShareCard({ model }: ShareCardProps) {
               <div className="justify-self-center sm:justify-self-end">
                 <div
                   aria-hidden="true"
-                  className="[&_svg]:block [&_svg]:h-full [&_svg]:w-full h-32 w-32 shrink-0 rounded-[1.25rem] bg-white p-3 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
+                  className="[&_svg]:block [&_svg]:h-full [&_svg]:w-full [&_svg]:rounded-[1rem] h-32 w-32 shrink-0 overflow-hidden rounded-[1.25rem] shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
                   dangerouslySetInnerHTML={{ __html: model.qrSvg }}
                 />
               </div>

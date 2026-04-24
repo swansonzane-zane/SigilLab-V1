@@ -48,11 +48,11 @@ export function createShareRecordPayload(
 async function buildQrSvg(url: string) {
   const svg = await QRCode.toString(url, {
     type: "svg",
-    margin: 0,
+    margin: 1,
     width: 168,
     color: {
-      dark: "#f5f5f4",
-      light: "#0000",
+      dark: "#111827",
+      light: "#ffffff",
     },
   });
 
