@@ -95,9 +95,9 @@ export function ShareActions({ model }: ShareActionsProps) {
 
     setIsSharing(true);
 
+    const shareMessage = buildShareMessage(model, currentUrl);
     const shareData = {
-      title: model.shareTitle,
-      text: buildShareMessage(model, currentUrl),
+      text: shareMessage,
     };
 
     try {
@@ -112,7 +112,7 @@ export function ShareActions({ model }: ShareActionsProps) {
         return;
       }
 
-      const copied = await copyToClipboard(buildShareMessage(model, currentUrl));
+      const copied = await copyToClipboard(shareMessage);
 
       if (copied) {
         startTransition({
@@ -135,7 +135,7 @@ export function ShareActions({ model }: ShareActionsProps) {
         return;
       }
 
-      const copied = await copyToClipboard(buildShareMessage(model, currentUrl));
+      const copied = await copyToClipboard(shareMessage);
 
       if (copied) {
         startTransition({
