@@ -1,13 +1,15 @@
 import type { ReadingInput, ReadingOutput } from "@/types/reading";
+import type { I18nDictionary } from "@/services/i18n-service";
 
 import { ResultSigil } from "@/components/result-sigil";
 
 type ResultHeroProps = {
   input: ReadingInput;
   output: ReadingOutput;
+  dictionary: I18nDictionary;
 };
 
-export function ResultHero({ input, output }: ResultHeroProps) {
+export function ResultHero({ input, output, dictionary }: ResultHeroProps) {
   return (
     <section className="grid items-center gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
       <div className="order-1 flex justify-center lg:order-none">
@@ -27,7 +29,7 @@ export function ResultHero({ input, output }: ResultHeroProps) {
 
         <div className="space-y-4">
           <p className="text-sm font-medium tracking-[0.32em] text-sky-100/70 uppercase">
-            Emotional Signal Result
+            {dictionary.result.heroEyebrow}
           </p>
           <h1 className="max-w-4xl font-heading text-4xl leading-[0.95] font-semibold text-amber-50 sm:text-5xl lg:text-6xl">
             {output.punchline}
@@ -39,7 +41,7 @@ export function ResultHero({ input, output }: ResultHeroProps) {
 
         <article className="max-w-3xl rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5 text-stone-200/88 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-6">
           <p className="mb-3 text-sm tracking-[0.28em] text-stone-300/60 uppercase">
-            Insight
+            {dictionary.result.insightLabel}
           </p>
           <p className="text-base leading-8 sm:text-lg">{output.insight}</p>
         </article>

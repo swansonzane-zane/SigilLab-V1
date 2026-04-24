@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { ResultSigil } from "@/components/result-sigil";
 import { buildShareModelFromRecord } from "@/engine/share-model";
+import { getDictionary } from "@/services/i18n-service";
 import { getShareRecordById } from "@/services/shares-service";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +18,8 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
   const record = await getShareRecordById(shareId);
 
   if (!record) {
+    const dictionary = await getDictionary("en");
+
     return (
       <main className="relative flex min-h-screen flex-1 overflow-hidden">
         <div
@@ -25,27 +28,27 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
         />
         <div className="relative mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 py-10 text-center">
           <p className="text-sm tracking-[0.32em] text-stone-300/58 uppercase">
-            Shared Seal
+            {dictionary.share.sharedMissingEyebrow}
           </p>
           <h1 className="mt-5 font-heading text-5xl leading-none text-amber-50">
-            This seal has faded from the circle.
+            {dictionary.share.sharedMissingTitle}
           </h1>
           <p className="mt-5 max-w-xl text-base leading-7 text-stone-300/80">
-            The shared sigil can no longer be recovered, but a new reading can still
-            be cast from the beginning.
+            {dictionary.share.sharedMissingSubtitle}
           </p>
           <Link
             href="/"
             className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-6 text-sm font-semibold text-slate-950 transition hover:brightness-105"
           >
-            Generate Your Own Signal
+            {dictionary.share.generateOwnSignal}
           </Link>
         </div>
       </main>
     );
   }
 
-  const model = await buildShareModelFromRecord(record);
+  const dictionary = await getDictionary(record.language);
+  const model = await buildShareModelFromRecord(record, dictionary);
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
@@ -73,7 +76,7 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
 
             <div className="space-y-4">
               <p className="text-xs tracking-[0.28em] text-sky-100/68 uppercase">
-                Shared Seal
+                {dictionary.share.sharedSealEyebrow}
               </p>
               <h1 className="font-heading text-4xl leading-[0.95] font-semibold text-amber-50 sm:text-[3.25rem]">
                 {model.punchline}
@@ -85,10 +88,12 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
             </div>
 
             <Link
-              href="/"
+              href={`/?${new URLSearchParams({
+                language: model.language,
+              }).toString()}`}
               className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-6 text-sm font-semibold text-slate-950 transition hover:brightness-105"
             >
-              Generate Your Own Signal
+              {dictionary.share.generateOwnSignal}
             </Link>
           </div>
         </section>

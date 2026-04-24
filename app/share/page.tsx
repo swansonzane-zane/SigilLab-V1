@@ -1,5 +1,6 @@
 import { ShareCard } from "@/components/share-card";
 import { buildShareModelFromRecord } from "@/engine/share-model";
+import { getDictionary, resolveLanguage } from "@/services/i18n-service";
 import { createShareRecord } from "@/services/shares-service";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,7 @@ type SharePageProps = {
     subtext?: string | string[];
     intent?: string | string[];
     zodiac?: string | string[];
+    language?: string | string[];
   }>;
 };
 
@@ -21,6 +23,8 @@ function getParam(value?: string | string[]) {
 
 export default async function SharePage({ searchParams }: SharePageProps) {
   const params = await searchParams;
+  const language = await resolveLanguage(params.language);
+  const dictionary = await getDictionary(language);
   const record = await createShareRecord({
     title: getParam(params.title),
     headline: getParam(params.headline),
@@ -28,8 +32,9 @@ export default async function SharePage({ searchParams }: SharePageProps) {
     subtext: getParam(params.subtext),
     intent: getParam(params.intent),
     zodiac: getParam(params.zodiac),
+    language,
   });
-  const model = await buildShareModelFromRecord(record);
+  const model = await buildShareModelFromRecord(record, dictionary);
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
@@ -40,15 +45,13 @@ export default async function SharePage({ searchParams }: SharePageProps) {
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-6 max-w-lg text-center">
           <p className="text-sm tracking-[0.32em] text-stone-300/58 uppercase">
-            Share Growth Ritual
+            {dictionary.share.eyebrow}
           </p>
           <h1 className="mt-4 font-heading text-4xl leading-none text-amber-50 sm:text-5xl">
-            Let the seal travel.
+            {dictionary.share.title}
           </h1>
           <p className="mt-4 text-sm leading-7 text-stone-300/78">
-            This card is shaped for screenshots, blessings, and return paths.
-            Keep the ritual close, then send it onward without breaking the
-            atmosphere.
+            {dictionary.share.subtitle}
           </p>
           <p className="mt-3 text-sm leading-7 text-emerald-100/68">
             {model.privacyNotice}

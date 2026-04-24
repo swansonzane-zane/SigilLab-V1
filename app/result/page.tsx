@@ -4,6 +4,7 @@ import { ResultActionBar } from "@/components/result-action-bar";
 import { ResultHero } from "@/components/result-hero";
 import { ResultPrompts } from "@/components/result-prompts";
 import { getAppConfig } from "@/services/configs-service";
+import { getDictionary } from "@/services/i18n-service";
 import { createReadingRecord } from "@/services/readings-service";
 
 type ResultPageProps = {
@@ -22,6 +23,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
     await searchParams,
     config.defaultLanguage,
   );
+  const dictionary = await getDictionary(input.language);
   const { output, meta } = await generateReadingWithMeta(input);
 
   await createReadingRecord({
@@ -44,21 +46,25 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
               SigilLab
             </div>
             <p className="text-xs tracking-[0.28em] text-stone-300/58 uppercase">
-              Ritual Result
+              {dictionary.result.eyebrow}
             </p>
           </div>
 
-          <ResultHero input={input} output={output} />
+          <ResultHero
+            input={input}
+            output={output}
+            dictionary={dictionary}
+          />
 
           {meta.failed ? (
             <div className="max-w-3xl rounded-[1.5rem] border border-amber-200/20 bg-amber-100/8 px-5 py-4 text-sm leading-7 text-amber-50/90">
-              Live generation failed and fallback mode is disabled, so this
-              page is showing a stable failure response instead of mock content.
+              {dictionary.result.fallbackNotice}
             </div>
           ) : null}
 
           <ResultPrompts
             prompts={output.journalPrompts.slice(0, config.maxJournalPrompts)}
+            dictionary={dictionary}
           />
         </section>
       </div>
@@ -71,7 +77,9 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
           subtext: output.insight,
           intent: input.intent,
           zodiac: input.westernZodiac,
+          language: input.language,
         }}
+        dictionary={dictionary}
       />
     </main>
   );

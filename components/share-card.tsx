@@ -24,7 +24,7 @@ export function ShareCard({ model }: ShareCardProps) {
               {model.title}
             </div>
             <p className="text-[11px] tracking-[0.28em] text-stone-300/58 uppercase">
-              Share Ritual
+              {model.posterEyebrow}
             </p>
           </div>
 
@@ -36,7 +36,7 @@ export function ShareCard({ model }: ShareCardProps) {
 
           <div className="space-y-4 text-center">
             <p className="text-xs tracking-[0.28em] text-sky-100/68 uppercase">
-              Emotional Reading
+              {model.readingEyebrow}
             </p>
             <h1 className="font-heading text-4xl leading-[0.95] font-semibold text-amber-50 sm:text-[3.25rem]">
               {model.punchline}
@@ -49,7 +49,7 @@ export function ShareCard({ model }: ShareCardProps) {
 
           <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-center">
             <p className="text-xs tracking-[0.28em] text-stone-300/62 uppercase">
-              Blessing To Send
+              {model.blessingLabel}
             </p>
             <p className="mt-2 text-sm leading-7 text-stone-200/84">
               {model.shareText}
@@ -74,11 +74,11 @@ export function ShareCard({ model }: ShareCardProps) {
                   {model.onlineCtaLabel}
                 </p>
                 <p className="max-w-[16rem] text-sm leading-6 text-stone-300/82">
-                  Carry this exact seal into a story, a message thread, or a private screenshot.
+                  {model.onlineCtaDescription}
                 </p>
                 <div className="space-y-2 pt-1">
                   <p className="text-[10px] tracking-[0.24em] text-amber-100/70 uppercase">
-                    Shared Link
+                    {model.sharedLinkLabel}
                   </p>
                   <p className="break-all text-sm leading-6 text-stone-200/80">
                     {model.sharedPath}

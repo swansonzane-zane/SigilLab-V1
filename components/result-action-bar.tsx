@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
+import type { I18nDictionary } from "@/services/i18n-service";
+import type { ReadingLanguage } from "@/types/reading";
 
 type ResultActionBarProps = {
   showShare: boolean;
@@ -13,12 +15,19 @@ type ResultActionBarProps = {
     subtext: string;
     intent: string;
     zodiac: string;
+    language: ReadingLanguage;
   };
+  dictionary: I18nDictionary;
 };
 
-export function ResultActionBar({ showShare, shareSeed }: ResultActionBarProps) {
+export function ResultActionBar({
+  showShare,
+  shareSeed,
+  dictionary,
+}: ResultActionBarProps) {
   const router = useRouter();
   const { startTransition } = useTransitionController();
+  const language = shareSeed?.language || "en";
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-[rgba(6,7,14,0.86)] px-4 py-3 backdrop-blur-xl">
@@ -30,9 +39,8 @@ export function ResultActionBar({ showShare, shareSeed }: ResultActionBarProps) 
               startTransition({
                 active: true,
                 level: "ritual",
-                title: "Preparing your sigil for the outer world...",
-                message:
-                  "A luminous share card is being lifted into view so the signal can travel cleanly.",
+                title: dictionary.result.shareTransitionTitle,
+                message: dictionary.result.shareTransitionMessage,
               });
 
               const searchParams = new URLSearchParams({
@@ -42,13 +50,14 @@ export function ResultActionBar({ showShare, shareSeed }: ResultActionBarProps) 
                 subtext: shareSeed?.subtext || "",
                 intent: shareSeed?.intent || "clarity",
                 zodiac: shareSeed?.zodiac || "",
+                language,
               });
 
               router.push(`/share?${searchParams.toString()}`);
             }}
             className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-medium text-stone-100 transition hover:bg-white/[0.1]"
           >
-            Share
+            {dictionary.result.share}
           </button>
         ) : null}
         <button
@@ -57,14 +66,14 @@ export function ResultActionBar({ showShare, shareSeed }: ResultActionBarProps) 
             startTransition({
               active: true,
               level: "instant",
-              title: "Return to the circle...",
-              message: "Another path is opening.",
+              title: dictionary.result.returnTransitionTitle,
+              message: dictionary.result.returnTransitionMessage,
             });
-            router.push("/");
+            router.push(`/?${new URLSearchParams({ language }).toString()}`);
           }}
           className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105"
         >
-          Regenerate
+          {dictionary.result.revealAnotherPath}
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import QRCode from "qrcode";
 
+import type { I18nDictionary } from "@/services/i18n-service";
 import type { ShareModel, ShareRecord, ShareSeedInput } from "@/types/share";
 
 function normalizeSeedText(value: string | undefined, fallback: string) {
@@ -42,6 +43,7 @@ export function createShareRecordPayload(
     },
     intent: normalizeIntentLabel(seed?.intent),
     zodiac: seed?.zodiac?.trim() || undefined,
+    language: seed?.language?.trim() || undefined,
   };
 }
 
@@ -64,6 +66,7 @@ async function buildQrSvg(url: string) {
 
 export async function buildShareModelFromRecord(
   record: ShareRecord,
+  dictionary: I18nDictionary,
 ): Promise<ShareModel> {
   const sharedPath = `/shared/${record.shareId}`;
 
@@ -75,21 +78,41 @@ export async function buildShareModelFromRecord(
     punchline: record.punchline,
     subtext: record.subtext,
     hashtags: record.hashtags,
-    revealCtaText: "Reveal Another Path",
-    revealCtaHref: "/",
-    onlineCtaLabel: "Open this seal online",
+    revealCtaText: dictionary.share.revealCtaText,
+    revealCtaHref: `/?${new URLSearchParams({
+      language: record.language || "en",
+    }).toString()}`,
+    onlineCtaLabel: dictionary.share.onlineCtaLabel,
     sharedPath,
-    shareTitle: record.title,
-    shareText: "A sigil was revealed for me today. May clarity travel with you.",
-    saveSuccessMessage: "The sigil has been sealed into your keeping.",
-    saveFailureMessage: "The sigil resisted capture.",
-    saveHint:
-      "Preserve this sigil before the energy fades. If the seal does not download, hold it on screen and keep a screenshot close.",
-    shareSuccessMessage: "The seal now travels beyond your path.",
-    copySuccessMessage: "Your blessing has been folded into the clipboard.",
-    shareFailureMessage: "The blessing could not leave your device this time.",
-    rewardHint: "Share light, and more light may return.",
-    privacyNotice: "Only the symbol is shared. Your private details remain with you.",
+    shareTitle: dictionary.share.shareTitle,
+    shareText: dictionary.share.shareText,
+    saveSuccessMessage: dictionary.share.saveSuccessMessage,
+    saveFailureMessage: dictionary.share.saveFailureMessage,
+    saveHint: dictionary.share.saveHint,
+    shareSuccessMessage: dictionary.share.shareSuccessMessage,
+    copySuccessMessage: dictionary.share.copySuccessMessage,
+    shareFailureMessage: dictionary.share.shareFailureMessage,
+    rewardHint: dictionary.share.rewardHint,
+    privacyNotice: dictionary.share.privacyNotice,
+    posterEyebrow: dictionary.share.posterEyebrow,
+    readingEyebrow: dictionary.share.readingEyebrow,
+    blessingLabel: dictionary.share.blessingLabel,
+    onlineCtaDescription: dictionary.share.onlineCtaDescription,
+    sharedLinkLabel: dictionary.share.sharedLinkLabel,
+    preserveLabel: dictionary.share.preserveLabel,
+    privacyBoundaryLabel: dictionary.share.privacyBoundaryLabel,
+    returnOfLightLabel: dictionary.share.returnOfLightLabel,
+    saveSigilLabel: dictionary.share.saveSigil,
+    savingSigilLabel: dictionary.share.savingSigil,
+    sendBlessingLabel: dictionary.share.sendBlessing,
+    sendingBlessingLabel: dictionary.share.sendingBlessing,
+    saveSuccessDetail: dictionary.share.saveSuccessDetail,
+    saveFailureDetail: dictionary.share.saveFailureDetail,
+    shareSuccessDetail: dictionary.share.shareSuccessDetail,
+    copySuccessDetail: dictionary.share.copySuccessDetail,
+    copyFallbackDetail: dictionary.share.copyFallbackDetail,
+    openSealPrefix: dictionary.share.openSealPrefix,
+    language: record.language || "en",
     sigilIntent: record.sigilSpec.intentLabel,
     qrSvg: await buildQrSvg(sharedPath),
   };

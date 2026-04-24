@@ -8,6 +8,7 @@ import {
   buildDerivedReadingInput,
   isValidBirthDate,
 } from "@/engine/reading-profile";
+import type { I18nDictionary } from "@/services/i18n-service";
 import type { ReadingLanguage } from "@/types/reading";
 
 const intents = [
@@ -20,9 +21,15 @@ const intents = [
 ] as const;
 
 export function HomeSignalForm({
-  defaultLanguage = "en",
+  dictionary,
+  language,
+  onLanguageChange,
+  supportedLanguages,
 }: {
-  defaultLanguage?: ReadingLanguage;
+  dictionary: I18nDictionary;
+  language: ReadingLanguage;
+  onLanguageChange: (language: ReadingLanguage) => void;
+  supportedLanguages: ReadingLanguage[];
 }) {
   const router = useRouter();
   const { activeTransition, startTransition } = useTransitionController();
@@ -41,15 +48,14 @@ export function HomeSignalForm({
     startTransition({
       active: true,
       level: "ritual",
-      title: "The signal is being cast...",
-      message:
-        "Hold your intention steady while the seal gathers form around your present season.",
+      title: dictionary.home.transitionTitle,
+      message: dictionary.home.transitionMessage,
     });
 
     const derivedInput = buildDerivedReadingInput({
       birthDate,
       intent,
-      language: defaultLanguage,
+      language,
     });
     const searchParams = new URLSearchParams({
       birthYear: String(derivedInput.birthYear),
@@ -77,18 +83,45 @@ export function HomeSignalForm({
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(250,204,21,0.12),_transparent_20%),radial-gradient(circle_at_left,_rgba(125,211,252,0.1),_transparent_26%)]"
         />
         <div className="relative space-y-6">
+          <div className="flex justify-end">
+            <div
+              aria-label={dictionary.home.languageLabel}
+              className="inline-flex rounded-full border border-white/12 bg-white/[0.04] p-1"
+            >
+              {supportedLanguages.map((option) => {
+                const selected = option === language;
+
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => onLanguageChange(option)}
+                    className={[
+                      "min-w-12 rounded-full px-3 py-1.5 text-xs font-semibold tracking-[0.16em] uppercase transition",
+                      selected
+                        ? "bg-amber-100 text-slate-950"
+                        : "text-stone-200/80 hover:bg-white/[0.08]",
+                    ].join(" ")}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="space-y-2">
             <p className="text-sm tracking-[0.28em] text-stone-300/65 uppercase">
-              Start a Reading
+              {dictionary.home.formEyebrow}
             </p>
             <h2 className="font-heading text-3xl leading-tight font-semibold text-stone-50 sm:text-4xl">
-              Tune the ritual, then generate your signal.
+              {dictionary.home.formTitle}
             </h2>
           </div>
 
           <label className="block space-y-3">
             <span className="text-sm font-medium text-stone-200">
-              Birth Date
+              {dictionary.home.birthDateLabel}
             </span>
             <input
               required
@@ -101,7 +134,7 @@ export function HomeSignalForm({
 
           <fieldset className="space-y-3">
             <legend className="text-sm font-medium text-stone-200">
-              Intent
+              {dictionary.home.intentLabel}
             </legend>
             <div className="flex flex-wrap gap-3">
               {intents.map((option) => {
@@ -124,7 +157,7 @@ export function HomeSignalForm({
                           : "border-white/12 bg-white/[0.04] text-stone-200 hover:border-white/25 hover:bg-white/[0.08]",
                       ].join(" ")}
                     >
-                      {option}
+                      {dictionary.intents[option]}
                     </span>
                   </label>
                 );
@@ -137,14 +170,12 @@ export function HomeSignalForm({
             className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 py-3.5 text-base font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-stone-500 disabled:hover:brightness-100"
           >
             {isSubmitting || activeTransition?.level === "ritual"
-              ? "The signal is being cast..."
-              : "Generate Signal"}
+              ? dictionary.home.generatingSignal
+              : dictionary.home.generateSignal}
           </button>
 
           <p className="text-sm leading-6 text-stone-300/70">
-            Your birth date is translated locally before navigation so the
-            result route only receives lower-sensitivity profile fields while
-            defaulting language from the current app config.
+            {dictionary.home.privacyNote}
           </p>
         </div>
       </form>

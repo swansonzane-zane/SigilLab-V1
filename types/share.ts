@@ -15,6 +15,7 @@ export type ShareRecord = {
   sigilSpec: ShareSigilSpec;
   intent?: string;
   zodiac?: string;
+  language?: string;
 };
 
 export type ShareSeedInput = {
@@ -24,6 +25,7 @@ export type ShareSeedInput = {
   subtext?: string;
   intent?: string;
   zodiac?: string;
+  language?: string;
 };
 
 export type ShareModel = {
@@ -48,6 +50,25 @@ export type ShareModel = {
   shareFailureMessage: string;
   rewardHint: string;
   privacyNotice: string;
+  posterEyebrow: string;
+  readingEyebrow: string;
+  blessingLabel: string;
+  onlineCtaDescription: string;
+  sharedLinkLabel: string;
+  preserveLabel: string;
+  privacyBoundaryLabel: string;
+  returnOfLightLabel: string;
+  saveSigilLabel: string;
+  savingSigilLabel: string;
+  sendBlessingLabel: string;
+  sendingBlessingLabel: string;
+  saveSuccessDetail: string;
+  saveFailureDetail: string;
+  shareSuccessDetail: string;
+  copySuccessDetail: string;
+  copyFallbackDetail: string;
+  openSealPrefix: string;
+  language: string;
   sigilIntent: string;
   qrSvg: string;
 };

@@ -64,7 +64,7 @@ function measureTextBlock(
 }
 
 export function buildShareMessage(model: ShareModel, url: string) {
-  return [model.shareText, "", "Open the seal:", url].join("\n");
+  return [model.shareText, "", model.openSealPrefix, url].join("\n");
 }
 
 export function buildPosterSvg(model: ShareModel, url: string) {

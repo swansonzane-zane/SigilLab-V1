@@ -74,15 +74,14 @@ export function ShareActions({ model }: ShareActionsProps) {
         active: true,
         level: "feedback",
         title: model.saveSuccessMessage,
-        message: "Keep it close while the current still answers to your name.",
+        message: model.saveSuccessDetail,
       });
     } catch {
       startTransition({
         active: true,
         level: "feedback",
         title: model.saveFailureMessage,
-        message:
-          "Preserve this sigil before the energy fades. If the seal cannot be captured here, keep it with a screenshot from the page itself.",
+        message: model.saveFailureDetail,
       });
     } finally {
       setIsSaving(false);
@@ -109,7 +108,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           active: true,
           level: "feedback",
           title: model.shareSuccessMessage,
-          message: "The blessing now moves beyond your own circle.",
+          message: model.shareSuccessDetail,
         });
         return;
       }
@@ -121,8 +120,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           active: true,
           level: "feedback",
           title: model.copySuccessMessage,
-          message:
-            "The blessing text is ready to be placed wherever you want the seal to travel next.",
+          message: model.copySuccessDetail,
         });
       } else {
         startTransition({
@@ -145,8 +143,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           active: true,
           level: "feedback",
           title: model.copySuccessMessage,
-          message:
-            "Native share closed its gate, so the blessing has been copied for manual sending instead.",
+          message: model.copyFallbackDetail,
         });
       } else {
         startTransition({
@@ -170,7 +167,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           disabled={isSaving}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-amber-100/20 bg-[linear-gradient(135deg,rgba(244,215,161,0.96),rgba(214,179,255,0.88)_56%,rgba(134,217,255,0.9))] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSaving ? "Sealing the sigil..." : "Save Sigil"}
+          {isSaving ? model.savingSigilLabel : model.saveSigilLabel}
         </button>
         <button
           type="button"
@@ -178,7 +175,7 @@ export function ShareActions({ model }: ShareActionsProps) {
           disabled={isSharing}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-semibold text-stone-100 transition hover:border-white/20 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSharing ? "Sending the blessing..." : "Send Blessing"}
+          {isSharing ? model.sendingBlessingLabel : model.sendBlessingLabel}
         </button>
         <button
           type="button"
@@ -199,7 +196,7 @@ export function ShareActions({ model }: ShareActionsProps) {
 
       <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-center">
         <p className="text-xs tracking-[0.28em] text-amber-100/72 uppercase">
-          Preserve
+          {model.preserveLabel}
         </p>
         <p className="mt-2 text-sm leading-7 text-stone-200/82">
           {model.saveHint}
@@ -208,7 +205,7 @@ export function ShareActions({ model }: ShareActionsProps) {
 
       <div className="rounded-[1.6rem] border border-emerald-200/10 bg-emerald-200/[0.04] px-4 py-4 text-center">
         <p className="text-xs tracking-[0.28em] text-emerald-100/72 uppercase">
-          Privacy Boundary
+          {model.privacyBoundaryLabel}
         </p>
         <p className="mt-2 text-sm leading-7 text-stone-200/82">
           {model.privacyNotice}
@@ -217,7 +214,7 @@ export function ShareActions({ model }: ShareActionsProps) {
 
       <div className="rounded-[1.6rem] border border-sky-200/12 bg-sky-200/[0.04] px-4 py-4 text-center">
         <p className="text-xs tracking-[0.28em] text-sky-100/72 uppercase">
-          Return Of Light
+          {model.returnOfLightLabel}
         </p>
         <p className="mt-2 text-sm leading-7 text-stone-200/82">
           {model.rewardHint}

@@ -38,6 +38,7 @@ function normalizeShareRecord(record: ShareRecord): ShareRecord {
     ctaText: record.ctaText || "Generate Your Own Signal",
     ctaHref: record.ctaHref || "/",
     sigilSpec: record.sigilSpec || { intentLabel: "share" },
+    language: record.language || "en",
   };
 }
 
