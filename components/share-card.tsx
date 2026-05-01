@@ -1,4 +1,5 @@
 import { ResultSigil } from "@/components/result-sigil";
+import { RecentShareWriter } from "@/components/recent-share-writer";
 import { ShareActions } from "@/components/share-actions";
 import type { ShareModel } from "@/types/share";
 
@@ -15,6 +16,7 @@ export function ShareCard({
 }: ShareCardProps) {
   return (
     <div className="mx-auto w-full max-w-[28rem] space-y-4">
+      <RecentShareWriter model={model} />
       <section
         id={`share-poster-${model.shareId}`}
         className="relative overflow-hidden rounded-[2.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(18,19,35,0.96),rgba(7,8,16,0.98))] p-5 shadow-[0_30px_120px_rgba(0,0,0,0.52)] backdrop-blur-xl sm:p-6"

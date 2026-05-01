@@ -1,13 +1,12 @@
 "use client";
 
 import { toPng } from "html-to-image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
 import { buildShareMessage } from "@/lib/share-flow";
 import { grantShareReward } from "@/services/energy-service";
-import { saveRecentShare } from "@/services/recent-share-service";
 import type { ShareModel } from "@/types/share";
 
 type ShareActionsProps = {
@@ -50,10 +49,6 @@ export function ShareActions({
     typeof window === "undefined"
       ? model.sharedPath
       : new URL(model.sharedPath, window.location.origin).toString();
-
-  useEffect(() => {
-    saveRecentShare(model, currentUrl);
-  }, [currentUrl, model]);
 
   function getEnergyRewardDetail(fallbackMessage: string) {
     const result = grantShareReward(isPremium, dailyFreeLimit);

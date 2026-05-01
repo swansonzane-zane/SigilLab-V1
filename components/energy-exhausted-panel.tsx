@@ -101,9 +101,6 @@ export function EnergyExhaustedPanel({
       <section className="w-full max-w-xl overflow-hidden rounded-[2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(19,20,38,0.97),rgba(7,8,16,0.99))] p-5 shadow-[0_30px_120px_rgba(0,0,0,0.6)] sm:p-6">
         <div className="space-y-5">
           <div className="space-y-3 text-center">
-            <p className="text-xs font-semibold tracking-[0.3em] text-amber-100/70 uppercase">
-              {dictionary.energy.panelEyebrow}
-            </p>
             <h2 className="font-heading text-4xl leading-none text-amber-50">
               {dictionary.energy.exhaustedTitle}
             </h2>

@@ -6,16 +6,33 @@ import type { ShareMessageModel, ShareModel } from "@/types/share";
 const recentShareStorageKey = "sigillab-recent-share-v1";
 
 type RecentSharePayload = ShareMessageModel & {
-  sharedUrl: string;
+  sharedPath: string;
+  sharedUrl?: string;
   savedAt: string;
 };
 
-export function saveRecentShare(model: ShareModel, sharedUrl: string) {
+function getShareUrl(sharedPath: string) {
+  if (!sharedPath.startsWith("/shared/")) {
+    return null;
+  }
+
+  return new URL(sharedPath, window.location.origin).toString();
+}
+
+export function saveRecentShare(model: ShareModel) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  if (!model.sharedPath.startsWith("/shared/")) {
+    return;
+  }
+
   const payload: RecentSharePayload = {
     shareTitle: model.shareTitle,
     shareTextLines: model.shareTextLines,
     openSealPrefix: model.openSealPrefix,
-    sharedUrl,
+    sharedPath: model.sharedPath,
     savedAt: new Date().toISOString(),
   };
 
@@ -24,6 +41,10 @@ export function saveRecentShare(model: ShareModel, sharedUrl: string) {
 
 export function getRecentShareMessage() {
   try {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
     const rawValue = window.localStorage.getItem(recentShareStorageKey);
 
     if (!rawValue) {
@@ -31,13 +52,19 @@ export function getRecentShareMessage() {
     }
 
     const parsed = JSON.parse(rawValue) as Partial<RecentSharePayload>;
+    const sharedUrl =
+      typeof parsed.sharedPath === "string"
+        ? getShareUrl(parsed.sharedPath)
+        : typeof parsed.sharedUrl === "string" &&
+            parsed.sharedUrl.includes("/shared/")
+          ? parsed.sharedUrl
+          : null;
 
     if (
       typeof parsed.shareTitle !== "string" ||
       !Array.isArray(parsed.shareTextLines) ||
       typeof parsed.openSealPrefix !== "string" ||
-      typeof parsed.sharedUrl !== "string" ||
-      !parsed.sharedUrl.includes("/shared/")
+      !sharedUrl
     ) {
       return null;
     }
@@ -50,7 +77,7 @@ export function getRecentShareMessage() {
         ),
         openSealPrefix: parsed.openSealPrefix,
       },
-      parsed.sharedUrl,
+      sharedUrl,
     );
   } catch {
     return null;
