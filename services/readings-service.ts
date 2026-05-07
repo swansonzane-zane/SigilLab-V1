@@ -12,12 +12,15 @@ function isRecordArray(value: unknown): value is ReadingRecord[] {
 }
 
 async function ensureReadingsFile() {
-  await mkdir(dataDir, { recursive: true });
-
   try {
+    await mkdir(dataDir, { recursive: true });
     await readFile(readingsFilePath, "utf-8");
   } catch {
-    await writeFile(readingsFilePath, "[]\n", "utf-8");
+    try {
+      await writeFile(readingsFilePath, "[]\n", "utf-8");
+    } catch {
+      return;
+    }
   }
 }
 
@@ -71,7 +74,14 @@ function normalizeReadingRecord(record: ReadingRecord): ReadingRecord {
 export async function listReadingRecords(): Promise<ReadingRecord[]> {
   await ensureReadingsFile();
 
-  const fileContents = await readFile(readingsFilePath, "utf-8");
+  let fileContents: string;
+
+  try {
+    fileContents = await readFile(readingsFilePath, "utf-8");
+  } catch {
+    return [];
+  }
+
   const trimmed = fileContents.trim();
 
   if (!trimmed) {
@@ -125,11 +135,16 @@ export async function createReadingRecord(params: {
 
   const nextRecords = [record, ...records];
 
-  await writeFile(
-    readingsFilePath,
-    `${JSON.stringify(nextRecords, null, 2)}\n`,
-    "utf-8",
-  );
+  try {
+    await ensureReadingsFile();
+    await writeFile(
+      readingsFilePath,
+      `${JSON.stringify(nextRecords, null, 2)}\n`,
+      "utf-8",
+    );
+  } catch {
+    return record;
+  }
 
   return record;
 }

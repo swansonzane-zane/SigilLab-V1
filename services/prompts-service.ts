@@ -34,39 +34,57 @@ function isPromptVersionArray(value: unknown): value is PromptVersion[] {
 }
 
 async function ensurePromptsFile() {
-  await mkdir(dataDir, { recursive: true });
-
   try {
+    await mkdir(dataDir, { recursive: true });
     const content = await readFile(promptsFilePath, "utf-8");
 
     if (!content.trim()) {
+      try {
+        await writeFile(
+          promptsFilePath,
+          `${JSON.stringify(defaultPromptVersions, null, 2)}\n`,
+          "utf-8",
+        );
+      } catch {
+        return;
+      }
+    }
+  } catch {
+    try {
       await writeFile(
         promptsFilePath,
         `${JSON.stringify(defaultPromptVersions, null, 2)}\n`,
         "utf-8",
       );
+    } catch {
+      return;
     }
-  } catch {
-    await writeFile(
-      promptsFilePath,
-      `${JSON.stringify(defaultPromptVersions, null, 2)}\n`,
-      "utf-8",
-    );
   }
 }
 
 async function writePromptVersions(promptVersions: PromptVersion[]) {
-  await ensurePromptsFile();
-  await writeFile(
-    promptsFilePath,
-    `${JSON.stringify(promptVersions, null, 2)}\n`,
-    "utf-8",
-  );
+  try {
+    await ensurePromptsFile();
+    await writeFile(
+      promptsFilePath,
+      `${JSON.stringify(promptVersions, null, 2)}\n`,
+      "utf-8",
+    );
+  } catch {
+    return;
+  }
 }
 
 export async function listPromptVersions(): Promise<PromptVersion[]> {
   await ensurePromptsFile();
-  const fileContents = await readFile(promptsFilePath, "utf-8");
+  let fileContents: string;
+
+  try {
+    fileContents = await readFile(promptsFilePath, "utf-8");
+  } catch {
+    return defaultPromptVersions;
+  }
+
   const trimmed = fileContents.trim();
 
   if (!trimmed) {

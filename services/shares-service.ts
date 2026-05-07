@@ -13,16 +13,23 @@ function isShareRecordArray(value: unknown): value is ShareRecord[] {
 }
 
 async function ensureSharesFile() {
-  await mkdir(dataDir, { recursive: true });
-
   try {
+    await mkdir(dataDir, { recursive: true });
     const content = await readFile(sharesFilePath, "utf-8");
 
     if (!content.trim()) {
-      await writeFile(sharesFilePath, "[]\n", "utf-8");
+      try {
+        await writeFile(sharesFilePath, "[]\n", "utf-8");
+      } catch {
+        return;
+      }
     }
   } catch {
-    await writeFile(sharesFilePath, "[]\n", "utf-8");
+    try {
+      await writeFile(sharesFilePath, "[]\n", "utf-8");
+    } catch {
+      return;
+    }
   }
 }
 
@@ -44,7 +51,14 @@ function normalizeShareRecord(record: ShareRecord): ShareRecord {
 
 export async function listShareRecords(): Promise<ShareRecord[]> {
   await ensureSharesFile();
-  const fileContents = await readFile(sharesFilePath, "utf-8");
+  let fileContents: string;
+
+  try {
+    fileContents = await readFile(sharesFilePath, "utf-8");
+  } catch {
+    return [];
+  }
+
   const trimmed = fileContents.trim();
 
   if (!trimmed) {
@@ -75,11 +89,16 @@ export async function createShareRecord(seed?: ShareSeedInput): Promise<ShareRec
     ...payload,
   };
 
-  await writeFile(
-    sharesFilePath,
-    `${JSON.stringify([record, ...records], null, 2)}\n`,
-    "utf-8",
-  );
+  try {
+    await ensureSharesFile();
+    await writeFile(
+      sharesFilePath,
+      `${JSON.stringify([record, ...records], null, 2)}\n`,
+      "utf-8",
+    );
+  } catch {
+    return record;
+  }
 
   return record;
 }

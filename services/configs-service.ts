@@ -20,24 +20,31 @@ const defaultAppConfig: AppConfig = {
 };
 
 async function ensureConfigsFile() {
-  await mkdir(dataDir, { recursive: true });
-
   try {
+    await mkdir(dataDir, { recursive: true });
     const content = await readFile(configsFilePath, "utf-8");
 
     if (!content.trim()) {
+      try {
+        await writeFile(
+          configsFilePath,
+          `${JSON.stringify(defaultAppConfig, null, 2)}\n`,
+          "utf-8",
+        );
+      } catch {
+        return;
+      }
+    }
+  } catch {
+    try {
       await writeFile(
         configsFilePath,
         `${JSON.stringify(defaultAppConfig, null, 2)}\n`,
         "utf-8",
       );
+    } catch {
+      return;
     }
-  } catch {
-    await writeFile(
-      configsFilePath,
-      `${JSON.stringify(defaultAppConfig, null, 2)}\n`,
-      "utf-8",
-    );
   }
 }
 
@@ -100,8 +107,20 @@ function normalizeAppConfig(value: unknown): AppConfig {
 }
 
 export async function getAppConfig(): Promise<AppConfig> {
-  await ensureConfigsFile();
-  const fileContents = await readFile(configsFilePath, "utf-8");
+  try {
+    await ensureConfigsFile();
+  } catch {
+    return defaultAppConfig;
+  }
+
+  let fileContents: string;
+
+  try {
+    fileContents = await readFile(configsFilePath, "utf-8");
+  } catch {
+    return defaultAppConfig;
+  }
+
   const trimmed = fileContents.trim();
 
   if (!trimmed) {
@@ -118,12 +137,16 @@ export async function getAppConfig(): Promise<AppConfig> {
 export async function saveAppConfig(config: AppConfig): Promise<AppConfig> {
   const normalizedConfig = normalizeAppConfig(config);
 
-  await ensureConfigsFile();
-  await writeFile(
-    configsFilePath,
-    `${JSON.stringify(normalizedConfig, null, 2)}\n`,
-    "utf-8",
-  );
+  try {
+    await ensureConfigsFile();
+    await writeFile(
+      configsFilePath,
+      `${JSON.stringify(normalizedConfig, null, 2)}\n`,
+      "utf-8",
+    );
+  } catch {
+    return normalizedConfig;
+  }
 
   return normalizedConfig;
 }

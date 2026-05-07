@@ -1,144 +1,122 @@
 # SigilLab
 
-SigilLab is a mystical emotional reading product with a consumer-facing ritual flow and a lightweight admin console for operations, configuration, and observability.
+SigilLab is a small ritual-style web app that generates emotional readings and shareable sigil cards. It is built as an MVP: the core public flow works, admin controls exist for launch operations, and AI generation has a local fallback when DeepSeek is unavailable.
 
-Current product scope:
+## Features
 
-- `/` ritualized homepage intake
-- `/result` generated emotional reading result
-- `/share` share-card style preview
-- `/admin/*` read-only operations console
+- Homepage reading intake with language support for English and Spanish.
+- AI-backed result generation with safe mock fallback.
+- Share preparation page that creates a share record and `/shared/[shareId]` landing page.
+- Lightweight local i18n dictionaries.
+- Energy economy MVP: daily free readings, share reward, sponsor reward placeholder, and mock premium mode.
+- Admin pages for dashboard metrics, configs, prompts, readings, and AI provider visibility.
+- Basic error and empty states for invalid routes, invalid shared seals, unavailable readings, and failed runtime rendering.
 
 ## Tech Stack
 
 - Next.js App Router
+- React
 - TypeScript
 - Tailwind CSS
-- DeepSeek chat completions with mock fallback
+- DeepSeek chat completions
+- Local JSON files for MVP data storage
 
 ## Local Development
 
-### Install
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Run
+Create a local env file:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the app:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) after the dev server starts.
+Open [http://localhost:3000](http://localhost:3000).
 
-### Validation
+## Environment Variables
+
+Required for live AI generation:
+
+- `DEEPSEEK_API_KEY`: DeepSeek API key. If missing or invalid, SigilLab falls back to the local mock reading generator when fallback is enabled in admin configs.
+
+Required for deployment clarity:
+
+- `NEXT_PUBLIC_APP_URL`: Public app URL. Use `http://localhost:3000` locally and your Vercel URL or custom domain in production.
+
+Optional DeepSeek overrides:
+
+- `DEEPSEEK_BASE_URL`: defaults to `https://api.deepseek.com`
+- `DEEPSEEK_MODEL`: defaults to `deepseek-chat`
+
+## Build
+
+Run launch checks before deploying:
 
 ```bash
 npm run lint
 npm run build
 ```
 
-## Environment Variables
+Start a production build locally:
 
-Required only for live AI generation:
+```bash
+npm run start
+```
 
-- `DEEPSEEK_API_KEY`
+## Deploy To Vercel
 
-Optional:
+1. Import the repository into Vercel.
+2. Set the environment variables:
+   - `DEEPSEEK_API_KEY`
+   - `NEXT_PUBLIC_APP_URL`
+3. Keep the default build command:
 
-- `DEEPSEEK_BASE_URL`
-  default: `https://api.deepseek.com`
-- `DEEPSEEK_MODEL`
-  default: `deepseek-chat`
+```bash
+npm run build
+```
 
-If `DEEPSEEK_API_KEY` is not present, SigilLab falls back to the local mock reading generator.
+4. Keep the default start behavior managed by Vercel.
 
-## Routes
+The app does not depend on local absolute paths or the Codex worktree. MVP data uses local JSON files under `data/`; this is suitable for local launch validation, but not durable serverless production storage.
 
-### Frontend
+## Admin Routes
 
-- `/`
-- `/result`
-- `/share`
+- `/admin/dashboard`: local metrics and launch health overview.
+- `/admin/configs`: editable runtime configuration, including default language, fallback, share, energy, ads, and premium placeholders.
+- `/admin/prompts`: prompt versions and active prompt selection.
+- `/admin/readings`: generated reading records.
+- `/admin/ai-providers`: configured AI provider surface.
 
-### Admin
+Admin routes are not authenticated in this MVP.
 
-- `/admin/dashboard`
-- `/admin/readings`
-- `/admin/prompts`
-- `/admin/ai-providers`
-- `/admin/configs`
+## Current MVP Scope
 
-## Current Data Flow
+The launch-ready MVP includes:
 
-1. The homepage accepts a full birth date plus reading intent.
-2. The browser locally derives lower-sensitivity fields from the birth date before navigation.
-3. `/result` reads the derived reading input and calls `generateReading()`.
-4. `generateReading()` uses DeepSeek first and falls back to the mock generator if AI is unavailable or invalid.
-5. `/share` renders from a derived share model in `engine/share-model.ts`.
-6. Admin pages currently read from local mock services under `services/`.
+- Public reading flow: `/` to `/result`
+- Share flow: `/result` to `/share` to `/shared/[shareId]`
+- Return-home flow from shared landing pages
+- English and Spanish user-facing copy for the main flow
+- DeepSeek generation with validation and fallback output
+- Local admin controls for the settings needed to operate the MVP
+- Basic monetization placeholders without real payments or ad SDKs
 
-## Privacy Boundary
+## Known Limitations
 
-Raw birth date is only used in the browser for local derivation.
-
-The system does not preserve full birth date in:
-
-- the result URL
-- the API reading route
-- the server-side reading pipeline
-- admin reading records
-
-Current downstream reading fields are limited to:
-
-- `birthYear`
-- `ageBand`
-- `westernZodiac`
-- `intent`
-- `language`
-
-## Architecture Boundaries
-
-- Frontend is responsible for input, generation flow orchestration, and share experience.
-- Admin is responsible for operations, configuration visibility, and observability.
-- AI provider access is centralized through engine/lib code, not page components.
-- There is currently no administrator authentication or permission system.
-
-## API Route
-
-- `POST /api/reading`
-
-This route:
-
-- accepts the de-identified `ReadingInput`
-- performs basic request validation
-- calls `generateReading()`
-- returns `ReadingOutput` JSON
-
-The route does not contain provider-specific DeepSeek logic.
-
-## Mock And Non-Persistent Modules
-
-The following modules are still mock-backed or read-only:
-
-- `services/readings-service.ts`
-- `services/prompts-service.ts`
-- `services/ai-providers-service.ts`
-- `services/configs-service.ts`
-- `services/metrics-service.ts`
-- admin pages in general, which currently do not persist edits
-- share card generation, which is derived locally and not exported as a file
-
-## Handoff Notes
-
-- Reading generation lives in `engine/` and `lib/ai/deepseek.ts`.
-- The homepage and result pages should not call provider APIs directly.
-- Privacy-sensitive input handling starts in `components/home-signal-form.tsx` and `engine/reading-profile.ts`.
-
-## Next Suggestions
-
-- Replace mock admin services with persistent data sources.
-- Add authenticated admin access control.
-- Introduce saved reading records and share exports.
-- Expand language support beyond the current default behavior.
+- No user accounts.
+- No database; local JSON files are not durable production storage on Vercel.
+- No admin authentication.
+- No Stripe, real premium entitlement, or real ad network.
+- No anti-abuse system beyond a basic in-memory API rate limit.
+- No long-term saved reading history for users.
+- Only English and Spanish are supported.

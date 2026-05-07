@@ -68,7 +68,11 @@ function writeStoredState(state: StoredEnergyState) {
     return;
   }
 
-  window.localStorage.setItem(energyStorageKey, JSON.stringify(state));
+  try {
+    window.localStorage.setItem(energyStorageKey, JSON.stringify(state));
+  } catch {
+    return;
+  }
 }
 
 export function resetIfNewDay() {

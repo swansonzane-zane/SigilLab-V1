@@ -36,7 +36,11 @@ export function saveRecentShare(model: ShareModel) {
     savedAt: new Date().toISOString(),
   };
 
-  window.localStorage.setItem(recentShareStorageKey, JSON.stringify(payload));
+  try {
+    window.localStorage.setItem(recentShareStorageKey, JSON.stringify(payload));
+  } catch {
+    return;
+  }
 }
 
 export function getRecentShareMessage() {
