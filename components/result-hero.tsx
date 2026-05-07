@@ -17,8 +17,8 @@ export function ResultHero({ input, output, dictionary }: ResultHeroProps) {
       </div>
 
       <div className="space-y-6">
-        <div className="flex flex-wrap items-center gap-3 text-xs tracking-[0.28em] text-stone-300/70 uppercase">
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+        <div className="flex flex-wrap items-center gap-3 text-xs tracking-[0.12em] text-[#bba16e]/76">
+          <span className="border border-[#b08d57]/18 bg-[#23150f]/58 px-3 py-1.5">
             {output.title}
           </span>
           <span>{input.birthYear}</span>
@@ -28,7 +28,7 @@ export function ResultHero({ input, output, dictionary }: ResultHeroProps) {
         </div>
 
         <div className="space-y-4">
-          <p className="text-sm font-medium tracking-[0.32em] text-sky-100/70 uppercase">
+          <p className="text-sm font-medium tracking-[0.14em] text-[#bba16e]/74">
             {dictionary.result.heroEyebrow}
           </p>
           <h1 className="max-w-4xl font-heading text-4xl leading-[0.95] font-semibold text-amber-50 sm:text-5xl lg:text-6xl">
@@ -39,8 +39,8 @@ export function ResultHero({ input, output, dictionary }: ResultHeroProps) {
           </p>
         </div>
 
-        <article className="max-w-3xl rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5 text-stone-200/88 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-6">
-          <p className="mb-3 text-sm tracking-[0.28em] text-stone-300/60 uppercase">
+        <article className="max-w-3xl rounded-[1.2rem] border border-[#80623c]/22 bg-[#120b08]/64 p-5 text-stone-200/88 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-6">
+          <p className="mb-3 text-sm tracking-[0.12em] text-[#bba16e]/68">
             {dictionary.result.insightLabel}
           </p>
           <p className="text-base leading-8 sm:text-lg">{output.insight}</p>

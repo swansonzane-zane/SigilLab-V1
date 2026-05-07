@@ -111,21 +111,21 @@ export function HomeSignalForm({
     <section className="relative">
       <div
         aria-hidden="true"
-        className="absolute inset-x-8 top-2 h-28 rounded-full bg-violet-400/20 blur-3xl"
+        className="absolute inset-x-8 top-2 h-28 bg-[#7a1b14]/18 blur-3xl"
       />
       <form
         onSubmit={handleSubmit}
-        className="relative overflow-hidden rounded-[2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(19,20,38,0.92),rgba(9,10,18,0.98))] p-5 shadow-[0_24px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-6"
+        className="relative overflow-hidden rounded-[1.4rem] border border-[#80623c]/24 bg-[linear-gradient(180deg,rgba(30,19,13,0.94),rgba(8,6,5,0.98))] p-5 shadow-[0_24px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-6"
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(250,204,21,0.12),_transparent_20%),radial-gradient(circle_at_left,_rgba(125,211,252,0.1),_transparent_26%)]"
+          className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(rgba(214,188,132,0.12)_1px,transparent_1px),linear-gradient(115deg,rgba(122,31,23,0.18),transparent_38%,rgba(176,141,87,0.1))] [background-size:12px_12px,100%_100%]"
         />
         <div className="relative space-y-6">
           <div className="flex justify-end">
             <div
               aria-label={dictionary.home.languageLabel}
-              className="inline-flex rounded-full border border-white/12 bg-white/[0.04] p-1"
+              className="inline-flex rounded-sm border border-[#80623c]/28 bg-[#120b08]/60 p-1"
             >
               {supportedLanguages.map((option) => {
                 const selected = option === language;
@@ -136,9 +136,9 @@ export function HomeSignalForm({
                     type="button"
                     onClick={() => onLanguageChange(option)}
                     className={[
-                      "min-w-12 rounded-full px-3 py-1.5 text-xs font-semibold tracking-[0.16em] uppercase transition",
+                      "min-w-12 rounded-sm px-3 py-1.5 text-xs font-semibold tracking-[0.12em] transition",
                       selected
-                        ? "bg-amber-100 text-slate-950"
+                        ? "bg-[#d8bd82] text-[#1c1009]"
                         : "text-stone-200/80 hover:bg-white/[0.08]",
                     ].join(" ")}
                   >
@@ -150,7 +150,7 @@ export function HomeSignalForm({
           </div>
 
           <div className="space-y-2">
-            <p className="text-sm tracking-[0.28em] text-stone-300/65 uppercase">
+            <p className="text-sm tracking-[0.12em] text-[#bba16e]/72">
               {dictionary.home.formEyebrow}
             </p>
             <h2 className="font-heading text-3xl leading-tight font-semibold text-stone-50 sm:text-4xl">
@@ -167,7 +167,7 @@ export function HomeSignalForm({
               type="date"
               value={birthDate}
               onChange={(event) => setBirthDate(event.target.value)}
-              className="w-full rounded-2xl border border-white/12 bg-white/6 px-4 py-3 text-base text-stone-50 outline-none transition focus:border-amber-200/60 focus:bg-white/8"
+              className="w-full rounded-xl border border-[#80623c]/24 bg-[#090605]/56 px-4 py-3 text-base text-stone-50 outline-none transition focus:border-[#d8bd82]/70 focus:bg-white/8"
             />
           </label>
 
@@ -190,10 +190,10 @@ export function HomeSignalForm({
                     />
                     <span
                       className={[
-                        "inline-flex min-w-[calc(50%-0.375rem)] items-center justify-center rounded-full border px-4 py-2.5 text-sm font-medium capitalize transition sm:min-w-0",
+                        "inline-flex min-w-[calc(50%-0.375rem)] items-center justify-center rounded-sm border px-4 py-2.5 text-sm font-medium capitalize transition sm:min-w-0",
                         selected
-                          ? "border-amber-200/70 bg-amber-100 text-slate-950 shadow-[0_0_24px_rgba(252,211,77,0.25)]"
-                          : "border-white/12 bg-white/[0.04] text-stone-200 hover:border-white/25 hover:bg-white/[0.08]",
+                          ? "border-[#d8bd82]/70 bg-[#d8bd82] text-[#1c1009]"
+                          : "border-[#80623c]/24 bg-[#120b08]/50 text-stone-200 hover:border-[#b08d57]/45 hover:bg-white/[0.08]",
                       ].join(" ")}
                     >
                       {dictionary.intents[option]}
@@ -206,7 +206,7 @@ export function HomeSignalForm({
           <button
             type="submit"
             disabled={!birthDate || isSubmitting}
-            className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 py-3.5 text-base font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-stone-500 disabled:hover:brightness-100"
+            className="inline-flex w-full items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 py-3.5 text-base font-semibold text-[#160d08] transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-stone-500 disabled:hover:brightness-100"
           >
             {isSubmitting || activeTransition?.level === "ritual"
               ? dictionary.home.generatingSignal

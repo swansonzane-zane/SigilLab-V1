@@ -177,7 +177,7 @@ export function ShareActions({
           type="button"
           onClick={handleSaveSigil}
           disabled={isSaving}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-amber-100/20 bg-[linear-gradient(135deg,rgba(244,215,161,0.96),rgba(214,179,255,0.88)_56%,rgba(134,217,255,0.9))] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#b08d57]/28 bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 text-sm font-semibold text-[#160d08] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSaving
             ? model.savingSigilLabel
@@ -189,7 +189,7 @@ export function ShareActions({
           type="button"
           onClick={handleSendBlessing}
           disabled={isSharing}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-semibold text-stone-100 transition hover:border-white/20 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#80623c]/28 bg-[#120b08]/72 px-5 text-sm font-semibold text-stone-100 transition hover:border-[#b08d57]/45 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSharing ? model.sendingBlessingLabel : model.sendBlessingLabel}
         </button>
@@ -204,7 +204,7 @@ export function ShareActions({
             });
             router.push(model.revealCtaHref);
           }}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-black/20 px-5 text-sm font-semibold text-stone-200 transition hover:border-white/18 hover:bg-white/[0.04]"
+          className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#80623c]/22 bg-black/24 px-5 text-sm font-semibold text-stone-200 transition hover:border-[#b08d57]/38 hover:bg-white/[0.04]"
         >
           {model.revealCtaText}
         </button>

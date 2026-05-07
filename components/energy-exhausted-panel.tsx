@@ -148,7 +148,7 @@ export function EnergyExhaustedPanel({
 
             <Link
               href={`/premium?${new URLSearchParams({ language }).toString()}`}
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105"
+              className="inline-flex min-h-12 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 text-sm font-semibold text-[#160d08] transition hover:brightness-105"
             >
               {dictionary.energy.premiumCta}
             </Link>

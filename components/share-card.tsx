@@ -19,47 +19,57 @@ export function ShareCard({
       <RecentShareWriter model={model} />
       <section
         id={`share-poster-${model.shareId}`}
-        className="relative overflow-hidden rounded-[2.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(18,19,35,0.96),rgba(7,8,16,0.98))] p-5 shadow-[0_30px_120px_rgba(0,0,0,0.52)] backdrop-blur-xl sm:p-6"
+        className="relative overflow-hidden rounded-[1.4rem] border border-[#80623c]/32 bg-[linear-gradient(180deg,#17100c,#080605)] p-5 shadow-[0_30px_120px_rgba(0,0,0,0.58)] sm:p-6"
       >
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.14),_transparent_22%),radial-gradient(circle_at_78%_18%,_rgba(125,211,252,0.12),_transparent_18%),radial-gradient(circle_at_bottom,_rgba(168,85,247,0.18),_transparent_30%)]"
+          className="absolute inset-0 opacity-80 [background-image:radial-gradient(rgba(214,188,132,0.14)_1px,transparent_1px),linear-gradient(115deg,rgba(122,31,23,0.22),transparent_34%,rgba(176,141,87,0.12)_72%,transparent)] [background-size:11px_11px,100%_100%]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-4 border border-[#b08d57]/18"
         />
         <div className="relative space-y-6">
           <div className="flex items-center justify-between gap-3">
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[11px] tracking-[0.3em] text-amber-100/88 uppercase">
-              <span className="h-2 w-2 rounded-full bg-amber-200 shadow-[0_0_12px_rgba(252,211,77,0.82)]" />
-              {model.title}
+            <div className="inline-flex items-center gap-3 border border-[#b08d57]/24 bg-[#23150f]/72 px-3 py-2 text-[11px] font-medium tracking-[0.14em] text-[#d8bd82]">
+              <span className="grid h-6 w-6 place-items-center rounded-sm border border-[#8f261c]/50 bg-[#6f1711] text-[10px] text-[#f0d7a4]">
+                SL
+              </span>
+              SigilLab
             </div>
-            <p className="text-[11px] tracking-[0.28em] text-stone-300/58 uppercase">
+            <p className="text-[11px] tracking-[0.14em] text-[#bba16e]/72">
               {model.posterEyebrow}
             </p>
           </div>
 
-          <div className="-my-2 flex justify-center">
-            <div className="scale-[0.82] sm:scale-[0.88]">
+          <div className="relative -my-1 flex justify-center">
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-8 top-7 h-56 rounded-[1.2rem] border border-[#7a1b14]/24 bg-[#c6aa78]/10"
+            />
+            <div className="scale-[0.84] sm:scale-[0.9]">
               <ResultSigil intent={model.sigilIntent} />
             </div>
           </div>
 
           <div className="space-y-4 text-center">
-            <p className="text-xs tracking-[0.28em] text-sky-100/68 uppercase">
+            <p className="text-xs tracking-[0.12em] text-[#bba16e]/70">
               {model.readingEyebrow}
             </p>
-            <h1 className="font-heading text-4xl leading-[0.95] font-semibold text-amber-50 sm:text-[3.25rem]">
+            <h1 className="font-heading text-4xl leading-[0.98] font-semibold text-[#f2dfb8] sm:text-[3.1rem]">
               {model.punchline}
             </h1>
-            <p className="text-lg leading-8 text-stone-100/86">{model.headline}</p>
-            <p className="mx-auto max-w-md text-sm leading-7 text-stone-300/78">
+            <p className="text-lg leading-8 text-[#d8c7a4]/88">{model.headline}</p>
+            <p className="mx-auto max-w-md text-sm leading-7 text-[#b9aa8c]/84">
               {model.subtext}
             </p>
           </div>
 
-          <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-center">
-            <p className="text-xs tracking-[0.28em] text-stone-300/62 uppercase">
+          <div className="border border-[#b08d57]/18 bg-[#120b08]/74 px-4 py-4 text-center">
+            <p className="text-xs tracking-[0.12em] text-[#bba16e]/68">
               {model.blessingLabel}
             </p>
-            <p className="mt-2 text-sm leading-7 text-stone-200/84">
+            <p className="mt-2 text-sm leading-7 text-[#dcc9a6]/86">
               {model.shareTextLines.map((line) => (
                 <span key={line} className="block">
                   {line}
@@ -72,27 +82,27 @@ export function ShareCard({
             {model.hashtags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-medium text-stone-200/78"
+                className="border border-[#7a1b14]/34 bg-[#2b140e]/72 px-3 py-1.5 text-xs font-medium text-[#cdb27b]/82"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <div className="rounded-[1.8rem] border border-white/10 bg-black/18 p-4 sm:p-5">
+          <div className="border border-[#80623c]/22 bg-[#090605]/62 p-4 sm:p-5">
             <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
               <div className="space-y-3">
-                <p className="text-[11px] tracking-[0.28em] text-stone-300/56 uppercase">
+                <p className="text-[11px] tracking-[0.12em] text-[#bba16e]/62">
                   {model.onlineCtaLabel}
                 </p>
-                <p className="max-w-[16rem] text-sm leading-6 text-stone-300/82">
+                <p className="max-w-[16rem] text-sm leading-6 text-[#b9aa8c]/84">
                   {model.onlineCtaDescription}
                 </p>
                 <div className="space-y-2 pt-1">
-                  <p className="text-[10px] tracking-[0.24em] text-amber-100/70 uppercase">
+                  <p className="text-[10px] tracking-[0.12em] text-[#d8bd82]/76">
                     {model.sharedLinkLabel}
                   </p>
-                  <p className="break-all text-sm leading-6 text-stone-200/80">
+                  <p className="break-all text-sm leading-6 text-[#d8c7a4]/86">
                     {model.sharedPath}
                   </p>
                 </div>
@@ -100,7 +110,7 @@ export function ShareCard({
               <div className="justify-self-center sm:justify-self-end">
                 <div
                   aria-hidden="true"
-                  className="[&_svg]:block [&_svg]:h-full [&_svg]:w-full [&_svg]:rounded-[1rem] h-32 w-32 shrink-0 overflow-hidden rounded-[1.25rem] shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
+                  className="[&_svg]:block [&_svg]:h-full [&_svg]:w-full h-32 w-32 shrink-0 overflow-hidden border border-[#b08d57]/22 bg-[#d5c19a] p-2 shadow-[0_10px_30px_rgba(0,0,0,0.32)]"
                   dangerouslySetInnerHTML={{ __html: model.qrSvg }}
                 />
               </div>

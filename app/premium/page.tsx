@@ -23,20 +23,20 @@ export default async function PremiumPage({ searchParams }: PremiumPageProps) {
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,215,138,0.12),_transparent_22%),radial-gradient(circle_at_80%_20%,_rgba(125,211,252,0.12),_transparent_18%),radial-gradient(circle_at_bottom,_rgba(16,185,129,0.16),_transparent_34%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.16),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.16),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"
       />
       <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-5 py-10 sm:px-8 lg:px-12">
         <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div className="space-y-6">
             <Link
               href={`/?${new URLSearchParams({ language }).toString()}`}
-              className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm tracking-[0.3em] text-amber-100/88 uppercase backdrop-blur"
+              className="inline-flex items-center gap-3 border border-[#b08d57]/24 bg-[#23150f]/72 px-4 py-2 text-sm tracking-[0.12em] text-[#d8bd82] backdrop-blur"
             >
-              <span className="h-2 w-2 rounded-full bg-amber-200 shadow-[0_0_14px_rgba(252,211,77,0.9)]" />
+              <span className="h-2.5 w-2.5 rounded-sm bg-[#7a1b14]" />
               SigilLab
             </Link>
             <div className="space-y-4">
-              <p className="text-sm font-medium tracking-[0.32em] text-emerald-100/76 uppercase">
+              <p className="text-sm font-medium tracking-[0.14em] text-[#bba16e]/74">
                 {dictionary.monetization.premiumEyebrow}
               </p>
               <h1 className="font-heading text-5xl leading-[0.95] font-semibold text-stone-50 sm:text-6xl">
@@ -48,7 +48,7 @@ export default async function PremiumPage({ searchParams }: PremiumPageProps) {
             </div>
           </div>
 
-          <div className="space-y-4 rounded-[2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(19,20,38,0.92),rgba(9,10,18,0.98))] p-5 shadow-[0_24px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-6">
+          <div className="space-y-4 rounded-[1.4rem] border border-[#80623c]/24 bg-[linear-gradient(180deg,rgba(30,19,13,0.94),rgba(8,6,5,0.98))] p-5 shadow-[0_24px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-6">
             <p className="text-sm leading-7 text-stone-200/82">
               {dictionary.monetization.whyPremium}
             </p>
@@ -60,7 +60,7 @@ export default async function PremiumPage({ searchParams }: PremiumPageProps) {
               ].map((item) => (
                 <div
                   key={item}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-stone-100"
+                  className="rounded-xl border border-[#80623c]/22 bg-[#120b08]/56 px-4 py-3 text-sm font-medium text-stone-100"
                 >
                   {item}
                 </div>
@@ -69,14 +69,14 @@ export default async function PremiumPage({ searchParams }: PremiumPageProps) {
             <div className="grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-5 text-sm font-semibold text-slate-950 transition hover:brightness-105"
+                className="inline-flex min-h-12 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 text-sm font-semibold text-[#160d08] transition hover:brightness-105"
               >
                 {dictionary.monetization.monthlyCta}{" "}
                 {formatPrice(config.premiumMonthlyPrice)}
               </button>
               <button
                 type="button"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] px-5 text-sm font-semibold text-stone-100 transition hover:bg-white/[0.1]"
+                className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#80623c]/28 bg-[#120b08]/72 px-5 text-sm font-semibold text-stone-100 transition hover:bg-white/[0.08]"
               >
                 {dictionary.monetization.yearlyCta}{" "}
                 {formatPrice(config.premiumYearlyPrice)}

@@ -18,7 +18,7 @@ export default function Error({
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,215,138,0.12),_transparent_22%),radial-gradient(circle_at_80%_20%,_rgba(125,211,252,0.12),_transparent_18%),radial-gradient(circle_at_bottom,_rgba(168,85,247,0.22),_transparent_34%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.14),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.18),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"
       />
       <div className="relative mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-5 py-10 text-center">
         <p className="text-sm tracking-[0.32em] text-stone-300/58 uppercase">
@@ -35,13 +35,13 @@ export default function Error({
           <button
             type="button"
             onClick={() => unstable_retry()}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4d7a1,#d6b3ff_54%,#86d9ff)] px-6 text-sm font-semibold text-slate-950 transition hover:brightness-105"
+            className="inline-flex min-h-12 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-6 text-sm font-semibold text-[#160d08] transition hover:brightness-105"
           >
             Try Again
           </button>
           <Link
             href="/"
-            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] px-6 text-sm font-semibold text-stone-100 transition hover:bg-white/[0.08]"
+            className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#80623c]/28 bg-[#120b08]/72 px-6 text-sm font-semibold text-stone-100 transition hover:bg-white/[0.08]"
           >
             Return Home
           </Link>

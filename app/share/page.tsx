@@ -46,14 +46,14 @@ export default async function SharePage({ searchParams }: SharePageProps) {
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,215,138,0.12),_transparent_22%),radial-gradient(circle_at_80%_20%,_rgba(125,211,252,0.12),_transparent_18%),radial-gradient(circle_at_bottom,_rgba(168,85,247,0.22),_transparent_34%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.16),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.16),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"
       />
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-6 max-w-lg text-center">
           <div className="mb-4 flex justify-center">
             {isPremium ? <PremiumBadge dictionary={dictionary} /> : null}
           </div>
-          <p className="text-sm tracking-[0.32em] text-stone-300/58 uppercase">
+          <p className="text-sm tracking-[0.14em] text-[#bba16e]/68">
             {dictionary.share.eyebrow}
           </p>
           <h1 className="mt-4 font-heading text-4xl leading-none text-amber-50 sm:text-5xl">

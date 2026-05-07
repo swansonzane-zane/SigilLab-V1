@@ -16,8 +16,8 @@ export function TransitionOverlay({
   if (level === "feedback") {
     return (
       <div className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
-        <div className="max-w-sm rounded-[1.7rem] border border-amber-100/16 bg-[linear-gradient(180deg,rgba(21,22,39,0.95),rgba(9,10,18,0.98))] px-5 py-4 text-center shadow-[0_28px_80px_rgba(0,0,0,0.42)] backdrop-blur-xl">
-          <p className="text-[11px] tracking-[0.28em] text-amber-100/72 uppercase">
+        <div className="max-w-sm rounded-[1.2rem] border border-[#80623c]/24 bg-[linear-gradient(180deg,rgba(30,19,13,0.95),rgba(8,6,5,0.98))] px-5 py-4 text-center shadow-[0_28px_80px_rgba(0,0,0,0.42)] backdrop-blur-xl">
+          <p className="text-[11px] tracking-[0.12em] text-[#d8bd82]/76">
             Ritual Notice
           </p>
           <p className="mt-2 text-sm font-medium text-stone-50">{title}</p>
@@ -33,10 +33,10 @@ export function TransitionOverlay({
 
   return (
     <div className="pointer-events-auto fixed inset-0 z-50 flex items-center justify-center bg-[rgba(4,5,10,0.68)] px-5 backdrop-blur-md">
-      <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(20,21,40,0.95),rgba(7,8,16,0.98))] px-6 py-8 text-center shadow-[0_40px_140px_rgba(0,0,0,0.58)]">
+      <div className="relative w-full max-w-md overflow-hidden rounded-[1.4rem] border border-[#80623c]/24 bg-[linear-gradient(180deg,rgba(30,19,13,0.95),rgba(8,6,5,0.98))] px-6 py-8 text-center shadow-[0_40px_140px_rgba(0,0,0,0.58)]">
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,215,138,0.14),_transparent_24%),radial-gradient(circle_at_80%_20%,_rgba(125,211,252,0.12),_transparent_18%),radial-gradient(circle_at_bottom,_rgba(168,85,247,0.2),_transparent_32%)]"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.16),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.18),_transparent_20%)]"
         />
         <div className="relative flex flex-col items-center">
           <div className="relative flex h-28 w-28 items-center justify-center">
@@ -47,7 +47,7 @@ export function TransitionOverlay({
               ].join(" ")}
             />
             <div className="absolute inset-3 rounded-full border border-amber-200/20" />
-            <div className="absolute inset-7 rounded-full border border-sky-200/16" />
+            <div className="absolute inset-7 rounded-full border border-[#7a1b14]/28" />
             <div className="absolute h-px w-20 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
             <div className="absolute h-20 w-px bg-gradient-to-b from-transparent via-white/40 to-transparent" />
             <div className="absolute h-12 w-12 rotate-45 border border-white/16" />
