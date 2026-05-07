@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import { useTransitionController } from "@/components/transition-provider";
 import { EnergyExhaustedPanel } from "@/components/energy-exhausted-panel";
@@ -54,6 +54,7 @@ export function HomeSignalForm({
   const [energyMessage, setEnergyMessage] = useState<string | null>(null);
   const [showEnergyPanel, setShowEnergyPanel] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   const remainingCurrent = Math.max(
     0,
@@ -62,6 +63,23 @@ export function HomeSignalForm({
       energyState.sponsorRewardsToday -
       energyState.usedToday,
   );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    queueMicrotask(() => {
+      if (cancelled) {
+        return;
+      }
+
+      setEnergyState(getEnergyState(isPremium, dailyFreeLimit));
+      setHasHydrated(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dailyFreeLimit, isPremium]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -223,7 +241,7 @@ export function HomeSignalForm({
                 ? dictionary.energy.remainingUnlimited
                 : dictionary.energy.remainingLabel}
             </span>
-            {isPremium ? null : <span>: {remainingCurrent}</span>}
+            {isPremium || !hasHydrated ? null : <span>: {remainingCurrent}</span>}
           </div>
 
           {energyMessage ? (
