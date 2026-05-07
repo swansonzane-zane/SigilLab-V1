@@ -38,7 +38,7 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
           </p>
           <Link
             href="/"
-            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-6 text-sm font-semibold text-[#160d08] transition hover:brightness-105"
+            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-6 text-sm font-semibold text-[#fff4d6] transition hover:brightness-110"
           >
             {dictionary.share.generateOwnSignal}
           </Link>
@@ -76,7 +76,14 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
 
             <div className="-my-2 flex justify-center">
               <div className="scale-[0.82] sm:scale-[0.88]">
-                <ResultSigil intent={model.sigilIntent} />
+                <ResultSigil
+                  intent={model.sigilIntent}
+                  zodiac={model.sigilSpec.zodiac}
+                  birthYear={model.sigilSpec.birthYear}
+                  ageBand={model.sigilSpec.ageBand}
+                  title={model.sigilSpec.titleSeed || model.title}
+                  headline={model.sigilSpec.headlineSeed || model.headline}
+                />
               </div>
             </div>
 
@@ -87,6 +94,9 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
               <h1 className="font-heading text-4xl leading-[0.98] font-semibold text-[#f2dfb8] sm:text-[3.1rem]">
                 {model.punchline}
               </h1>
+              <p className="text-base leading-7 text-[#ead7aa]/84 italic">
+                {model.ritualPhrase}
+              </p>
               <p className="text-lg leading-8 text-[#d8c7a4]/88">{model.headline}</p>
               <p className="mx-auto max-w-md text-sm leading-7 text-[#b9aa8c]/84">
                 {model.subtext}
@@ -97,7 +107,7 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
               href={`/?${new URLSearchParams({
                 language: model.language,
               }).toString()}`}
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-6 text-sm font-semibold text-[#160d08] transition hover:brightness-105"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-sm bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-6 text-sm font-semibold text-[#fff4d6] transition hover:brightness-110"
             >
               {dictionary.share.generateOwnSignal}
             </Link>

@@ -1,5 +1,10 @@
 export type ShareSigilSpec = {
   intentLabel: string;
+  birthYear?: number;
+  ageBand?: string;
+  zodiac?: string;
+  titleSeed?: string;
+  headlineSeed?: string;
 };
 
 export type ShareRecord = {
@@ -8,6 +13,7 @@ export type ShareRecord = {
   title: string;
   headline: string;
   punchline: string;
+  ritualPhrase: string;
   subtext: string;
   hashtags: string[];
   ctaText: string;
@@ -22,9 +28,12 @@ export type ShareSeedInput = {
   title?: string;
   headline?: string;
   punchline?: string;
+  ritualPhrase?: string;
   subtext?: string;
   intent?: string;
   zodiac?: string;
+  birthYear?: number;
+  ageBand?: string;
   language?: string;
 };
 
@@ -40,6 +49,7 @@ export type ShareModel = {
   posterTitle: string;
   headline: string;
   punchline: string;
+  ritualPhrase: string;
   subtext: string;
   hashtags: string[];
   revealCtaText: string;
@@ -78,5 +88,6 @@ export type ShareModel = {
   openSealPrefix: string;
   language: string;
   sigilIntent: string;
+  sigilSpec: ShareSigilSpec;
   qrSvg: string;
 };

@@ -13,7 +13,14 @@ export function ResultHero({ input, output, dictionary }: ResultHeroProps) {
   return (
     <section className="grid items-center gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
       <div className="order-1 flex justify-center lg:order-none">
-        <ResultSigil intent={input.intent} />
+        <ResultSigil
+          intent={input.intent}
+          zodiac={input.westernZodiac}
+          birthYear={input.birthYear}
+          ageBand={input.ageBand}
+          title={output.title}
+          headline={output.headline}
+        />
       </div>
 
       <div className="space-y-6">
@@ -34,6 +41,9 @@ export function ResultHero({ input, output, dictionary }: ResultHeroProps) {
           <h1 className="max-w-4xl font-heading text-4xl leading-[0.95] font-semibold text-amber-50 sm:text-5xl lg:text-6xl">
             {output.punchline}
           </h1>
+          <p className="max-w-3xl text-base leading-7 text-[#ead7aa]/84 italic sm:text-lg">
+            {output.ritualPhrase}
+          </p>
           <p className="max-w-3xl text-xl leading-8 text-stone-100/88 sm:text-2xl sm:leading-9">
             {output.headline}
           </p>

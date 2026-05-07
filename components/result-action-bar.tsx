@@ -13,9 +13,12 @@ type ResultActionBarProps = {
     title: string;
     headline: string;
     punchline: string;
+    ritualPhrase: string;
     subtext: string;
     intent: string;
     zodiac: string;
+    birthYear: number;
+    ageBand: string;
     language: ReadingLanguage;
   };
   dictionary: I18nDictionary;
@@ -49,9 +52,12 @@ export function ResultActionBar({
                 title: shareSeed?.title || "SigilLab",
                 headline: shareSeed?.headline || "",
                 punchline: shareSeed?.punchline || "",
+                ritualPhrase: shareSeed?.ritualPhrase || "",
                 subtext: shareSeed?.subtext || "",
                 intent: shareSeed?.intent || "clarity",
                 zodiac: shareSeed?.zodiac || "",
+                birthYear: String(shareSeed?.birthYear || ""),
+                ageBand: shareSeed?.ageBand || "",
                 language,
                 ...(isPremium ? { premium: "1" } : {}),
               });
@@ -80,7 +86,7 @@ export function ResultActionBar({
 
             router.push(`/?${params.toString()}`);
           }}
-          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 text-sm font-semibold text-[#160d08] transition hover:brightness-105"
+          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-sm bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-5 text-sm font-semibold text-[#fff4d6] transition hover:brightness-110"
         >
           {dictionary.result.revealAnotherPath}
         </button>

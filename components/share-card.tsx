@@ -48,7 +48,14 @@ export function ShareCard({
               className="absolute inset-x-8 top-7 h-56 rounded-[1.2rem] border border-[#7a1b14]/24 bg-[#c6aa78]/10"
             />
             <div className="scale-[0.84] sm:scale-[0.9]">
-              <ResultSigil intent={model.sigilIntent} />
+              <ResultSigil
+                intent={model.sigilIntent}
+                zodiac={model.sigilSpec.zodiac}
+                birthYear={model.sigilSpec.birthYear}
+                ageBand={model.sigilSpec.ageBand}
+                title={model.sigilSpec.titleSeed || model.title}
+                headline={model.sigilSpec.headlineSeed || model.headline}
+              />
             </div>
           </div>
 
@@ -59,6 +66,9 @@ export function ShareCard({
             <h1 className="font-heading text-4xl leading-[0.98] font-semibold text-[#f2dfb8] sm:text-[3.1rem]">
               {model.punchline}
             </h1>
+            <p className="text-base leading-7 text-[#ead7aa]/84 italic">
+              {model.ritualPhrase}
+            </p>
             <p className="text-lg leading-8 text-[#d8c7a4]/88">{model.headline}</p>
             <p className="mx-auto max-w-md text-sm leading-7 text-[#b9aa8c]/84">
               {model.subtext}

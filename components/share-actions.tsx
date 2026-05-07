@@ -177,7 +177,7 @@ export function ShareActions({
           type="button"
           onClick={handleSaveSigil}
           disabled={isSaving}
-          className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#b08d57]/28 bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 text-sm font-semibold text-[#160d08] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#b08d57]/28 bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-5 text-sm font-semibold text-[#fff4d6] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSaving
             ? model.savingSigilLabel

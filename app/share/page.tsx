@@ -13,9 +13,12 @@ type SharePageProps = {
     title?: string | string[];
     headline?: string | string[];
     punchline?: string | string[];
+    ritualPhrase?: string | string[];
     subtext?: string | string[];
     intent?: string | string[];
     zodiac?: string | string[];
+    birthYear?: string | string[];
+    ageBand?: string | string[];
     language?: string | string[];
     premium?: string | string[];
   }>;
@@ -23,6 +26,12 @@ type SharePageProps = {
 
 function getParam(value?: string | string[]) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function getNumberParam(value?: string | string[]) {
+  const parsed = Number.parseInt(getParam(value) || "", 10);
+
+  return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 export default async function SharePage({ searchParams }: SharePageProps) {
@@ -35,9 +44,12 @@ export default async function SharePage({ searchParams }: SharePageProps) {
     title: getParam(params.title),
     headline: getParam(params.headline),
     punchline: getParam(params.punchline),
+    ritualPhrase: getParam(params.ritualPhrase),
     subtext: getParam(params.subtext),
     intent: getParam(params.intent),
     zodiac: getParam(params.zodiac),
+    birthYear: getNumberParam(params.birthYear),
+    ageBand: getParam(params.ageBand),
     language,
   });
   const model = await buildShareModelFromRecord(record, dictionary);

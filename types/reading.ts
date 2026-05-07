@@ -56,6 +56,7 @@ export type ReadingOutput = {
   title: string;
   headline: string;
   punchline: string;
+  ritualPhrase: string;
   insight: string;
   journalPrompts: string[];
 };

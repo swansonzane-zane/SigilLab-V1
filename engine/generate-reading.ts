@@ -137,6 +137,7 @@ export function buildMockReadingOutput(input: ReadingInput): ReadingOutput {
     title: `${input.intent[0].toUpperCase()}${input.intent.slice(1)} Signal`,
     headline: `A ${theme.aura} is rising around your ${input.westernZodiac.toLowerCase()} current.`,
     punchline: `Your emotional field ${theme.verb} and points toward resonance level ${resonance}.`,
+    ritualPhrase: `The seal turns when your ${input.intent} current settles into view.`,
     insight: `With a birth year of ${input.birthYear}, an age band of ${input.ageBand}, and a ${input.westernZodiac} signature, you are arriving at this reading with a pattern that favors reflection before movement. The current ${input.intent} pulse suggests that your next shift comes from naming the feeling underneath the story, then choosing one action that matches the quieter truth you already sense.`,
     journalPrompts: [
       `Where in my life do I already feel the first signs of ${input.intent}, even if they are subtle?`,
@@ -157,6 +158,7 @@ function buildSpanishMockReadingOutput(input: ReadingInput): ReadingOutput {
     title: `Señal de ${theme.intentLabel}`,
     headline: `Un ${theme.aura} se eleva alrededor de tu corriente ${input.westernZodiac}.`,
     punchline: `Tu campo emocional ${theme.verb} y apunta hacia el nivel de resonancia ${resonance}.`,
+    ritualPhrase: `El sello gira cuando tu corriente de ${theme.intentLabel} por fin se aquieta.`,
     insight: `Con un ano de nacimiento ${input.birthYear}, una franja de edad ${input.ageBand} y una firma ${input.westernZodiac}, llegas a esta lectura con un patron que favorece la reflexion antes del movimiento. El pulso actual de ${theme.intentLabel} sugiere que tu proximo cambio nace al nombrar la emocion debajo de la historia y elegir una accion que coincida con la verdad mas silenciosa que ya percibes.`,
     journalPrompts: [
       `Donde siento ya las primeras señales de ${theme.intentLabel}, aunque sean sutiles?`,
@@ -173,6 +175,7 @@ function buildUnavailableReadingOutput(input: ReadingInput): ReadingOutput {
       headline: "El canal de lectura esta en silencio por un momento.",
       punchline:
         "No pudimos completar tu señal ahora, pero tu intencion sigue sostenida.",
+      ritualPhrase: "Aun en silencio, el sello guarda tu intencion.",
       insight:
         "El modelo de lectura en vivo no devolvio una respuesta util y el modo de respaldo esta desactivado. Intentalo de nuevo en breve o vuelve al ritual para generar otra señal.",
       journalPrompts: [
@@ -187,6 +190,7 @@ function buildUnavailableReadingOutput(input: ReadingInput): ReadingOutput {
     headline: "The reading channel is quiet for a moment.",
     punchline:
       "We couldn't complete your signal right now, but your intent is still held.",
+    ritualPhrase: "Even in silence, the seal keeps your intent.",
     insight:
       "The live reading model did not return a usable result and fallback mode is currently disabled. Please try again shortly or return to the ritual and generate another signal.",
     journalPrompts: [
@@ -218,6 +222,7 @@ function parseReadingOutput(rawText: string): ReadingOutput {
   const title = parsed.title;
   const headline = parsed.headline;
   const punchline = parsed.punchline;
+  const ritualPhrase = parsed.ritualPhrase;
   const insight = parsed.insight;
   const journalPrompts = Array.isArray(parsed.journalPrompts)
     ? parsed.journalPrompts
@@ -236,6 +241,7 @@ function parseReadingOutput(rawText: string): ReadingOutput {
     assertNonEmptyString(title);
     assertNonEmptyString(headline);
     assertNonEmptyString(punchline);
+    assertNonEmptyString(ritualPhrase);
     assertNonEmptyString(insight);
   } catch {
     throw new DeepSeekError(
@@ -247,12 +253,14 @@ function parseReadingOutput(rawText: string): ReadingOutput {
   const normalizedTitle = title.trim();
   const normalizedHeadline = headline.trim();
   const normalizedPunchline = punchline.trim();
+  const normalizedRitualPhrase = ritualPhrase.trim();
   const normalizedInsight = insight.trim();
 
   return {
     title: normalizedTitle,
     headline: normalizedHeadline,
     punchline: normalizedPunchline,
+    ritualPhrase: normalizedRitualPhrase,
     insight: normalizedInsight,
     journalPrompts: journalPrompts.map((prompt) => prompt.trim()),
   };

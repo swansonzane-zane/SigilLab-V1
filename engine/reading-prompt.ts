@@ -24,9 +24,10 @@ function getLanguageInstruction(input: ReadingInput) {
 
   return [
     `The requested output language is ${languageName} (${input.language}).`,
-    `Every JSON string value must be written in ${languageName}, including title, headline, punchline, insight, and every journalPrompts item.`,
-    `Keep the JSON keys exactly as specified in English: title, headline, punchline, insight, journalPrompts.`,
+    `Every JSON string value must be written in ${languageName}, including title, headline, punchline, ritualPhrase, insight, and every journalPrompts item.`,
+    `Keep the JSON keys exactly as specified in English: title, headline, punchline, ritualPhrase, insight, journalPrompts.`,
     `Do not mix languages. If language is es, no English prose is allowed in the field values.`,
+    `ritualPhrase must be one concise standalone sentence with subtle eastern mystical tone and plain modern readability.`,
   ].join(" ");
 }
 
@@ -38,14 +39,25 @@ export async function buildReadingPrompt(
 
   if (activePrompt) {
     return {
-      systemPrompt: `${activePrompt.systemPrompt}\n\n${languageInstruction}`,
-      userPrompt: `${fillPromptTemplate(activePrompt.userPromptTemplate, input)}\n\n${languageInstruction}`,
+      systemPrompt: `${activePrompt.systemPrompt}\n\nReturn JSON only with the exact keys: title, headline, punchline, ritualPhrase, insight, journalPrompts.\n\n${languageInstruction}`,
+      userPrompt: `${fillPromptTemplate(activePrompt.userPromptTemplate, input)}\n
+Output valid JSON only in this shape:
+{
+  "title": "string",
+  "headline": "string",
+  "punchline": "string",
+  "ritualPhrase": "string",
+  "insight": "string",
+  "journalPrompts": ["string", "string", "string"]
+}
+
+${languageInstruction}`,
     };
   }
 
   return {
     systemPrompt:
-      `You are SigilLab, an emotionally resonant reading writer. Return JSON only with the exact keys: title, headline, punchline, insight, journalPrompts. ${languageInstruction} The tone should be concise, mystical, emotionally perceptive, slightly confronting but supportive, and non-deterministic. Do not mention being an AI, a model, a system, or a mock. Do not include markdown fences. Do not make medical, legal, financial, or guaranteed predictive claims. journalPrompts must be an array of 2 or 3 short reflective prompts.`,
+      `You are SigilLab, an emotionally resonant reading writer. Return JSON only with the exact keys: title, headline, punchline, ritualPhrase, insight, journalPrompts. ${languageInstruction} The tone should be concise, mystical, emotionally perceptive, slightly confronting but supportive, and non-deterministic. Do not mention being an AI, a model, a system, or a mock. Do not include markdown fences. Do not make medical, legal, financial, or guaranteed predictive claims. journalPrompts must be an array of 2 or 3 short reflective prompts.`,
     userPrompt: `Create a reading for this input:
 - birthYear: ${input.birthYear}
 - ageBand: ${input.ageBand}
@@ -58,12 +70,14 @@ Output valid JSON only in this shape:
   "title": "string",
   "headline": "string",
   "punchline": "string",
+  "ritualPhrase": "string",
   "insight": "string",
   "journalPrompts": ["string", "string", "string"]
 }
 
 Writing guidance:
 - Keep punchline vivid and emotionally charged.
+- Add one short ritualPhrase that feels quietly talismanic, not theatrical.
 - Make headline complementary, not repetitive.
 - Make insight grounded, intimate, and concise.
 - Keep journal prompts reflective and usable.

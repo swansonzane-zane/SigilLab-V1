@@ -206,7 +206,7 @@ export function HomeSignalForm({
           <button
             type="submit"
             disabled={!birthDate || isSubmitting}
-            className="inline-flex w-full items-center justify-center rounded-sm bg-[linear-gradient(135deg,#e5c98c,#b08d57_48%,#7a1b14)] px-5 py-3.5 text-base font-semibold text-[#160d08] transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-stone-500 disabled:hover:brightness-100"
+            className="inline-flex w-full items-center justify-center rounded-sm bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-5 py-3.5 text-base font-semibold text-[#fff4d6] transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-stone-500 disabled:hover:brightness-100"
           >
             {isSubmitting || activeTransition?.level === "ritual"
               ? dictionary.home.generatingSignal

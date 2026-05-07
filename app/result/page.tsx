@@ -80,9 +80,12 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
           title: output.title,
           headline: output.headline,
           punchline: output.punchline,
+          ritualPhrase: output.ritualPhrase,
           subtext: output.insight,
           intent: input.intent,
           zodiac: input.westernZodiac,
+          birthYear: input.birthYear,
+          ageBand: input.ageBand,
           language: input.language,
         }}
         dictionary={dictionary}

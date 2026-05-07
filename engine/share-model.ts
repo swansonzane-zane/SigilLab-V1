@@ -26,6 +26,10 @@ export function createShareRecordPayload(
       seed?.punchline,
       "Your signal is asking for honesty before motion and softness before proof.",
     ),
+    ritualPhrase: normalizeSeedText(
+      seed?.ritualPhrase,
+      "The seal turns when stillness meets intent.",
+    ),
     subtext: normalizeSeedText(
       seed?.subtext,
       "Hold this reading like a private omen: intimate, luminous, and clear enough to carry into the next conversation you cannot avoid.",
@@ -40,6 +44,15 @@ export function createShareRecordPayload(
     ctaHref: "/",
     sigilSpec: {
       intentLabel: normalizeIntentLabel(seed?.intent),
+      birthYear:
+        typeof seed?.birthYear === "number" ? Math.round(seed.birthYear) : undefined,
+      ageBand: seed?.ageBand?.trim() || undefined,
+      zodiac: seed?.zodiac?.trim() || undefined,
+      titleSeed: normalizeSeedText(seed?.title, "SigilLab"),
+      headlineSeed: normalizeSeedText(
+        seed?.headline,
+        "A threshold is opening where old static used to rule.",
+      ),
     },
     intent: normalizeIntentLabel(seed?.intent),
     zodiac: seed?.zodiac?.trim() || undefined,
@@ -76,6 +89,7 @@ export async function buildShareModelFromRecord(
     posterTitle: record.punchline,
     headline: record.headline,
     punchline: record.punchline,
+    ritualPhrase: record.ritualPhrase,
     subtext: record.subtext,
     hashtags: record.hashtags,
     revealCtaText: dictionary.share.revealCtaText,
@@ -116,6 +130,7 @@ export async function buildShareModelFromRecord(
     openSealPrefix: dictionary.share.openSealPrefix,
     language: record.language || "en",
     sigilIntent: record.sigilSpec.intentLabel,
+    sigilSpec: record.sigilSpec,
     qrSvg: await buildQrSvg(sharedPath),
   };
 }

@@ -41,10 +41,25 @@ function normalizeShareRecord(record: ShareRecord): ShareRecord {
   return {
     ...record,
     title: record.title || "SigilLab",
+    headline: record.headline || "A threshold is opening where old static used to rule.",
+    punchline:
+      record.punchline ||
+      "Your signal is asking for honesty before motion and softness before proof.",
+    ritualPhrase:
+      record.ritualPhrase || "The seal turns when stillness meets intent.",
+    subtext:
+      record.subtext ||
+      "Hold this reading like a private omen: intimate, luminous, and clear enough to carry into the next conversation you cannot avoid.",
     hashtags: Array.isArray(record.hashtags) ? record.hashtags : [],
     ctaText: record.ctaText || "Generate Your Own Signal",
     ctaHref: record.ctaHref || "/",
-    sigilSpec: record.sigilSpec || { intentLabel: "share" },
+    sigilSpec: record.sigilSpec || {
+      intentLabel: record.intent || "clarity",
+      zodiac: record.zodiac,
+      titleSeed: record.title || "SigilLab",
+      headlineSeed:
+        record.headline || "A threshold is opening where old static used to rule.",
+    },
     language: record.language || "en",
   };
 }
