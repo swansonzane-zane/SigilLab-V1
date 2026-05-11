@@ -52,6 +52,8 @@ Required for live AI generation:
 Required for deployment clarity:
 
 - `NEXT_PUBLIC_APP_URL`: Public app URL. Use `http://localhost:3000` locally and your Vercel URL or custom domain in production.
+- `ADMIN_USERNAME`: Basic Auth username for `/admin` and `/api/admin/*`.
+- `ADMIN_PASSWORD`: Basic Auth password for `/admin` and `/api/admin/*`.
 
 Optional DeepSeek overrides:
 
@@ -97,7 +99,14 @@ The app does not depend on local absolute paths or the Codex worktree. MVP data 
 - `/admin/readings`: generated reading records.
 - `/admin/ai-providers`: configured AI provider surface.
 
-Admin routes are not authenticated in this MVP.
+## Admin Protection
+
+Admin routes and admin API routes are protected with HTTP Basic Auth through `middleware.ts`.
+
+- Protected paths: `/admin`, `/admin/*`, `/api/admin/*`
+- Public paths remain open, including `/`, `/result`, `/share`, `/shared/*`, `/premium`, and `/api/reading`
+- Configure `ADMIN_USERNAME` and `ADMIN_PASSWORD` in your environment before deploying
+- If admin credentials are missing, protected routes return `401 Unauthorized` instead of falling through
 
 ## Current MVP Scope
 
