@@ -54,7 +54,9 @@ export type I18nDictionary = {
     onlineCtaDescription: string;
     sharedLinkLabel: string;
     sealPosterLabel: string;
+    sealPosterDescription: string;
     ritualCardLabel: string;
+    ritualCardDescription: string;
     saveSealPoster: string;
     savingSealPoster: string;
     saveRitualCard: string;

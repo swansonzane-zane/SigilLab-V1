@@ -76,7 +76,9 @@ export type ShareModel = {
   onlineCtaDescription: string;
   sharedLinkLabel: string;
   sealPosterLabel: string;
+  sealPosterDescription: string;
   ritualCardLabel: string;
+  ritualCardDescription: string;
   preserveLabel: string;
   privacyBoundaryLabel: string;
   returnOfLightLabel: string;

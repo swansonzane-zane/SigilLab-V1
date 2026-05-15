@@ -20,11 +20,16 @@ export function ShareCard({
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
         <section className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-xs tracking-[0.28em] text-[#d8bd82]/76 uppercase">
-              {model.sealPosterLabel}
-            </p>
-            <p className="text-[11px] tracking-[0.18em] text-stone-300/54 uppercase">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs tracking-[0.28em] text-[#d8bd82]/76 uppercase">
+                {model.sealPosterLabel}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-stone-300/70">
+                {model.sealPosterDescription}
+              </p>
+            </div>
+            <p className="shrink-0 text-[11px] tracking-[0.18em] text-stone-300/54 uppercase">
               4:5
             </p>
           </div>
@@ -54,12 +59,12 @@ export function ShareCard({
                 </p>
               </div>
 
-              <div className="relative flex flex-1 items-center justify-center py-6">
+              <div className="relative -my-4 flex flex-1 items-center justify-center py-0">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-x-6 top-1/2 h-[58%] -translate-y-1/2 rounded-[1.4rem] border border-[#7a1b14]/18 bg-[#c6aa78]/8"
+                  className="absolute inset-x-2 top-1/2 h-[72%] -translate-y-1/2 rounded-[1.4rem] border border-[#7a1b14]/18 bg-[#c6aa78]/8"
                 />
-                <div className="scale-[1.12] sm:scale-[1.18]">
+                <div className="scale-[1.38] sm:scale-[1.48]">
                   <ResultSigil
                     intent={model.sigilIntent}
                     zodiac={model.sigilSpec.zodiac}
@@ -71,11 +76,11 @@ export function ShareCard({
                 </div>
               </div>
 
-              <div className="space-y-4 text-center">
+              <div className="space-y-3 text-center">
                 <p className="text-[11px] tracking-[0.18em] text-[#bba16e]/72 uppercase">
                   {model.readingEyebrow}
                 </p>
-                <h2 className="font-heading text-3xl leading-tight font-semibold text-[#f2dfb8] sm:text-[2.55rem]">
+                <h2 className="font-heading text-2xl leading-tight font-semibold text-[#f2dfb8] sm:text-[2.35rem]">
                   {model.ritualPhrase || model.headline}
                 </h2>
                 <p className="mx-auto max-w-sm text-sm leading-7 text-[#e5d0a2]/86">
@@ -90,11 +95,16 @@ export function ShareCard({
         </section>
 
         <section className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-xs tracking-[0.28em] text-[#d8bd82]/76 uppercase">
-              {model.ritualCardLabel}
-            </p>
-            <p className="text-[11px] tracking-[0.18em] text-stone-300/54 uppercase">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs tracking-[0.28em] text-[#d8bd82]/76 uppercase">
+                {model.ritualCardLabel}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-stone-300/70">
+                {model.ritualCardDescription}
+              </p>
+            </div>
+            <p className="shrink-0 text-[11px] tracking-[0.18em] text-stone-300/54 uppercase">
               {model.readingEyebrow}
             </p>
           </div>
