@@ -53,12 +53,20 @@ function normalizeShareRecord(record: ShareRecord): ShareRecord {
     hashtags: Array.isArray(record.hashtags) ? record.hashtags : [],
     ctaText: record.ctaText || "Generate Your Own Signal",
     ctaHref: record.ctaHref || "/",
-    sigilSpec: record.sigilSpec || {
-      intentLabel: record.intent || "clarity",
-      zodiac: record.zodiac,
-      titleSeed: record.title || "SigilLab",
+    sigilSpec: {
+      intentLabel:
+        record.sigilSpec?.intentLabel || record.intent || "clarity",
+      birthYear:
+        typeof record.sigilSpec?.birthYear === "number"
+          ? record.sigilSpec.birthYear
+          : undefined,
+      ageBand: record.sigilSpec?.ageBand || undefined,
+      zodiac: record.sigilSpec?.zodiac || record.zodiac,
+      titleSeed: record.sigilSpec?.titleSeed || record.title || "SigilLab",
       headlineSeed:
-        record.headline || "A threshold is opening where old static used to rule.",
+        record.sigilSpec?.headlineSeed ||
+        record.headline ||
+        "A threshold is opening where old static used to rule.",
     },
     language: record.language || "en",
   };

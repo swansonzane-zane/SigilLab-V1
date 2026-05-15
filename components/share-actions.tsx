@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
-import { buildShareMessage } from "@/lib/share-flow";
 import { grantShareReward } from "@/services/energy-service";
 import type { ShareModel } from "@/types/share";
 
@@ -42,13 +41,9 @@ export function ShareActions({
 }: ShareActionsProps) {
   const router = useRouter();
   const { startTransition } = useTransitionController();
-  const [isSaving, setIsSaving] = useState(false);
-  const [isSharing, setIsSharing] = useState(false);
-
-  const currentUrl =
-    typeof window === "undefined"
-      ? model.sharedPath
-      : new URL(model.sharedPath, window.location.origin).toString();
+  const [isSavingSealPoster, setIsSavingSealPoster] = useState(false);
+  const [isSavingRitualCard, setIsSavingRitualCard] = useState(false);
+  const [isCopyingSealLink, setIsCopyingSealLink] = useState(false);
 
   function getEnergyRewardDetail(fallbackMessage: string) {
     const result = grantShareReward(isPremium, dailyFreeLimit);
@@ -56,18 +51,18 @@ export function ShareActions({
     return result.granted ? model.energyRewardMessage : fallbackMessage;
   }
 
-  async function handleSaveSigil() {
-    if (isSaving) {
+  async function handleSaveSealPoster() {
+    if (isSavingSealPoster) {
       return;
     }
 
-    setIsSaving(true);
+    setIsSavingSealPoster(true);
 
     try {
-      const posterNode = document.getElementById(`share-poster-${model.shareId}`);
+      const posterNode = document.getElementById(`seal-poster-${model.shareId}`);
 
       if (!posterNode) {
-        throw new Error("share poster not found");
+        throw new Error("seal poster not found");
       }
 
       const dataUrl = await toPng(posterNode, {
@@ -78,7 +73,7 @@ export function ShareActions({
       const anchor = document.createElement("a");
 
       anchor.href = dataUrl;
-      anchor.download = `sigillab-${model.shareId}.png`;
+      anchor.download = `sigillab-seal-poster-${model.shareId}.png`;
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
@@ -86,8 +81,8 @@ export function ShareActions({
       startTransition({
         active: true,
         level: "feedback",
-        title: model.saveSuccessMessage,
-        message: getEnergyRewardDetail(model.saveSuccessDetail),
+        title: model.saveSealPosterSuccessMessage,
+        message: getEnergyRewardDetail(model.saveSealPosterDetail),
       });
     } catch {
       startTransition({
@@ -97,35 +92,19 @@ export function ShareActions({
         message: model.saveFailureDetail,
       });
     } finally {
-      setIsSaving(false);
+      setIsSavingSealPoster(false);
     }
   }
 
-  async function handleSendBlessing() {
-    if (isSharing) {
+  async function handleCopySealLink() {
+    if (isCopyingSealLink) {
       return;
     }
 
-    setIsSharing(true);
-
-    const shareMessage = buildShareMessage(model, currentUrl);
-    const shareData = {
-      text: shareMessage,
-    };
+    setIsCopyingSealLink(true);
 
     try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-        startTransition({
-          active: true,
-          level: "feedback",
-          title: model.shareSuccessMessage,
-          message: getEnergyRewardDetail(model.shareSuccessDetail),
-        });
-        return;
-      }
-
-      const copied = await copyToClipboard(shareMessage);
+      const copied = await copyToClipboard(model.sealLinkLines.join("\n"));
 
       if (copied) {
         startTransition({
@@ -142,31 +121,60 @@ export function ShareActions({
           message: model.saveHint,
         });
       }
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
-        setIsSharing(false);
-        return;
-      }
-
-      const copied = await copyToClipboard(shareMessage);
-
-      if (copied) {
-        startTransition({
-          active: true,
-          level: "feedback",
-          title: model.copySuccessMessage,
-          message: getEnergyRewardDetail(model.copyFallbackDetail),
-        });
-      } else {
-        startTransition({
-          active: true,
-          level: "feedback",
-          title: model.shareFailureMessage,
-          message: model.saveHint,
-        });
-      }
+    } catch {
+      startTransition({
+        active: true,
+        level: "feedback",
+        title: model.shareFailureMessage,
+        message: model.saveHint,
+      });
     } finally {
-      setIsSharing(false);
+      setIsCopyingSealLink(false);
+    }
+  }
+
+  async function handleSaveRitualCard() {
+    if (isSavingRitualCard) {
+      return;
+    }
+
+    setIsSavingRitualCard(true);
+
+    try {
+      const ritualCardNode = document.getElementById(`ritual-card-${model.shareId}`);
+
+      if (!ritualCardNode) {
+        throw new Error("ritual card not found");
+      }
+
+      const dataUrl = await toPng(ritualCardNode, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: "#090b14",
+      });
+      const anchor = document.createElement("a");
+
+      anchor.href = dataUrl;
+      anchor.download = `sigillab-ritual-card-${model.shareId}.png`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+
+      startTransition({
+        active: true,
+        level: "feedback",
+        title: model.saveRitualCardSuccessMessage,
+        message: getEnergyRewardDetail(model.saveRitualCardDetail),
+      });
+    } catch {
+      startTransition({
+        active: true,
+        level: "feedback",
+        title: model.saveFailureMessage,
+        message: model.saveFailureDetail,
+      });
+    } finally {
+      setIsSavingRitualCard(false);
     }
   }
 
@@ -175,23 +183,35 @@ export function ShareActions({
       <div className="grid gap-3">
         <button
           type="button"
-          onClick={handleSaveSigil}
-          disabled={isSaving}
+          onClick={handleSaveSealPoster}
+          disabled={isSavingSealPoster}
           className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#b08d57]/28 bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-5 text-sm font-semibold text-[#fff4d6] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSaving
-            ? model.savingSigilLabel
-            : isPremium
-              ? model.hdExportLabel
-              : model.saveSigilLabel}
+          {isSavingSealPoster
+            ? model.savingSealPosterLabel
+            : model.saveSealPosterLabel}
         </button>
         <button
           type="button"
-          onClick={handleSendBlessing}
-          disabled={isSharing}
+          onClick={handleCopySealLink}
+          disabled={isCopyingSealLink}
           className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#80623c]/28 bg-[#120b08]/72 px-5 text-sm font-semibold text-stone-100 transition hover:border-[#b08d57]/45 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSharing ? model.sendingBlessingLabel : model.sendBlessingLabel}
+          {isCopyingSealLink
+            ? model.copyingSealLinkLabel
+            : model.copySealLinkLabel}
+        </button>
+        <button
+          type="button"
+          onClick={handleSaveRitualCard}
+          disabled={isSavingRitualCard}
+          className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[#80623c]/24 bg-black/28 px-5 text-sm font-semibold text-[#f3e6c5] transition hover:border-[#b08d57]/40 hover:bg-white/[0.05] disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {isSavingRitualCard
+            ? model.savingRitualCardLabel
+            : isPremium
+              ? model.hdExportLabel
+              : model.saveRitualCardLabel}
         </button>
         <button
           type="button"

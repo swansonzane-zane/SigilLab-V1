@@ -3,6 +3,8 @@ import QRCode from "qrcode";
 import type { I18nDictionary } from "@/services/i18n-service";
 import type { ShareModel, ShareRecord, ShareSeedInput } from "@/types/share";
 
+const defaultPublicAppUrl = "https://sigil-lab-v1.vercel.app";
+
 function normalizeSeedText(value: string | undefined, fallback: string) {
   const trimmed = value?.trim();
   return trimmed ? trimmed : fallback;
@@ -77,16 +79,72 @@ async function buildQrSvg(url: string) {
   );
 }
 
+function getPublicAppUrl() {
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim();
+
+  if (!configured) {
+    return defaultPublicAppUrl;
+  }
+
+  return configured.replace(/\/+$/, "");
+}
+
+function getPublicSiteHost() {
+  try {
+    return new URL(getPublicAppUrl()).host;
+  } catch {
+    return "sigil-lab-v1.vercel.app";
+  }
+}
+
+function getIntentLabel(
+  dictionary: I18nDictionary,
+  intent: string,
+) {
+  const key = intent as keyof I18nDictionary["intents"];
+
+  return dictionary.intents[key] || intent;
+}
+
+function buildIntentLine(
+  dictionary: I18nDictionary,
+  intent: string,
+  language: string,
+) {
+  const intentLabel = getIntentLabel(dictionary, intent);
+
+  if (language === "es") {
+    return `Un talisman digital para ${intentLabel}.`;
+  }
+
+  return `A digital talisman for ${intentLabel}.`;
+}
+
 export async function buildShareModelFromRecord(
   record: ShareRecord,
   dictionary: I18nDictionary,
 ): Promise<ShareModel> {
   const sharedPath = `/shared/${record.shareId}`;
+  const publicAppUrl = getPublicAppUrl();
+  const sharedUrl = `${publicAppUrl}${sharedPath}`;
+  const homeUrl = `${publicAppUrl}/`;
+  const sealLinkLines = dictionary.share.sealLinkLines.map((line) =>
+    line
+      .replaceAll("{{sharedUrl}}", sharedUrl)
+      .replaceAll("{{homeUrl}}", homeUrl),
+  );
 
   return {
     shareId: record.shareId,
     title: record.title,
     posterTitle: record.punchline,
+    siteHost: getPublicSiteHost(),
+    sharedUrl,
+    intentLine: buildIntentLine(
+      dictionary,
+      record.sigilSpec.intentLabel,
+      record.language || "en",
+    ),
     headline: record.headline,
     punchline: record.punchline,
     ritualPhrase: record.ritualPhrase,
@@ -100,10 +158,13 @@ export async function buildShareModelFromRecord(
     sharedPath,
     shareTitle: dictionary.share.shareTitle,
     shareTextLines: dictionary.share.shareTextLines,
-    saveSuccessMessage: dictionary.share.saveSuccessMessage,
+    sealLinkLines,
+    saveSealPosterSuccessMessage:
+      dictionary.share.saveSealPosterSuccessMessage,
+    saveRitualCardSuccessMessage:
+      dictionary.share.saveRitualCardSuccessMessage,
     saveFailureMessage: dictionary.share.saveFailureMessage,
     saveHint: dictionary.share.saveHint,
-    shareSuccessMessage: dictionary.share.shareSuccessMessage,
     copySuccessMessage: dictionary.share.copySuccessMessage,
     shareFailureMessage: dictionary.share.shareFailureMessage,
     rewardHint: dictionary.share.rewardHint,
@@ -113,17 +174,21 @@ export async function buildShareModelFromRecord(
     blessingLabel: dictionary.share.blessingLabel,
     onlineCtaDescription: dictionary.share.onlineCtaDescription,
     sharedLinkLabel: dictionary.share.sharedLinkLabel,
+    sealPosterLabel: dictionary.share.sealPosterLabel,
+    ritualCardLabel: dictionary.share.ritualCardLabel,
     preserveLabel: dictionary.share.preserveLabel,
     privacyBoundaryLabel: dictionary.share.privacyBoundaryLabel,
     returnOfLightLabel: dictionary.share.returnOfLightLabel,
-    saveSigilLabel: dictionary.share.saveSigil,
+    saveSealPosterLabel: dictionary.share.saveSealPoster,
+    saveRitualCardLabel: dictionary.share.saveRitualCard,
     hdExportLabel: dictionary.monetization.hdExport,
-    savingSigilLabel: dictionary.share.savingSigil,
-    sendBlessingLabel: dictionary.share.sendBlessing,
-    sendingBlessingLabel: dictionary.share.sendingBlessing,
-    saveSuccessDetail: dictionary.share.saveSuccessDetail,
+    savingSealPosterLabel: dictionary.share.savingSealPoster,
+    savingRitualCardLabel: dictionary.share.savingRitualCard,
+    copySealLinkLabel: dictionary.share.copySealLink,
+    copyingSealLinkLabel: dictionary.share.copyingSealLink,
+    saveSealPosterDetail: dictionary.share.saveSealPosterDetail,
+    saveRitualCardDetail: dictionary.share.saveRitualCardDetail,
     saveFailureDetail: dictionary.share.saveFailureDetail,
-    shareSuccessDetail: dictionary.share.shareSuccessDetail,
     copySuccessDetail: dictionary.share.copySuccessDetail,
     copyFallbackDetail: dictionary.share.copyFallbackDetail,
     energyRewardMessage: dictionary.energy.rewardSuccess,
@@ -131,6 +196,6 @@ export async function buildShareModelFromRecord(
     language: record.language || "en",
     sigilIntent: record.sigilSpec.intentLabel,
     sigilSpec: record.sigilSpec,
-    qrSvg: await buildQrSvg(sharedPath),
+    qrSvg: await buildQrSvg(sharedUrl),
   };
 }
