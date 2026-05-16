@@ -1,4 +1,5 @@
 import { ShareCard } from "@/components/share-card";
+import { AnalyticsEvent } from "@/components/analytics-event";
 import { PremiumBadge } from "@/components/premium-badge";
 import { buildShareModelFromRecord } from "@/engine/share-model";
 import { getAppConfig } from "@/services/configs-service";
@@ -56,6 +57,15 @@ export default async function SharePage({ searchParams }: SharePageProps) {
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
+      <AnalyticsEvent
+        eventName="share_page_view"
+        properties={{
+          intent: record.sigilSpec.intentLabel,
+          zodiac: record.sigilSpec.zodiac || record.zodiac,
+          ageBand: record.sigilSpec.ageBand,
+          language: record.language || language,
+        }}
+      />
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.16),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.16),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"

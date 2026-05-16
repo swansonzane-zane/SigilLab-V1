@@ -8,6 +8,7 @@ import {
   grantShareReward,
   type EnergyState,
 } from "@/services/energy-service";
+import { captureEvent } from "@/services/analytics-service";
 import { buildShareMessage } from "@/lib/share-flow";
 import type { I18nDictionary } from "@/services/i18n-service";
 import { getRecentShareMessage } from "@/services/recent-share-service";
@@ -69,6 +70,9 @@ export function EnergyExhaustedPanel({
     }
 
     setIsSharing(true);
+    captureEvent("blessing_sent_clicked", {
+      language,
+    });
 
     try {
       await shareBlessing(
@@ -90,6 +94,9 @@ export function EnergyExhaustedPanel({
     }
 
     setIsWatching(true);
+    captureEvent("sponsor_omen_clicked", {
+      language,
+    });
     await new Promise((resolve) => setTimeout(resolve, 2000));
     const nextState = grantAdReward(false, dailyFreeLimit);
     setIsWatching(false);

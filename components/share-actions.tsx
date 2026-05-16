@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
 import { grantShareReward } from "@/services/energy-service";
+import { captureEvent } from "@/services/analytics-service";
 import type { ShareModel } from "@/types/share";
 
 type ShareActionsProps = {
@@ -78,6 +79,14 @@ export function ShareActions({
       anchor.click();
       document.body.removeChild(anchor);
 
+      captureEvent("seal_poster_saved", {
+        intent: model.sigilSpec.intentLabel,
+        zodiac: model.sigilSpec.zodiac,
+        ageBand: model.sigilSpec.ageBand,
+        language: model.language,
+        shareId: model.shareId,
+      });
+
       startTransition({
         active: true,
         level: "feedback",
@@ -107,6 +116,14 @@ export function ShareActions({
       const copied = await copyToClipboard(model.sealLinkLines.join("\n"));
 
       if (copied) {
+        captureEvent("seal_link_copied", {
+          intent: model.sigilSpec.intentLabel,
+          zodiac: model.sigilSpec.zodiac,
+          ageBand: model.sigilSpec.ageBand,
+          language: model.language,
+          shareId: model.shareId,
+        });
+
         startTransition({
           active: true,
           level: "feedback",
@@ -159,6 +176,14 @@ export function ShareActions({
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
+
+      captureEvent("ritual_card_saved", {
+        intent: model.sigilSpec.intentLabel,
+        zodiac: model.sigilSpec.zodiac,
+        ageBand: model.sigilSpec.ageBand,
+        language: model.language,
+        shareId: model.shareId,
+      });
 
       startTransition({
         active: true,

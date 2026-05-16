@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { AnalyticsEvent } from "@/components/analytics-event";
 import { PremiumBadge } from "@/components/premium-badge";
 import { HomeSignalForm } from "@/components/home-signal-form";
 import type { I18nDictionary } from "@/services/i18n-service";
@@ -44,6 +45,11 @@ export function HomePageShell({
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
+      <AnalyticsEvent
+        eventName="landing_view"
+        includeLandingProperties
+        properties={{ language: initialLanguage }}
+      />
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.16),_transparent_24%),radial-gradient(circle_at_80%_24%,_rgba(122,31,23,0.16),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"

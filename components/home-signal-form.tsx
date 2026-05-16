@@ -15,6 +15,7 @@ import {
   getEnergyState,
   type EnergyState,
 } from "@/services/energy-service";
+import { captureEvent } from "@/services/analytics-service";
 import type { I18nDictionary } from "@/services/i18n-service";
 import type { ReadingLanguage } from "@/types/reading";
 
@@ -89,8 +90,15 @@ export function HomeSignalForm({
     }
 
     if (!canGenerate(isPremium, dailyFreeLimit)) {
-      setEnergyState(getEnergyState(isPremium, dailyFreeLimit));
+      const nextEnergyState = getEnergyState(isPremium, dailyFreeLimit);
+
+      setEnergyState(nextEnergyState);
       setShowEnergyPanel(true);
+      captureEvent("energy_gate_viewed", {
+        usedToday: nextEnergyState.usedToday,
+        dailyFreeLimit,
+        language,
+      });
       return;
     }
 
@@ -108,6 +116,14 @@ export function HomeSignalForm({
       intent,
       language,
     });
+
+    captureEvent("generate_clicked", {
+      intent: derivedInput.intent,
+      westernZodiac: derivedInput.westernZodiac,
+      ageBand: derivedInput.ageBand,
+      language: derivedInput.language,
+    });
+
     const nextParams: Record<string, string> = {
       birthYear: String(derivedInput.birthYear),
       ageBand: derivedInput.ageBand,

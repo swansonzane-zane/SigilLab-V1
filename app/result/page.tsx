@@ -1,5 +1,6 @@
 import { generateReadingWithMeta } from "@/engine/generate-reading";
 import { buildReadingInputFromSearchParams } from "@/engine/reading-request";
+import { AnalyticsEvent } from "@/components/analytics-event";
 import { ResultActionBar } from "@/components/result-action-bar";
 import { ResultHero } from "@/components/result-hero";
 import { ResultPrompts } from "@/components/result-prompts";
@@ -39,6 +40,19 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
+      <AnalyticsEvent
+        eventName="reading_generated"
+        properties={{
+          intent: input.intent,
+          westernZodiac: input.westernZodiac,
+          ageBand: input.ageBand,
+          language: input.language,
+          status: meta.status,
+          fallbackReason: meta.fallbackReason,
+          providerResponseMs: meta.providerResponseMs,
+          totalLatencyMs: meta.totalLatencyMs,
+        }}
+      />
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.16),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.16),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"

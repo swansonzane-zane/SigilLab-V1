@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { useTransitionController } from "@/components/transition-provider";
+import { captureEvent } from "@/services/analytics-service";
 import type { I18nDictionary } from "@/services/i18n-service";
 import type { ReadingLanguage } from "@/types/reading";
 
@@ -41,6 +42,12 @@ export function ResultActionBar({
           <button
             type="button"
             onClick={() => {
+              captureEvent("share_ritual_clicked", {
+                intent: shareSeed?.intent,
+                westernZodiac: shareSeed?.zodiac,
+                ageBand: shareSeed?.ageBand,
+                language,
+              });
               startTransition({
                 active: true,
                 level: "ritual",

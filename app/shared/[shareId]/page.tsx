@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { AnalyticsEvent } from "@/components/analytics-event";
 import { ResultSigil } from "@/components/result-sigil";
+import { SharedRevealLink } from "@/components/shared-reveal-link";
 import { buildShareModelFromRecord } from "@/engine/share-model";
 import { getDictionary } from "@/services/i18n-service";
 import { getShareRecordById } from "@/services/shares-service";
@@ -22,6 +24,13 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
 
     return (
       <main className="relative flex min-h-screen flex-1 overflow-hidden">
+        <AnalyticsEvent
+          eventName="shared_page_opened"
+          properties={{
+            shareId,
+            language: "en",
+          }}
+        />
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.14),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.18),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"
@@ -52,6 +61,15 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
 
   return (
     <main className="relative flex min-h-screen flex-1 overflow-hidden">
+      <AnalyticsEvent
+        eventName="shared_page_opened"
+        properties={{
+          shareId: record.shareId,
+          intent: record.sigilSpec.intentLabel,
+          zodiac: record.sigilSpec.zodiac || record.zodiac,
+          language: record.language || model.language,
+        }}
+      />
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(176,141,87,0.14),_transparent_24%),radial-gradient(circle_at_82%_18%,_rgba(122,31,23,0.18),_transparent_20%),linear-gradient(180deg,#15100c,#050403)]"
@@ -103,14 +121,17 @@ export default async function SharedSealPage({ params }: SharedPageProps) {
               </p>
             </div>
 
-            <Link
+            <SharedRevealLink
               href={`/?${new URLSearchParams({
                 language: model.language,
               }).toString()}`}
+              shareId={model.shareId}
+              intent={model.sigilSpec.intentLabel}
+              zodiac={model.sigilSpec.zodiac}
+              language={model.language}
+              text={dictionary.share.generateOwnSignal}
               className="inline-flex min-h-12 w-full items-center justify-center rounded-sm bg-[linear-gradient(135deg,#9d2b20,#6f1711_54%,#2a1711)] px-6 text-sm font-semibold text-[#fff4d6] transition hover:brightness-110"
-            >
-              {dictionary.share.generateOwnSignal}
-            </Link>
+            />
           </div>
         </section>
       </div>

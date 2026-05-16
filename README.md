@@ -55,6 +55,11 @@ Required for deployment clarity:
 - `ADMIN_USERNAME`: Basic Auth username for `/admin` and `/api/admin/*`.
 - `ADMIN_PASSWORD`: Basic Auth password for `/admin` and `/api/admin/*`.
 
+Optional client-side analytics:
+
+- `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`: PostHog project token. If missing, analytics is disabled and the app continues normally.
+- `NEXT_PUBLIC_POSTHOG_HOST`: PostHog ingest host. Defaults to `https://us.i.posthog.com`.
+
 Optional DeepSeek overrides:
 
 - `DEEPSEEK_BASE_URL`: defaults to `https://api.deepseek.com`
@@ -81,6 +86,10 @@ npm run start
 2. Set the environment variables:
    - `DEEPSEEK_API_KEY`
    - `NEXT_PUBLIC_APP_URL`
+   - `ADMIN_USERNAME`
+   - `ADMIN_PASSWORD`
+   - `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` if analytics is enabled
+   - `NEXT_PUBLIC_POSTHOG_HOST` if using a non-default PostHog region
 3. Keep the default build command:
 
 ```bash
@@ -108,6 +117,28 @@ Admin routes and admin API routes are protected with HTTP Basic Auth through `mi
 - Configure `ADMIN_USERNAME` and `ADMIN_PASSWORD` in your environment before deploying
 - If admin credentials are missing, protected routes return `401 Unauthorized` instead of falling through
 
+## PostHog Analytics
+
+SigilLab uses `posthog-js` for minimal client-side funnel analytics. Initialization happens in `instrumentation-client.ts` only when `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is configured.
+
+Tracked public events include:
+
+- `landing_view`
+- `generate_clicked`
+- `reading_generated`
+- `share_ritual_clicked`
+- `share_page_view`
+- `seal_poster_saved`
+- `seal_link_copied`
+- `ritual_card_saved`
+- `shared_page_opened`
+- `reveal_your_seal_clicked`
+- `energy_gate_viewed`
+- `sponsor_omen_clicked`
+- `blessing_sent_clicked`
+
+Admin paths are skipped by the analytics wrapper, and PostHog is not initialized when the first page load is under `/admin`. Events intentionally avoid full birth dates, names, emails, admin credentials, and free-form user input. Before larger paid distribution, add a formal privacy and consent strategy appropriate to the launch regions.
+
 ## Current MVP Scope
 
 The launch-ready MVP includes:
@@ -124,7 +155,7 @@ The launch-ready MVP includes:
 
 - No user accounts.
 - No database; local JSON files are not durable production storage on Vercel.
-- No admin authentication.
+- Admin is protected with Basic Auth, not a full login system.
 - No Stripe, real premium entitlement, or real ad network.
 - No anti-abuse system beyond a basic in-memory API rate limit.
 - No long-term saved reading history for users.
