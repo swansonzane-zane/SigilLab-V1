@@ -46,7 +46,7 @@ export function ShareCard({
               aria-hidden="true"
               className="absolute inset-4 border border-[#b08d57]/16"
             />
-            <div className="relative flex h-full flex-col justify-between">
+            <div className="relative flex h-full flex-col">
               <div className="flex items-start justify-between gap-3">
                 <div className="inline-flex items-center gap-3 border border-[#b08d57]/24 bg-[#23150f]/72 px-3 py-2 text-[11px] font-medium tracking-[0.14em] text-[#d8bd82]">
                   <span className="grid h-6 w-6 place-items-center rounded-sm border border-[#8f261c]/50 bg-[#6f1711] text-[10px] text-[#f0d7a4]">
@@ -59,12 +59,12 @@ export function ShareCard({
                 </p>
               </div>
 
-              <div className="relative -my-4 flex flex-1 items-center justify-center py-0">
+              <div className="relative mt-3 flex h-[52%] min-h-[13.5rem] items-center justify-center">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-x-2 top-1/2 h-[72%] -translate-y-1/2 rounded-[1.4rem] border border-[#7a1b14]/18 bg-[#c6aa78]/8"
+                  className="absolute inset-x-3 top-1/2 h-[74%] -translate-y-1/2 rounded-[1.4rem] border border-[#7a1b14]/18 bg-[#c6aa78]/8"
                 />
-                <div className="scale-[1.38] sm:scale-[1.48]">
+                <div className="scale-[1.18] sm:scale-[1.24]">
                   <ResultSigil
                     intent={model.sigilIntent}
                     zodiac={model.sigilSpec.zodiac}
@@ -76,11 +76,11 @@ export function ShareCard({
                 </div>
               </div>
 
-              <div className="space-y-3 text-center">
+              <div className="mt-4 space-y-2 text-center">
                 <p className="text-[11px] tracking-[0.18em] text-[#bba16e]/72 uppercase">
                   {model.readingEyebrow}
                 </p>
-                <h2 className="font-heading text-2xl leading-tight font-semibold text-[#f2dfb8] sm:text-[2.35rem]">
+                <h2 className="mx-auto max-w-[22rem] font-heading text-[1.55rem] leading-[1.2] font-semibold text-[#f2dfb8] sm:max-w-[24rem] sm:text-[1.95rem]">
                   {model.ritualPhrase || model.headline}
                 </h2>
                 <p className="mx-auto max-w-sm text-sm leading-7 text-[#e5d0a2]/86">
