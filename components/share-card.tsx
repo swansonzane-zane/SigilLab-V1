@@ -62,7 +62,11 @@ export function ShareCard({
               <div className="relative mt-3 flex h-[52%] min-h-[13.5rem] items-center justify-center">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-x-3 top-1/2 h-[74%] -translate-y-1/2 rounded-[1.4rem] border border-[#7a1b14]/18 bg-[#c6aa78]/8"
+                  className="absolute inset-x-5 top-1/2 h-[70%] -translate-y-1/2 rounded-[1.45rem] border border-[#b08d57]/14 bg-[radial-gradient(circle_at_center,rgba(214,188,132,0.07),rgba(214,188,132,0.01)_62%,transparent_100%)] shadow-[inset_0_0_0_1px_rgba(122,31,23,0.12)]"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-8 top-1/2 h-[58%] -translate-y-1/2 border border-[#b08d57]/10"
                 />
                 <div className="scale-[1.18] sm:scale-[1.24]">
                   <ResultSigil
@@ -137,7 +141,7 @@ export function ShareCard({
               <div className="relative -my-1 flex justify-center">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-x-8 top-7 h-56 rounded-[1.2rem] border border-[#7a1b14]/24 bg-[#c6aa78]/10"
+                  className="absolute inset-x-10 top-8 h-52 rounded-[1.2rem] border border-[#7a1b14]/16 bg-[#c6aa78]/6"
                 />
                 <div className="scale-[0.84] sm:scale-[0.9]">
                   <ResultSigil
